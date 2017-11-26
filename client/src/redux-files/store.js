@@ -6,6 +6,7 @@ import rootReducer from 'reducers/indexReducer';
 import * as actions from 'actions/indexActions';
 
 export default createStore(
-  rootReducer, 
+  rootReducer,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(thunk, logger())
 );
