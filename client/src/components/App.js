@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-dnd';
+import { connect } from 'react-redux';
 import HTML5Backend from 'react-dnd-html5-backend';
 import Container from './Container';
 
 class App extends Component {
 
 	render() {
+		const { cards } = this.props;
+
 		const style = {
 			display: "flex",
 			justifyContent: "space-around",
@@ -18,19 +21,23 @@ class App extends Component {
 			{ id: 3, text: "Item 3" }
 		];
 
-		const listTwo = [
-			{ id: 4, text: "Item 4" },
-			{ id: 5, text: "Item 5" },
-			{ id: 6, text: "Item 6" }
-		];
-
 		return (
 			<div style={{...style}}>
-				<Container id={1} list={listOne} />
-				<Container id={2} list={listTwo} />
+				<Container id={1} list={cards} />
 			</div>
 		);
 	}
 }
 
-export default DragDropContext(HTML5Backend)(App);
+App = DragDropContext(HTML5Backend)(App);
+
+const mapStateToProps = (state) => {
+	const { listOne } = state;
+	const { cards } = listOne;
+
+  return {
+		cards
+  };
+};
+
+export default connect(mapStateToProps)(App);

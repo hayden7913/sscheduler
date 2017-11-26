@@ -87,6 +87,7 @@ const cardTarget = {
 
 		// Time to actually perform the action
 		if ( props.listId === sourceListId ) {
+			console.log('moving')
 			props.moveCard(dragIndex, hoverIndex);
 
 			// Note: we're mutating the monitor item here!
