@@ -5,6 +5,11 @@ body,
 #root {
   height: 100%;
   font-family: 'Roboto';
+  font-size: $font-size;
+}
+
+table, tr, td, thead  {
+  font-size: $font-size !important;
 }
 
 section {

@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export default function getMoment(inputTime) {
+export function getMoment(inputTime) {
   const isPM = /pm/.test(inputTime)
   const strippedTime = inputTime.replace(/(am)|(pm)/, "");
   const splitTime = strippedTime.split(":");
@@ -10,10 +10,20 @@ export default function getMoment(inputTime) {
     hours = (parseInt(hours) + 12).toString();
   }
 
-  const date = "2017-11-26T!";
-  const fTime = hours < 12
-    ? date + "0" + hours + ":" + minutes
-    : date + hours + ":" + minutes;
+  const dateToday = moment().format().split("T")[0];
 
+  const fTime = hours < 12
+    ? dateToday + "T" + "0" + hours + ":" + minutes
+    : dateToday + "T" + hours + ":" + minutes;
     return moment(fTime)
+}
+
+const now = getMoment("3:30am");
+const later = "4:00am";
+// console.log(moment())
+const res = now.isBefore(getMoment(later));
+console.log(res);
+
+export function getCummTimeStamp(startTime, cummTime) {
+  return startTime.add(cummTime, 'minutes').format('h:mm a');
 }

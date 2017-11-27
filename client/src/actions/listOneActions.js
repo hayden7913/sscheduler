@@ -76,3 +76,9 @@ export const updateCardDuration = (cardId, newDuration) => ({
   cardId,
   newDuration,
 });
+
+export const UPDATE_START_TIME = 'UPDATE_START_TIME';
+export const updateStartTime = (newStartTime) => ({
+  type: 'UPDATE_START_TIME',
+  newStartTime,
+});

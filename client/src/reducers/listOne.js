@@ -4,6 +4,7 @@ import * as actions from '../actions/indexActions';
 const defaultState = {
   cards: [],
   listId: null,
+  startTime: "12:00pm",
 }
 
 export const listOne = (state = defaultState, action) => {
@@ -35,6 +36,7 @@ export const listOne = (state = defaultState, action) => {
       const { cards, _id: listId } = action.payload[0];
 
       return  {
+        ...state,
         cards,
         listId,
       };
@@ -86,6 +88,11 @@ export const listOne = (state = defaultState, action) => {
       return  {
         ...state,
         cards: newCards
+      };
+    case actions.UPDATE_START_TIME:
+      return  {
+        ...state,
+        startTime: action.newStartTime,
       };
   }
   return state;

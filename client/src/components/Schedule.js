@@ -1,48 +1,91 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, TableBody, TableRow, TableRowColumn} from 'material-ui/Table';
+import {
+  Table,
+  TableBody,
+  TableFooter,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
 import shortId from 'shortid';
 
-import SchedgeRow from './SchedgeRow';
-import List from './List';
+import { getCummTimeStamp, getMoment } from '../helpers/time';
 
-import
-{
-	addCard,
+import EditInlineText from './EditInlineText';
 
+import {
+	updateStartTime,
 } from '../actions/indexActions';
 
 import Container from './Container';
 
 class Schedule extends Component {
-  renderList = () => {
-		const { cards } = this.props;
-    return (
-			cards.map(card => {
-				<TableRow style={{ marginTop: "10px" }}>
-		      <TableRowColumn>{card.duration}</TableRowColumn>
-		      <TableRowColumn>{card.text}</TableRowColumn>
-        </TableRow>
-			})
-		);
+  getCummDurationMap() {
+    const { cards } = this.props;
+    const durationMap = [0];
+
+    if (cards.length === 0) {
+      return [];
+    }
+
+    durationMap.push(cards[0].duration)
+
+    cards.map(card => parseInt(card.duration))
+    .reduce((a, b) => {
+      durationMap.push(a+b);
+      return a + b;
+    });
+
+    return durationMap;
+  };
+
+  handleStartTimeChange = (newStartTime) => {
+    const { updateStartTime } = this.props;
+
+    updateStartTime(newStartTime);
   }
 
-	renderRow = () => (
-		<TableRow style={{ marginTop: "10px" }}>
-			<TableRowColumn>{'hello'}</TableRowColumn>
-			<TableRowColumn>{'world'}</TableRowColumn>
-		</TableRow>
-	)
 
 	render() {
-		const { cards, updateCards } = this.props;
+		const { cards, updateCards, startTime } = this.props;
+
+    const startTimeMoment = getMoment(startTime);
+    const cummDurationMap = this.getCummDurationMap();
 
 		return (
-			<Table>
-				<TableBody>
-					{this.renderRow}
-				</TableBody>
-			</Table>
+  		<div>
+        <div style={{marginLeft: "21px"}}>
+          <span>Start Time: </span>
+						<EditInlineText
+							className="edit-inline edit-duration"
+							handleChange={this.handleStartTimeChange}
+							text={startTime}
+						/>
+        </div>
+        <Table>
+          <TableHeader
+            displaySelectAll={false}
+            adjustForCheckbox={false}
+          >
+            <TableRow>
+              <TableHeaderColumn>Duration</TableHeaderColumn>
+              <TableHeaderColumn>Task</TableHeaderColumn>
+            </TableRow>
+          </TableHeader>
+          <TableBody
+            displayRowCheckbox={false}
+          >
+            {cards.map( (card, index) => (
+              <TableRow key={index}>
+                <TableRowColumn>{getCummTimeStamp(startTimeMoment, cummDurationMap[index])}</TableRowColumn>
+                <TableRowColumn style={{tableLayout: "fixed", width: "128px"}}>{card.text}</TableRowColumn>
+              </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+			</div>
 		);
 	}
 }
@@ -50,13 +93,14 @@ class Schedule extends Component {
 
 const mapStateToProps = (state) => {
 	const { listOne } = state;
-	const { cards } = listOne;
+	const { cards, startTime } = listOne;
 
   return {
-		cards
+		cards,
+    startTime,
   };
 };
 
 export default connect(mapStateToProps, {
-	addCard,
+	updateStartTime,
 })(Schedule);
