@@ -20,7 +20,7 @@ export function getMoment(inputTime) {
 
 
 export function getCummTimeStamp(startTime, cummTime) {
-  return startTime.add(cummTime, 'minutes').format('h:mm a');
+  return startTime.clone().add(cummTime, 'minutes').format('h:mm a');
 }
 
 
