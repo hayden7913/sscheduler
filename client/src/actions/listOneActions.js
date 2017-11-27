@@ -48,14 +48,15 @@ export function saveCardState() {
           'Content-Type': 'application/json'
         }
       })
-      // .then((res) => {
-      //   return res.json();
-      // })
-      // .then(data => {
-      //   alert(JSON.stringify(data));
-      // })
   }
 }
+
+export const SET_ACTIVE_TASK = 'SET_ACTIVE_TASK';
+export const setActiveTask = (cardId) => ({
+  type: 'SET_ACTIVE_TASK',
+  cardId,
+});
+
 export const UPDATE_CARDS = 'UPDATE_CARDS';
 export const updateCards = (newList) => ({
   type: 'UPDATE_CARDS',

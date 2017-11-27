@@ -2,6 +2,7 @@ import shortId from 'shortid';
 import * as actions from '../actions/indexActions';
 
 const defaultState = {
+  activeTaskId: null,
   cards: [],
   listId: null,
   startTime: "12:00pm",
@@ -54,6 +55,11 @@ export const listOne = (state = defaultState, action) => {
         cards: newCards,
       };
     }
+    case actions.SET_ACTIVE_TASK:
+      return  {
+        ...state,
+        activeTaskId: action.cardId
+      };
     case actions.UPDATE_CARDS:
       return  {
         ...state,

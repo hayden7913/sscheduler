@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
+import repeat from 'repeat';
+import shortId from 'shortid';
+
 import {
   Table,
   TableBody,
@@ -9,19 +13,33 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import shortId from 'shortid';
 
-import { getCummTimeStamp, getMoment } from '../helpers/time';
-
-import EditInlineText from './EditInlineText';
-
+import { getCummTimeStamp, getMoment, isTimeBetweenInteveral } from '../helpers/time';
 import {
+  setActiveTask,
 	updateStartTime,
 } from '../actions/indexActions';
 
 import Container from './Container';
+import EditInlineText from './EditInlineText';
 
 class Schedule extends Component {
+  componentDidUpdate(prevProps) {
+    const { activeTaskId, cards, setActiveTask, startTime } = this.props;
+
+    if (!activeTaskId && (cards.length > 0)) {
+      setActiveTask(cards[0].id);
+    }
+    if (prevProps.cards.length === 0 && this.props.cards.length > 0 ||
+        prevProps.startTime !== this.props.startTime
+    ) {
+      const startTimeMoment = getMoment(startTime);
+      const cummDurationMap = this.getCummDurationMap();
+
+      repeat(this.checkActiveTask(startTimeMoment, cummDurationMap));
+    }
+  }
+
   getCummDurationMap() {
     const { cards } = this.props;
     const durationMap = [0];
@@ -47,15 +65,26 @@ class Schedule extends Component {
     updateStartTime(newStartTime);
   }
 
+  checkActiveTask = (startTime, cummDurationMap) => {
+    const { activeTaskId, cards, setActiveTask } = this.props;
+
+    const activeIndex = cummDurationMap.findIndex((value, index) => {
+        return isTimeBetweenInteveral(startTime, value, cummDurationMap[index + 1]);
+    });
+
+    if ((activeIndex > -1) && (cards[activeIndex].id !== activeTaskId)) {
+      setActiveTask(cards[activeIndex].id);
+    }
+  }
 
 	render() {
-		const { cards, updateCards, startTime } = this.props;
-
+		const { activeTaskId, cards, updateCards, startTime } = this.props;
     const startTimeMoment = getMoment(startTime);
     const cummDurationMap = this.getCummDurationMap();
 
 		return (
   		<div>
+
         <div style={{marginLeft: "21px"}}>
           <span>Start Time: </span>
 						<EditInlineText
@@ -77,8 +106,11 @@ class Schedule extends Component {
           <TableBody
             displayRowCheckbox={false}
           >
-            {cards.map( (card, index) => (
-              <TableRow key={index}>
+            {cards.map((card, index) => (
+              <TableRow
+                style={activeTaskId === card.id ? {backgroundColor: '#E8F5E9'} : {backgroundColor: 'transparent'}}
+                key={index}
+              >
                 <TableRowColumn>{getCummTimeStamp(startTimeMoment, cummDurationMap[index])}</TableRowColumn>
                 <TableRowColumn style={{tableLayout: "fixed", width: "128px"}}>{card.text}</TableRowColumn>
               </TableRow>
@@ -93,14 +125,16 @@ class Schedule extends Component {
 
 const mapStateToProps = (state) => {
 	const { listOne } = state;
-	const { cards, startTime } = listOne;
+	const { activeTaskId, cards, startTime } = listOne;
 
   return {
+    activeTaskId,
 		cards,
     startTime,
   };
 };
 
 export default connect(mapStateToProps, {
+  setActiveTask,
 	updateStartTime,
 })(Schedule);
