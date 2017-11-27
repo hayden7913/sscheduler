@@ -4,6 +4,12 @@ export const updateCards = (newList) => ({
   newList
 });
 
+export const ADD_CARD = 'ADD_CARD';
+export const addCard = (newCard) => ({
+  type: 'ADD_CARD',
+  newCard
+});
+
 export const UPDATE_CARD_TEXT = 'UPDATE_CARD_TEXT';
 export const updateCardText= (cardId, newText) => ({
   type: 'UPDATE_CARD_TEXT',

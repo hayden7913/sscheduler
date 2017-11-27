@@ -10,12 +10,22 @@ const defaultState = {
 
 export const listOne = (state = defaultState, action) => {
   switch(action.type) {
+    case actions.ADD_CARD: {
+      const newCards = [
+        ... state.cards,
+        action.newCard
+      ]
+
+      return  {
+        ...state,
+        cards: newCards,
+      };
+    }
     case actions.UPDATE_CARDS:
       return  {
         ...state,
         cards: action.newList
       };
-
     case actions.UPDATE_CARD_TEXT: {
         const { cardId, newText } = action;
         const newCards = state.cards.map(card => {

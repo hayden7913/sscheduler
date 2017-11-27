@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import update from 'react/lib/update';
-import Card from './Card';
 import { DropTarget } from 'react-dnd';
+
+import Card from './Card';
+import NewCardForm from './NewCardForm';
 
 class Container extends Component {
 
@@ -57,7 +59,7 @@ class Container extends Component {
 
 	render() {
 		const { cards } = this.state;
-		const { canDrop, isOver, connectDropTarget, updateCardText } = this.props;
+		const { addCard, canDrop, isOver, connectDropTarget, updateCardText } = this.props;
 
 		const isActive = canDrop && isOver;
 		const style = {
@@ -65,7 +67,7 @@ class Container extends Component {
 			height: "404px",
 			border: '1px dashed gray'
 		};
-
+		console.log(cards)
 		return connectDropTarget(
 			<div style={{ ...style }}>
 				{cards.map((card, i) => {
@@ -82,6 +84,7 @@ class Container extends Component {
 						/>
 					);
 				})}
+				<NewCardForm addCard={addCard} />
 			</div>
 		);
   }
