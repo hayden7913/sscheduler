@@ -25,7 +25,7 @@ export default class NewCardForm extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const { addCard } = this.props;
+    const { addCard, saveCardState } = this.props;
     const { durationValue, textValue } = this.state;
 
     addCard({
@@ -33,6 +33,8 @@ export default class NewCardForm extends React.Component {
       text: textValue,
       duration: durationValue === '' ? 0 :  parseInt(durationValue),
     });
+
+    saveCardState();
 
     this.setState({
        textValue: '',

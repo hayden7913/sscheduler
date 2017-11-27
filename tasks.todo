@@ -1,12 +1,15 @@
 **Tasks**:
 
-☐ wire up db
-  ☐ serve project
-  ☐ write post endpoint
-  ☐ write get endpoint
-  ☐ load tasks from db on mountA
+☐ save db on card move and on card add
 
+☐ place card list inside of a ui card
+  ☐ alos do this for cards
 ☐ write schege
   ☐ write schedge item component
   ☐ copy list component
   ☐ write scedge container?
+
+
+
+
+  ☐ increase width of task list

@@ -3,6 +3,9 @@ import { DragDropContext } from 'react-dnd';
 import { connect } from 'react-redux';
 import HTML5Backend from 'react-dnd-html5-backend';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { Card } from 'material-ui/Card';
+
+import Schedule from './Schedule';
 
 import
 {
@@ -30,14 +33,19 @@ class App extends Component {
 
 		const style = {
 			display: "flex",
-			justifyContent: "space-around",
-			paddingTop: "20px"
+			justifyContent: "center",
+			paddingTop: "10%",
 		}
 
 		return (
 	  <MuiThemeProvider>
 			<div style={{...style}}>
-				<Container id={1} list={cards} {...this.props} />
+				<Card>
+					<Container id={1} list={cards} {...this.props} />
+				</Card>
+				<Card style={{ marginLeft: "20px", padding: "10px", width: "300px"}}>
+					<Schedule />
+				</Card>
 			</div>
 	  </MuiThemeProvider>
 		);

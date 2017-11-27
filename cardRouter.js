@@ -9,8 +9,6 @@ cardRouter.use(bodyParser.urlencoded({
 cardRouter.use(bodyParser.json());
 
 cardRouter.get('/', (req, res) => {
-  console.log('get request')
-  // res.send({cardRouter: 'success'});
   TestData
     .find()
     .exec()
@@ -49,12 +47,10 @@ cardRouter.post('/', (req, res) => {
 });
 
 cardRouter.put('/:listId', (req, res) => {
-  console.log(req.body)
   const toUpdate = {
     cards: req.body.cards,
   }
-  console.log(req.params.listId)
-  console.log(toUpdate)
+
   TestData
     .findByIdAndUpdate(req.params.listId, {$set: toUpdate})
     .exec()

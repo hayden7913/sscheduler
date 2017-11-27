@@ -34,7 +34,7 @@ class Container extends Component {
 	}
 
 	moveCard(dragIndex, hoverIndex) {
-		const { updateCards, moveCard } = this.props;
+		const { updateCards, moveCard, saveCardState } = this.props;
 		const { cards } = this.state;
 		const dragCard = cards[dragIndex];
 
@@ -42,6 +42,7 @@ class Container extends Component {
 			dragIndex,
 			hoverIndex,
 		});
+		saveCardState();
 	}
 
 	handleTextChange = (cardId) => (newText) => {
@@ -71,9 +72,8 @@ class Container extends Component {
 
 		const isActive = canDrop && isOver;
 		const style = {
-			width: "200px",
-			pading: "5px",
-			border: '1px dashed gray',
+			width: "300px",
+			padding: "10px",
 		};
 
 		return connectDropTarget(

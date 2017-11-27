@@ -2,37 +2,40 @@ import React, { Component } from 'react';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import flow from 'lodash/flow';
+import { Card } from 'material-ui/Card';
 
 import EditInlineText from './EditInlineText';
 
 const style = {
-	border: '1px dashed gray',
-	padding: '0.5rem 1rem',
+	// padding: '0.5rem 1rem',
+	padding: "10px",
 	margin: '.5rem',
 	backgroundColor: 'white',
 	cursor: 'move'
 };
 
-class Card extends Component {
+class TaskCard extends Component {
 	render() {
 		const { card, isDragging, connectDragSource, connectDropTarget, handleTextChange, handleDelete, handleDurationChange } = this.props;
 		const opacity = isDragging ? 0 : 1;
 
 		return connectDragSource(connectDropTarget(
-			<div className="card" style={{ ...style, opacity }}>
-				<div className="card-col card-col-1 card-col-text">
-					<EditInlineText className="edit-text" handleChange={handleTextChange}  text={card.text} />
-				</div>
-				<div className="card-col card-col-2 card-col-duration">
-					<EditInlineText
-						className="edit-duration"
-						handleChange={handleDurationChange}
-						text={isNaN(card.duration) ? card.duration : card.duration.toString()}
-					/>
-				</div>
-				<div className="card-col card-col-3 card-col-delete">
-					<span className="icon-trash" onClick={handleDelete}></span>
-				</div>
+			<div className="card" >
+				<Card  style={{ ...style, opacity }}>
+					<div className="card-col card-col-1 card-col-text">
+						<EditInlineText className="edit-inline edit-text" handleChange={handleTextChange}  text={card.text} />
+					</div>
+					<div className="card-col card-col-2 card-col-duration">
+						<EditInlineText
+							className="edit-inline edit-duration"
+							handleChange={handleDurationChange}
+							text={isNaN(card.duration) ? card.duration : card.duration.toString()}
+						/>
+					</div>
+					<div className="card-col card-col-3 card-col-delete">
+						<span className="icon-trash" onClick={handleDelete}></span>
+					</div>
+				</Card>
 			</div>
 		));
 	}
@@ -116,4 +119,4 @@ export default flow(
 		connectDragSource: connect.dragSource(),
 		isDragging: monitor.isDragging()
 	}))
-)(Card);
+)(TaskCard);
