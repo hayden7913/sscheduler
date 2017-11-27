@@ -2,11 +2,8 @@ import shortId from 'shortid';
 import * as actions from '../actions/indexActions';
 
 const defaultState = {
-  cards: [
-    { id: shortId.generate(), text: "fdsa 1", duration: 20 },
-    { id: shortId.generate(), text: "Item 2", duration: 5 },
-    { id: shortId.generate(), text: "Item 3", duration: 10}
-  ]
+  cards: [],
+  listId: null,
 }
 
 export const listOne = (state = defaultState, action) => {
@@ -23,18 +20,23 @@ export const listOne = (state = defaultState, action) => {
       };
     }
     case actions.DELETE_CARD: {
-    const { cardId } = action;
-    console.log(cardId)
-    const newCards = state.cards.filter(card => {
-      console.log(card.id, cardId)
-      return card.id !== cardId;
-    });
+      const { cardId } = action;
 
-    console.log(newCards);
+      const newCards = state.cards.filter(card => {
+        return card.id !== cardId;
+      });
 
       return  {
         ...state,
         cards: newCards,
+      };
+    }
+    case actions.FETCH_CARDS_SUCCESS: {
+      const { cards, _id: listId } = action.payload[0];
+
+      return  {
+        cards,
+        listId,
       };
     }
     case actions.MOVE_CARD: {

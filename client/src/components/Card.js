@@ -24,7 +24,11 @@ class Card extends Component {
 					<EditInlineText className="edit-text" handleChange={handleTextChange}  text={card.text} />
 				</div>
 				<div className="card-col card-col-2 card-col-duration">
-					<EditInlineText className="edit-duration" handleChange={handleDurationChange}  text={card.duration.toString()} />
+					<EditInlineText
+						className="edit-duration"
+						handleChange={handleDurationChange}
+						text={isNaN(card.duration) ? card.duration : card.duration.toString()}
+					/>
 				</div>
 				<div className="card-col card-col-3 card-col-delete">
 					<span className="icon-trash" onClick={handleDelete}></span>

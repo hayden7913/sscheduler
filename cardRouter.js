@@ -1,16 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { TestData } = require('./models');
-const testRouter = express.Router();
+const cardRouter = express.Router();
 
-testRouter.use(bodyParser.urlencoded({
+cardRouter.use(bodyParser.urlencoded({
   extended: true
 }));
-testRouter.use(bodyParser.json());
+cardRouter.use(bodyParser.json());
 
-testRouter.get('/', (req, res) => {
+cardRouter.get('/', (req, res) => {
   console.log('get request')
-  //res.send({testRouter: 'success'});
+  // res.send({cardRouter: 'success'});
   TestData
     .find()
     .exec()
@@ -22,7 +22,7 @@ testRouter.get('/', (req, res) => {
       });
 });
 
-testRouter.get('/:projectId', (req, res) => {
+cardRouter.get('/:projectId', (req, res) => {
   console.log('get project by id')
   TestData
     .findById(req.params.projectId)
@@ -34,7 +34,8 @@ testRouter.get('/:projectId', (req, res) => {
       });
 });
 
-testRouter.post('/', (req, res) => {
+cardRouter.post('/', (req, res) => {
+  console.log('posting')
   console.log(req.body)
   TestData
     .create({
@@ -47,25 +48,23 @@ testRouter.post('/', (req, res) => {
     });
 });
 
-testRouter.put('/:projectId', (req, res) => {
+cardRouter.put('/:listId', (req, res) => {
   console.log(req.body)
   const toUpdate = {
-    name: req.body.projectName,
-    boardSpecs: req.body.boardSpecs,
-    modules: req.body.modules,
-    boardModules: req.body.boardModules
+    cards: req.body.cards,
   }
+  console.log(req.params.listId)
   console.log(toUpdate)
-  testData
-    .findByIdAndUpdate(req.params.projectId, {$set: toUpdate})
+  TestData
+    .findByIdAndUpdate(req.params.listId, {$set: toUpdate})
     .exec()
     .then(project => res.status(204).end())
-    .catch(err => 
+    .catch(err =>
       res.status(500).json({message: 'Internal server error'})
     );
 });
 
-testRouter.delete('/:projectId', (req, res) => {
+cardRouter.delete('/:projectId', (req, res) => {
   testData
     .findByIdAndRemove(req.params.projectId)
     .exec()
@@ -73,4 +72,4 @@ testRouter.delete('/:projectId', (req, res) => {
     .catch(err => res.status(404).json({message: 'Not Found'}));
 });
 
-module.exports = testRouter;
+module.exports = cardRouter;

@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import HTML5Backend from 'react-dnd-html5-backend';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-
 import
 {
 	addCard,
 	deleteCard,
+	fetchCards,
 	moveCard,
+	saveCardState,
 	updateCards,
 	updateCardText,
 	updateCardDuration
@@ -18,9 +19,15 @@ import
 import Container from './Container';
 
 class App extends Component {
+	componentDidMount() {
+		const { fetchCards } = this.props;
+
+		fetchCards();
+	}
 
 	render() {
 		const { cards, updateCards } = this.props;
+
 		const style = {
 			display: "flex",
 			justifyContent: "space-around",
@@ -51,7 +58,9 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
 	addCard,
   deleteCard,
+	fetchCards,
 	moveCard,
+	saveCardState,
 	updateCards,
 	updateCardText,
 	updateCardDuration,

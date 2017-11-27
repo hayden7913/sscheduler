@@ -5,19 +5,19 @@ import store from 'reduxFiles/store';
 const url = 'testRouter';
 
 export const FETCH_TEST_DATA_SUCCESS = 'FETCH_TEST_DATA_SUCCESS'; 
-export const fetchTestDataSuccess = (testData) => ({
+export const fetchCardsSuccess = (testData) => ({
   type: 'FETCH_TEST_DATA_SUCCESS',
   testData
 });
 
-export function fetchTestData() {
+export function fetchCards() {
   return (dispatch) => {
     fetch(url)
     .then((res) => {
       return res.json();
     })
     .then(data => {
-      dispatch(fetchTestDataSuccess(data));
+      dispatch(fetchCardsSuccess(data));
     })
     .catch(err => {
       console.error(err)
@@ -75,7 +75,7 @@ export function postNewProject(newProject) {
       })
       .then(data => {
         const projectId = data._id;
-        console.log('New project saved');
+        
         dispatch(fetchProjectById(projectId));
       })
       .catch(err => {
@@ -131,7 +131,7 @@ export function deleteProject(projectId, projects) {
         })
       })
       .then((res) => {
-        console.log('delete successful')
+        
         dispatch(fetchProjects());
       })
       .catch(err => {

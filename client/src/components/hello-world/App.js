@@ -7,11 +7,11 @@ import store from 'reduxFiles/store';
 import List from './List';
 
 export function App(props) {
-  console.log(props.testData)
+  
   return (
     <div>
       <h1>Hola Mundo</h1>
-      <Button clickAction={() => store.dispatch(actions.fetchTestData())} text={"Get Test Data"}/>
+      <Button clickAction={() => store.dispatch(actions.fetchCards())} text={"Get Test Data"}/>
       <List data={props.testData}/>
     </div>
   )

@@ -13,7 +13,7 @@ ReactDOM.render(
   <Provider store={ store }>
     <Router history={hashHistory}>
       {/* <Route path="/app" component={App}/>  */}
-      <Route path="/*" component ={App}/>
+      <Route path="/" component ={App}/>
     </Router>
   </Provider>,
   document.getElementById('root')

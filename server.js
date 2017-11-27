@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const app = express();
 const { PORT, DATABASE_URL } = require('./config');
 const { TestData } = require('./models');
-const testRouter = require('./testRouter');
+const cardRouter = require('./cardRouter');
 mongoose.Promise = global.Promise;
 
 //app.set('port', (process.env.PORT || 3001));
@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
-app.use('/testRouter', testRouter);
+app.use('/cards', cardRouter);
 
 app.get('/test', (req, res) => {
   TestData
@@ -39,7 +39,7 @@ app.get('/test', (req, res) => {
 app.post('/test', (req, res) => {
   console.log('post hit');
   console.log(req.body)
-  
+
   TestData
     .create({
       'testData': req.body.testData,

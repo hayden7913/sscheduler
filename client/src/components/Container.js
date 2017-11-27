@@ -6,6 +6,9 @@ import Card from './Card';
 import NewCardForm from './NewCardForm';
 
 class Container extends Component {
+	static defaultProps = {
+		cards:  []
+	}
 
 	constructor(props) {
 		super(props);
@@ -42,26 +45,29 @@ class Container extends Component {
 	}
 
 	handleTextChange = (cardId) => (newText) => {
-		const { updateCardText } = this.props;
+		const { updateCardText, saveCardState } = this.props;
 
 		updateCardText(cardId, newText);
+		saveCardState();
 	}
 
 	handleDurationChange = (cardId) => (newDuration) => {
-		const { updateCardDuration} = this.props;
+		const { updateCardDuration, saveCardState } = this.props;
 
 		updateCardDuration(cardId, newDuration);
+		saveCardState();
 	}
 
 	handleDeleteCard = (cardId) => () => {
-		const { deleteCard } = this.props;
+		const { deleteCard, saveCardState } = this.props;
 
 		deleteCard(cardId);
+		saveCardState()
 	}
 
 	render() {
 		const { cards } = this.props;
-		const { addCard, canDrop, isOver, connectDropTarget, deleteCard, updateCardText } = this.props;
+		const { addCard, canDrop, isOver, connectDropTarget, deleteCard, updateCardText, saveCardState } = this.props;
 
 		const isActive = canDrop && isOver;
 		const style = {
@@ -87,7 +93,7 @@ class Container extends Component {
 						/>
 					);
 				})}
-				<NewCardForm addCard={addCard} />
+				<NewCardForm addCard={addCard} saveCardState={saveCardState} />
 			</div>
 		);
   }

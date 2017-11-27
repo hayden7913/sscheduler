@@ -1,11 +1,15 @@
 const mongoose = require('mongoose');
 
 const testSchema = mongoose.Schema({
-  testData: String
+  cards: [{
+    text: String,
+    id: String,
+    duration: Number,
+  }],
 });
 
 
-const TestData = mongoose.model('Modules', testSchema);
+const TestData = mongoose.model('cards', testSchema);
 //const Projects = mongoose.model('Projects', projectSchema);
 
 module.exports = {TestData /*, Projects*/};
