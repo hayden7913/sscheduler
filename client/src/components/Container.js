@@ -6,7 +6,7 @@ import { DropTarget } from 'react-dnd';
 class Container extends Component {
 
 	constructor(props) {
-		super(props);		
+		super(props);
 		this.state = { cards: props.list };
 	}
 
@@ -18,7 +18,7 @@ class Container extends Component {
 		}));
 	}
 
-	removeCard(index) {		
+	removeCard(index) {
 		this.setState(update(this.state, {
 			cards: {
 				$splice: [
@@ -29,7 +29,8 @@ class Container extends Component {
 	}
 
 	moveCard(dragIndex, hoverIndex) {
-		const { cards } = this.state;		
+		const { updateCards } = this.props;
+		const { cards } = this.state;
 		const dragCard = cards[dragIndex];
 
 		this.setState(update(this.state, {
@@ -39,12 +40,25 @@ class Container extends Component {
 					[hoverIndex, 0, dragCard]
 				]
 			}
-		}));
+		}), () => updateCards(cards));
+	}
+
+	handleTextChange = (cardId) => (newText) => {
+		const { updateCardText } = this.props;
+
+		updateCardText(cardId, newText);
+	}
+
+	handleDurationChange = (cardId) => (newDuration) => {
+		const { updateCardDuration} = this.props;
+
+		updateCardDuration(cardId, newDuration);
 	}
 
 	render() {
 		const { cards } = this.state;
-		const { canDrop, isOver, connectDropTarget } = this.props;
+		const { canDrop, isOver, connectDropTarget, updateCardText } = this.props;
+
 		const isActive = canDrop && isOver;
 		const style = {
 			width: "200px",
@@ -52,19 +66,20 @@ class Container extends Component {
 			border: '1px dashed gray'
 		};
 
-		const backgroundColor = isActive ? 'lightgreen' : '#FFF';
-
 		return connectDropTarget(
-			<div style={{...style, backgroundColor}}>
+			<div style={{ ...style }}>
 				{cards.map((card, i) => {
 					return (
-						<Card 
+						<Card
 							key={card.id}
 							index={i}
 							listId={this.props.id}
-							card={card}														
+							card={card}
+							handleTextChange={this.handleTextChange(card.id)}
+							handleDurationChange={this.handleDurationChange(card.id)}
 							removeCard={this.removeCard.bind(this)}
-							moveCard={this.moveCard.bind(this)} />
+							moveCard={this.moveCard.bind(this)}
+						/>
 					);
 				})}
 			</div>
@@ -75,7 +90,7 @@ class Container extends Component {
 const cardTarget = {
 	drop(props, monitor, component ) {
 		const { id } = props;
-		const sourceObj = monitor.getItem();		
+		const sourceObj = monitor.getItem();
 		if ( id !== sourceObj.listId ) component.pushCard(sourceObj.card);
 		return {
 			listId: id

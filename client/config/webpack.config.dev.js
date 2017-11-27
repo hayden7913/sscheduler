@@ -77,13 +77,13 @@ module.exports = {
     },
     extensions: ['', '.js', '.jsx']
   },
-    
+
   module: {
     // First, run the linter.
     // It's important to do this before Babel processes the JS.
-    
-    
-    
+
+
+
     loaders: [
       // Default loader: load all assets that are not handled
       // by other loaders with the url loader.
@@ -105,7 +105,8 @@ module.exports = {
           /\.(js|jsx)$/,
           /\.css$/,
           /\.json$/,
-          /\.svg$/
+          /\.svg$/,
+          /\.scss$/
         ],
         loader: 'url',
         query: {
@@ -119,7 +120,7 @@ module.exports = {
         include: paths.appSrc,
         loader: 'babel',
         query: {
-          
+
           // This is a feature of `babel-loader` for webpack (not Babel itself).
           // It enables caching results in ./node_modules/.cache/babel-loader/
           // directory for faster rebuilds.
@@ -135,7 +136,11 @@ module.exports = {
         test: /\.css$/,
         loader: 'style!css?importLoaders=1!postcss'
       },
-      // JSON is not enabled by default in Webpack but both Node and Browserify
+      {
+        test: /(\.scss$)/,
+        exclude: /node_modules/,
+        loaders: ["style-loader", "css-loader", "sass-loader"],
+      },      // JSON is not enabled by default in Webpack but both Node and Browserify
       // allow it implicitly so we also enable it.
       {
         test: /\.json$/,
@@ -151,7 +156,7 @@ module.exports = {
       }
     ]
   },
-  
+
   // We use PostCSS for autoprefixing only.
   postcss: function() {
     return [

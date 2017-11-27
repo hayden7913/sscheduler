@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { DragDropContext } from 'react-dnd';
 import { connect } from 'react-redux';
 import HTML5Backend from 'react-dnd-html5-backend';
+
+import { updateCards, updateCardText, updateCardDuration } from '../actions/indexActions';
+
 import Container from './Container';
 
 class App extends Component {
 
 	render() {
-		const { cards } = this.props;
-
+		const { cards, updateCards } = this.props;
 		const style = {
 			display: "flex",
 			justifyContent: "space-around",
@@ -23,7 +25,7 @@ class App extends Component {
 
 		return (
 			<div style={{...style}}>
-				<Container id={1} list={cards} />
+				<Container id={1} list={cards} {...this.props} />
 			</div>
 		);
 	}
@@ -40,4 +42,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, {
+	updateCards,
+	updateCardText,
+	updateCardDuration,
+})(App);

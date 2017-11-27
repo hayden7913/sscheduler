@@ -1,0 +1,13 @@
+* { box-sizing: border-box };
+
+html,
+body,
+#root {
+  height: 100%;
+  font-family: 'Roboto';
+}
+
+section {
+  padding: 50px;
+  text-align: center;
+};

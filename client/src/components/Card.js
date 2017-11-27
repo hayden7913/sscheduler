@@ -14,15 +14,18 @@ const style = {
 };
 
 class Card extends Component {
-
 	render() {
-		const { card, isDragging, connectDragSource, connectDropTarget } = this.props;
+		const { card, isDragging, connectDragSource, connectDropTarget, handleTextChange, handleDurationChange } = this.props;
 		const opacity = isDragging ? 0 : 1;
 
 		return connectDragSource(connectDropTarget(
-			<div style={{ ...style, opacity }}>
-				<EditInlineText text="Card Name" />
-				{card.text}
+			<div className="card" style={{ ...style, opacity }}>
+				<div className="card-col card-col-1 card-col-text">
+					<EditInlineText className="edit-text" handleChange={handleTextChange}  text={card.text} />
+				</div>
+				<div className="card-col card-col-2 card-col-duration">
+					<EditInlineText className="edit-duration" handleChange={handleDurationChange}  text="20" />
+				</div>
 			</div>
 		));
 	}
@@ -87,7 +90,6 @@ const cardTarget = {
 
 		// Time to actually perform the action
 		if ( props.listId === sourceListId ) {
-			console.log('moving')
 			props.moveCard(dragIndex, hoverIndex);
 
 			// Note: we're mutating the monitor item here!

@@ -14,7 +14,7 @@ export default class EditInlineText extends Component {
     this.dataChanged = this.dataChanged;
   }
 
-  dataChanged(data) {
+  dataChanged = (data) => {
     const { handleChange } = this.props;
 
     handleChange(data.message);
@@ -37,13 +37,6 @@ export default class EditInlineText extends Component {
         text={text || ''}
         paramName="message"
         change={this.dataChanged}
-        style={{
-          minWidth: 150,
-          display: 'inline-block',
-          margin: '13px 10px',
-          padding: 0,
-          border: 0,
-        }}
       />
     );
   }
