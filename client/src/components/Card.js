@@ -15,7 +15,7 @@ const style = {
 
 class Card extends Component {
 	render() {
-		const { card, isDragging, connectDragSource, connectDropTarget, handleTextChange, handleDurationChange } = this.props;
+		const { card, isDragging, connectDragSource, connectDropTarget, handleTextChange, handleDelete, handleDurationChange } = this.props;
 		const opacity = isDragging ? 0 : 1;
 
 		return connectDragSource(connectDropTarget(
@@ -24,7 +24,10 @@ class Card extends Component {
 					<EditInlineText className="edit-text" handleChange={handleTextChange}  text={card.text} />
 				</div>
 				<div className="card-col card-col-2 card-col-duration">
-					<EditInlineText className="edit-duration" handleChange={handleDurationChange}  text="20" />
+					<EditInlineText className="edit-duration" handleChange={handleDurationChange}  text={card.duration.toString()} />
+				</div>
+				<div className="card-col card-col-3 card-col-delete">
+					<span className="icon-trash" onClick={handleDelete}></span>
 				</div>
 			</div>
 		));

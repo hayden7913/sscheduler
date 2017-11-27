@@ -1,42 +1,73 @@
 import React from 'react';
+import shortId from 'shortid';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 export default class NewCardForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {
+      textValue: '',
+      durationValue: '',
+    };
 
-    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  handleChange = (event) => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     const { addCard } = this.props;
-    const { value } = this.state;
+    const { durationValue, textValue } = this.state;
 
-    event.preventDefault();
     addCard({
-      id: 4,
-      text: value,
-      duration: 0,
+      id: shortId.generate(),
+      text: textValue,
+      duration: durationValue === '' ? 0 :  parseInt(durationValue),
     });
-    this.setState({ value: ''});
+
+    this.setState({
+       textValue: '',
+       durationValue: ''
+    });
+
+    this.firstInput.focus();
+    event.preventDefault();
   }
 
   render() {
+    const inputStyle = {
+      width: '175px',
+      marginLeft: '10px',
+    }
     return (
       <form onSubmit={this.handleSubmit}>
-        <label>
-          <input
+          <TextField
+            ref={(input) => { this.firstInput = input; }}
             type="text"
-            value={this.state.value}
+            name="textValue"
+            value={this.state.textValue}
             placeholder="New Task"
             onChange={this.handleChange}
+            style={inputStyle}
           />
-        </label>
+          <TextField
+            type="text"
+            name="durationValue"
+            value={this.state.durationValue}
+            placeholder="Duration"
+            onChange={this.handleChange}
+            style={inputStyle}
+          />
+        <RaisedButton type="submit" label="Submit" style={{marginLeft: "10px", marginBottom: "10px"}}/>
       </form>
     );
   }

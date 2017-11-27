@@ -1,10 +1,11 @@
+import shortId from 'shortid';
 import * as actions from '../actions/indexActions';
 
 const defaultState = {
   cards: [
-    { id: 1, text: "fdsa 1", duration: 20 },
-    { id: 2, text: "Item 2", duration: 5 },
-    { id: 3, text: "Item 3", duration: 10}
+    { id: shortId.generate(), text: "fdsa 1", duration: 20 },
+    { id: shortId.generate(), text: "Item 2", duration: 5 },
+    { id: shortId.generate(), text: "Item 3", duration: 10}
   ]
 }
 
@@ -15,6 +16,34 @@ export const listOne = (state = defaultState, action) => {
         ... state.cards,
         action.newCard
       ]
+
+      return  {
+        ...state,
+        cards: newCards,
+      };
+    }
+    case actions.DELETE_CARD: {
+    const { cardId } = action;
+    console.log(cardId)
+    const newCards = state.cards.filter(card => {
+      console.log(card.id, cardId)
+      return card.id !== cardId;
+    });
+
+    console.log(newCards);
+
+      return  {
+        ...state,
+        cards: newCards,
+      };
+    }
+    case actions.MOVE_CARD: {
+      const { dragIndex, hoverIndex } = action.payload;
+      const dragCard = state.cards[dragIndex];
+      const newCards = state.cards.splice(0);
+
+      newCards.splice(dragIndex, 1);
+      newCards.splice(hoverIndex, 0, dragCard);
 
       return  {
         ...state,

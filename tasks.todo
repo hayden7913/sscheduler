@@ -1,0 +1,16 @@
+**Tasks**:
+
+☐ delete card
+  ☐ add action
+  ☐ add reducer handler
+  ☐ add card icon/button
+
+☐ wire up db
+  ☐ write post endpoint
+  ☐ write get endpoint
+  ☐ load tasks from db on mountA
+
+☐ write schege
+  ☐ write schedge item component
+  ☐ copy list component
+  ☐ write scedge container?

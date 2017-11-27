@@ -31,18 +31,14 @@ class Container extends Component {
 	}
 
 	moveCard(dragIndex, hoverIndex) {
-		const { updateCards } = this.props;
+		const { updateCards, moveCard } = this.props;
 		const { cards } = this.state;
 		const dragCard = cards[dragIndex];
 
-		this.setState(update(this.state, {
-			cards: {
-				$splice: [
-					[dragIndex, 1],
-					[hoverIndex, 0, dragCard]
-				]
-			}
-		}), () => updateCards(cards));
+		moveCard({
+			dragIndex,
+			hoverIndex,
+		});
 	}
 
 	handleTextChange = (cardId) => (newText) => {
@@ -57,17 +53,23 @@ class Container extends Component {
 		updateCardDuration(cardId, newDuration);
 	}
 
+	handleDeleteCard = (cardId) => () => {
+		const { deleteCard } = this.props;
+
+		deleteCard(cardId);
+	}
+
 	render() {
-		const { cards } = this.state;
-		const { addCard, canDrop, isOver, connectDropTarget, updateCardText } = this.props;
+		const { cards } = this.props;
+		const { addCard, canDrop, isOver, connectDropTarget, deleteCard, updateCardText } = this.props;
 
 		const isActive = canDrop && isOver;
 		const style = {
 			width: "200px",
-			height: "404px",
-			border: '1px dashed gray'
+			pading: "5px",
+			border: '1px dashed gray',
 		};
-		console.log(cards)
+
 		return connectDropTarget(
 			<div style={{ ...style }}>
 				{cards.map((card, i) => {
@@ -79,6 +81,7 @@ class Container extends Component {
 							card={card}
 							handleTextChange={this.handleTextChange(card.id)}
 							handleDurationChange={this.handleDurationChange(card.id)}
+							handleDelete={this.handleDeleteCard(card.id)}
 							removeCard={this.removeCard.bind(this)}
 							moveCard={this.moveCard.bind(this)}
 						/>
