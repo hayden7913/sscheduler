@@ -122,7 +122,6 @@ class Schedule extends Component {
 	}
 }
 
-
 const mapStateToProps = (state) => {
 	const { listOne } = state;
 	const { activeTaskId, cards, startTime } = listOne;
