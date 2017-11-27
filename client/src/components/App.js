@@ -43,9 +43,7 @@ class App extends Component {
 				<Card>
 					<Container id={1} list={cards} {...this.props} />
 				</Card>
-				<Card style={{ marginLeft: "20px", padding: "10px", width: "300px"}}>
 					<Schedule />
-				</Card>
 			</div>
 	  </MuiThemeProvider>
 		);

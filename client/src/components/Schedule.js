@@ -13,6 +13,7 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
+import { Card } from 'material-ui/Card';
 
 import { getCummTimeStamp, getMoment, isTimeBetweenInteveral } from '../helpers/time';
 import {
@@ -36,7 +37,7 @@ class Schedule extends Component {
       const startTimeMoment = getMoment(startTime);
       const cummDurationMap = this.getCummDurationMap();
 
-      repeat(this.checkActiveTask(startTimeMoment, cummDurationMap));
+      repeat(() => this.checkActiveTask(startTimeMoment, cummDurationMap)).every(1000, 'ms').start();
     }
   }
 
@@ -81,10 +82,9 @@ class Schedule extends Component {
 		const { activeTaskId, cards, updateCards, startTime } = this.props;
     const startTimeMoment = getMoment(startTime);
     const cummDurationMap = this.getCummDurationMap();
-
+    const durationColWidth = "220px";
 		return (
-  		<div>
-
+			<Card style={{ marginLeft: "20px", padding: "10px", width: "375px"}}>
         <div style={{marginLeft: "21px"}}>
           <span>Start Time: </span>
 						<EditInlineText
@@ -97,6 +97,7 @@ class Schedule extends Component {
           <TableHeader
             displaySelectAll={false}
             adjustForCheckbox={false}
+            style={{tableLayout: "fixed", width: durationColWidth}}
           >
             <TableRow>
               <TableHeaderColumn>Duration</TableHeaderColumn>
@@ -112,12 +113,12 @@ class Schedule extends Component {
                 key={index}
               >
                 <TableRowColumn>{getCummTimeStamp(startTimeMoment, cummDurationMap[index])}</TableRowColumn>
-                <TableRowColumn style={{tableLayout: "fixed", width: "128px"}}>{card.text}</TableRowColumn>
+                <TableRowColumn style={{tableLayout: "fixed", width: durationColWidth }}>{card.text}</TableRowColumn>
               </TableRow>
               ))}
           </TableBody>
         </Table>
-			</div>
+			</Card>
 		);
 	}
 }
