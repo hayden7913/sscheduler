@@ -5,7 +5,7 @@ const defaultState = {
   activeTaskId: null,
   cards: [],
   listId: null,
-  startTime: "12:00pm",
+  startTime: localStorage.startTime || "12:00pm",
 }
 
 export const listOne = (state = defaultState, action) => {
