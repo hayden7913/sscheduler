@@ -34,7 +34,7 @@ export const listOne = (state = defaultState, action) => {
       };
     }
     case actions.FETCH_CARDS_SUCCESS: {
-      const { cards, _id: listId } = action.payload[0];
+      const { cards, listId } = action.payload;
 
       return  {
         ...state,

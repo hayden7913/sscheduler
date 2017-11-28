@@ -31,9 +31,9 @@ app.get('/test', (req, res) => {
       });
 });
 
-app.get('/test', (req, res) => {
-  console.log('test hit');
-  res.send({test: 'success'});
+app.get('/deleteServer', (req, res) => {
+  tearDownDb();
+  res.send({deleting: 'server'});
 });
 
 app.post('/test', (req, res) => {

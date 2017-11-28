@@ -1,3 +1,5 @@
+import shortId from 'shortid';
+
 export const ADD_CARD = 'ADD_CARD';
 export const addCard = (newCard) => ({
   type: 'ADD_CARD',
@@ -29,7 +31,21 @@ export function fetchCards() {
       return res.json();
     })
     .then(data => {
-      dispatch(fetchCardsSuccess(data));
+     if (!data.length > 0) {
+        return null;
+      }
+
+      const cardsWithIds = data[0].cards.map(card => {
+        if (!card.id) {
+          return Object.assign(card, { id: shortId.generate() })
+        }
+
+        return card;
+      })
+      dispatch(fetchCardsSuccess({
+        listId: data[0]._id,
+        cards: cardsWithIds,
+      }));
     })
 
   }

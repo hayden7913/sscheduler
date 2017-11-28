@@ -33,11 +33,10 @@ cardRouter.get('/:projectId', (req, res) => {
 });
 
 cardRouter.post('/', (req, res) => {
-  console.log('posting')
-  console.log(req.body)
+  console.log(req.body.cards)
   TestData
     .create({
-      testData: req.body.testData
+      cards: req.body.cards
     })
   .then(testObj => res.status(201).json(testObj))
   .catch(err => {
