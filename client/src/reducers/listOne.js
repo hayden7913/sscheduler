@@ -5,16 +5,17 @@ const defaultState = {
   activeTaskId: null,
   cards: [],
   listId: null,
+  newCardsToTop: false,
   startTime: localStorage.startTime || "12:00pm",
 }
 
 export const listOne = (state = defaultState, action) => {
   switch(action.type) {
     case actions.ADD_CARD: {
-      const newCards = [
-        ... state.cards,
-        action.newCard
-      ]
+      const newCards = state.newCardsToTop
+      ? [   ...state.cards, action.newCard ]
+      : [  action.newCard, ...state.cards ]
+
 
       return  {
         ...state,
@@ -59,6 +60,11 @@ export const listOne = (state = defaultState, action) => {
       return  {
         ...state,
         activeTaskId: action.cardId
+      };
+    case actions.TOGGLE_NEW_CARDS_TO_TOP :
+      return  {
+        ...state,
+        toggleNewCardsToTop: !state.newCardsToTop
       };
     case actions.UPDATE_CARDS:
       return  {

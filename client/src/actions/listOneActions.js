@@ -72,6 +72,11 @@ export const setActiveTask = (cardId) => ({
   cardId,
 });
 
+export const TOGGLE_NEW_CARDS_TO_TOP = 'TOGGLE_NEW_CARDS_TO_TOP';
+export const toggleNewCardsToTop= () => ({
+  type: 'TOGGLE_NEW_CARDS_TO_TOP',
+});
+
 export const UPDATE_CARDS = 'UPDATE_CARDS';
 export const updateCards = (newList) => ({
   type: 'UPDATE_CARDS',
@@ -85,6 +90,7 @@ export const updateCardText= (cardId, newText) => ({
   cardId,
   newText,
 });
+
 
 export const UPDATE_CARD_DURATION = 'UPDATE_CARD_DURATION';
 export const updateCardDuration = (cardId, newDuration) => ({

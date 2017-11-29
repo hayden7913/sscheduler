@@ -15,6 +15,7 @@ import
 	fetchCards,
 	moveCard,
 	saveCardState,
+	toggleNewCardsToTop,
 	updateCards,
 	updateCardText,
 	updateCardDuration
@@ -52,8 +53,8 @@ class App extends Component {
 			marginLeft: "20px",
 			fontSize: "20px",
 		};
-		return (
 
+		return (
 	  <MuiThemeProvider>
 			<div>
 				<div style={{...style}}>
@@ -88,6 +89,7 @@ export default connect(mapStateToProps, {
 	fetchCards,
 	moveCard,
 	saveCardState,
+	toggleNewCardsToTop,
 	updateCards,
 	updateCardText,
 	updateCardDuration,

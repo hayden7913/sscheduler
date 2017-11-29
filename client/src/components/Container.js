@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import update from 'react/lib/update';
 import { DropTarget } from 'react-dnd';
+import Toggle from 'material-ui/Toggle';
 
 import Card from './Card';
 import NewCardForm from './NewCardForm';
@@ -68,7 +69,7 @@ class Container extends Component {
 
 	render() {
 		const { cards } = this.props;
-		const { addCard, canDrop, isOver, connectDropTarget, deleteCard, updateCardText, saveCardState } = this.props;
+		const { addCard, canDrop, isOver, connectDropTarget, deleteCard, updateCardText, saveCardState, toggleNewCardsToTop } = this.props;
 
 		const isActive = canDrop && isOver;
 		const style = {
@@ -94,6 +95,11 @@ class Container extends Component {
 					);
 				})}
 				<NewCardForm addCard={addCard} saveCardState={saveCardState} />
+				<Toggle
+					label="Add cards to top"
+					style={{marginTop: "10px"}}
+					onToggle={toggleNewCardsToTop}
+				/>
 			</div>
 		);
   }
