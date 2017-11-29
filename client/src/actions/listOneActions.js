@@ -46,15 +46,13 @@ export function fetchCards() {
         listId: data[0]._id,
         cards: cardsWithIds,
       }));
-    })
-
+    });
   }
 }
 
 export function saveCardState() {
   return (dispatch, getState) => {
     const { cards, listId } = getState().listOne;
-    console.log('saving')
     fetch(`/cards/${listId}`, {
         method: 'put',
         body: JSON.stringify({ cards }),
@@ -102,8 +100,9 @@ export const updateCardDuration = (cardId, newDuration) => ({
 export const UPDATE_START_TIME = 'UPDATE_START_TIME';
 export function updateStartTime(newStartTime) {
   return (dispatch, getState) => {
-      localStorage.startTime = newStartTime;
-    return ({
+    localStorage.startTime = newStartTime;
+
+    return dispatch({
       type: 'UPDATE_START_TIME',
       newStartTime,
     });

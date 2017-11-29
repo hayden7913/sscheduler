@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import repeat from 'repeat';
 import shortId from 'shortid';
-
+import { Card } from 'material-ui/Card';
+import store from '../redux-files/store';
 import {
   Table,
   TableBody,
@@ -13,9 +14,9 @@ import {
   TableRow,
   TableRowColumn,
 } from 'material-ui/Table';
-import { Card } from 'material-ui/Card';
+import RaisedButton from 'material-ui/RaisedButton';
 
-import { getCummTimeStamp, getMoment, isTimeBetweenInteveral } from '../helpers/time';
+import { getCummTimeStamp, getMoment, isTimeBetweenInteveral, roundMinutes } from '../helpers/time';
 import {
   setActiveTask,
 	updateStartTime,
@@ -60,6 +61,13 @@ class Schedule extends Component {
     return durationMap;
   };
 
+  handleNowButtonClick = () => {
+    const { dispatch, setActiveTask, updateStartTime } = this.props;
+    const newTime = roundMinutes(moment().format('h:mm a'), 5);
+
+    updateStartTime(newTime);
+  }
+
   handleStartTimeChange = (newStartTime) => {
     const { updateStartTime } = this.props;
 
@@ -92,6 +100,14 @@ class Schedule extends Component {
 							handleChange={this.handleStartTimeChange}
 							text={startTime}
 						/>
+        <RaisedButton
+          type="button"
+          label="Now"
+          onClick={this.handleNowButtonClick}
+          // buttonStyle={{ height: "30px", lineHeight:"30px", width: "50px", fontSize: "13px" }}
+          // labelStyle={{fontSize: "13px"}}
+          style={{marginLeft: "30px", marginBottom: "10px", width: "50px"}}
+        />
         </div>
         <Table>
           <TableHeader

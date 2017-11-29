@@ -13,9 +13,14 @@ export const listOne = (state = defaultState, action) => {
   switch(action.type) {
     case actions.ADD_CARD: {
       const newCards = state.newCardsToTop
-      ? [   ...state.cards, action.newCard ]
-      : [  action.newCard, ...state.cards ]
+      ? [  action.newCard, ...state.cards ]
+      : [   ...state.cards, action.newCard ];
+      const a = [   ...state.cards, action.newCard ];
+      const b = [  action.newCard, ...state.cards ];
 
+      console.table(a);
+      console.table(b);
+      console.log(state.newCardsToTop)
 
       return  {
         ...state,
@@ -64,7 +69,7 @@ export const listOne = (state = defaultState, action) => {
     case actions.TOGGLE_NEW_CARDS_TO_TOP :
       return  {
         ...state,
-        toggleNewCardsToTop: !state.newCardsToTop
+        newCardsToTop: !state.newCardsToTop
       };
     case actions.UPDATE_CARDS:
       return  {
