@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { TestData } = require('./models');
+const { Cards } = require('./models');
 const cardRouter = express.Router();
 
 cardRouter.use(bodyParser.urlencoded({
@@ -9,7 +9,7 @@ cardRouter.use(bodyParser.urlencoded({
 cardRouter.use(bodyParser.json());
 
 cardRouter.get('/', (req, res) => {
-  TestData
+  Cards
     .find()
     .exec()
     .then(data => res.json(data))
@@ -22,7 +22,7 @@ cardRouter.get('/', (req, res) => {
 
 cardRouter.get('/:projectId', (req, res) => {
   console.log('get project by id')
-  TestData
+  Cards
     .findById(req.params.projectId)
     .exec()
     .then(project => res.json(project))
@@ -34,7 +34,7 @@ cardRouter.get('/:projectId', (req, res) => {
 
 cardRouter.post('/', (req, res) => {
   console.log(req.body.cards)
-  TestData
+  Cards
     .create({
       cards: req.body.cards
     })
@@ -50,7 +50,7 @@ cardRouter.put('/:listId', (req, res) => {
     cards: req.body.cards,
   }
 
-  TestData
+  Cards
     .findByIdAndUpdate(req.params.listId, {$set: toUpdate})
     .exec()
     .then(project => res.status(204).end())
@@ -60,7 +60,7 @@ cardRouter.put('/:listId', (req, res) => {
 });
 
 cardRouter.delete('/:projectId', (req, res) => {
-  testData
+  Cards
     .findByIdAndRemove(req.params.projectId)
     .exec()
     .then(project => res.status(204).json(project))

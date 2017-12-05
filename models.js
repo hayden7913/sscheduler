@@ -9,7 +9,7 @@ const testSchema = mongoose.Schema({
 });
 
 
-const TestData = mongoose.model('cards', testSchema);
+const Cards = mongoose.model('cards', testSchema);
 //const Projects = mongoose.model('Projects', projectSchema);
 
-module.exports = {TestData /*, Projects*/};
+module.exports = {Cards /*, Projects*/};

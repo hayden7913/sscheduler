@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 const { PORT, DATABASE_URL } = require('./config');
-const { TestData } = require('./models');
+const { Cards } = require('./models');
 const cardRouter = require('./cardRouter');
 mongoose.Promise = global.Promise;
 
@@ -19,32 +19,14 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use('/cards', cardRouter);
 
-app.get('/test', (req, res) => {
-  TestData
-    .find()
-    .exec()
-    .then(modules => res.json(modules))
-    .catch(
-      err => {
-        console.error(err);
-        res.status(500).json({message: 'Internal Server Error'});
-      });
-});
-
 app.get('/deleteServer', (req, res) => {
   tearDownDb();
   res.send({deleting: 'server'});
-});
-
-app.post('/test', (req, res) => {
-  console.log('post hit');
-  console.log(req.body)
-
-  TestData
+  Cards
     .create({
-      'testData': req.body.testData,
+      cards: []
     })
-  .then(project => res.status(201).json(project))
+  .then(testObj => res.status(201).json(testObj))
   .catch(err => {
         console.error(err);
         res.status(500).json({message: 'Internal server error'});
@@ -59,8 +41,6 @@ function tearDownDb() {
       .catch(err => reject(err));
   });
 }
-
- //tearDownDb()
 
 let server;
 

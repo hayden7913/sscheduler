@@ -5,9 +5,9 @@ import store from 'reduxFiles/store';
 const url = 'testRouter';
 
 export const FETCH_TEST_DATA_SUCCESS = 'FETCH_TEST_DATA_SUCCESS'; 
-export const fetchCardsSuccess = (testData) => ({
+export const fetchCardsSuccess = (Cards) => ({
   type: 'FETCH_TEST_DATA_SUCCESS',
-  testData
+  Cards
 });
 
 export function fetchCards() {

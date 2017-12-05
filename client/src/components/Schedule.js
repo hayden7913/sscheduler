@@ -104,8 +104,6 @@ class Schedule extends Component {
           type="button"
           label="Now"
           onClick={this.handleNowButtonClick}
-          // buttonStyle={{ height: "30px", lineHeight:"30px", width: "50px", fontSize: "13px" }}
-          // labelStyle={{fontSize: "13px"}}
           style={{marginLeft: "30px", marginBottom: "10px", width: "50px"}}
         />
         </div>
@@ -124,15 +122,17 @@ class Schedule extends Component {
             <TableBody
               displayRowCheckbox={false}
             >
-              {cards.map((card, index) => (
-                <TableRow
-                  style={activeTaskId === card.id ? {backgroundColor: '#E8F5E9'} : {backgroundColor: 'transparent'}}
-                  key={index}
-                >
-                  <TableRowColumn>{getCummTimeStamp(startTimeMoment, cummDurationMap[index])}</TableRowColumn>
-                  <TableRowColumn style={{tableLayout: "fixed", width: durationColWidth }}>{card.text}</TableRowColumn>
-                </TableRow>
-                ))}
+              {cards.map((card, index) => {
+                return (
+                  <TableRow
+                    style={activeTaskId === card.id ? {backgroundColor: '#E8F5E9'} : {backgroundColor: 'transparent'}}
+                    key={index}
+                  >
+                    <TableRowColumn>{getCummTimeStamp(startTimeMoment, cummDurationMap[index])}</TableRowColumn>
+                    <TableRowColumn style={{tableLayout: "fixed", width: durationColWidth }}>{card.text}</TableRowColumn>
+                  </TableRow>
+                )
+              })}
             </TableBody>
           </Table>
         </div>
