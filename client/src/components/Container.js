@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import shortId from 'shortid';
 import update from 'react/lib/update';
 import { DropTarget } from 'react-dnd';
 
@@ -59,6 +60,24 @@ class Container extends Component {
 		saveCardState();
 	}
 
+	handleCardClick = (cardId) => () => {
+		const { toggleSelected } = this.props;
+
+		toggleSelected(cardId);
+	}
+
+	handleCardDblClick = (index) => () => {
+		const { insertCardBelow } = this.props;
+
+		const blankCard = {
+			duration: 0,
+			id: shortId.generate,
+			text: 'new card',
+		}
+
+		insertCardBelow(index, blankCard );
+	}
+
 	handleDeleteCard = (cardId) => () => {
 		const { deleteCard, saveCardState } = this.props;
 
@@ -85,6 +104,8 @@ class Container extends Component {
 							index={i}
 							listId={this.props.id}
 							card={card}
+							handleClick={this.handleCardClick(card.id)}
+							handleDblClick={this.handleCardDblClick(i)}
 							handleTextChange={this.handleTextChange(card.id)}
 							handleDurationChange={this.handleDurationChange(card.id)}
 							handleDelete={this.handleDeleteCard(card.id)}

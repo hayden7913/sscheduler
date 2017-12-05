@@ -16,11 +16,21 @@ const style = {
 
 class TaskCard extends Component {
 	render() {
-		const { card, isDragging, connectDragSource, connectDropTarget, handleTextChange, handleDelete, handleDurationChange } = this.props;
+		const {
+			card,
+			isDragging,
+			connectDragSource,
+			connectDropTarget,
+			handleClick,
+			handleDblClick,
+			handleTextChange,
+			handleDelete,
+			handleDurationChange
+		} = this.props;
 		const opacity = isDragging ? 0 : 1;
 
 		return connectDragSource(connectDropTarget(
-			<div className="card" >
+			<div className="card" onClick={handleClick} onDoubleClick={handleDblClick} >
 				<Card  style={{ ...style, opacity }}>
 					<div className="card-col card-col-1 card-col-text">
 						<EditInlineText className="edit-inline edit-text" handleChange={handleTextChange}  text={card.text} />

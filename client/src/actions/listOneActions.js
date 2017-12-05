@@ -77,19 +77,37 @@ export function setActiveTask() {
       return isTimeBetweenInteveral(startTime, cummDuration, cummDurationMap[index + 1]);
     });
 
+
+    if ((activeIndex === -1) && (cards.length > 0)) {
+      newActiveTaskId = cards[0].id;
+    }
+
     if ((activeIndex > -1) && (cards[activeIndex].id !== activeTaskId)) {
       // console.log(cards[activeIndex]);
       newActiveTaskId = cards[activeIndex].id
     }
 
     if (newActiveTaskId) {
-      dispatch( {
+      dispatch({
         type: 'SET_ACTIVE_TASK',
         newActiveTaskId,
       });
     }
   }
 }
+
+export const INSERT_CARD_BELOW = 'INSERT_CARD_BELOW';
+export const insertCardBelow = (index, newCard) => ({
+  type: 'INSERT_CARD_BELOW',
+  index,
+  newCard,
+});
+
+export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
+export const toggleSelected= (cardId) => ({
+  type: 'TOGGLE_SELECTED',
+  cardId
+});
 
 export const TOGGLE_NEW_CARDS_TO_TOP = 'TOGGLE_NEW_CARDS_TO_TOP';
 export const toggleNewCardsToTop= () => ({

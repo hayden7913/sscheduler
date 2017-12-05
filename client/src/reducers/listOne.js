@@ -1,5 +1,6 @@
 import shortId from 'shortid';
 import * as actions from '../actions/indexActions';
+import { insertAfterIndex } from '../helpers/custom-immutable';
 
 const defaultState = {
   activeTaskId: null,
@@ -15,8 +16,8 @@ export const listOne = (state = defaultState, action) => {
       const newCards = state.newCardsToTop
       ? [  action.newCard, ...state.cards ]
       : [   ...state.cards, action.newCard ];
-      const a = [   ...state.cards, action.newCard ];
-      const b = [  action.newCard, ...state.cards ];
+      const a = [...state.cards, action.newCard];
+      const b = [action.newCard, ...state.cards];
 
       return  {
         ...state,
@@ -44,6 +45,14 @@ export const listOne = (state = defaultState, action) => {
         listId,
       };
     }
+    case actions.INSERT_CARD_BELOW: {
+      const { index, newCard } = action;
+      const newCards = insertAfterIndex(state.cards, index, newCard);
+      return  {
+        ...state,
+        cards: newCards,
+      };
+    }
     case actions.MOVE_CARD: {
       const { dragIndex, hoverIndex } = action.payload;
       const dragCard = state.cards[dragIndex];
@@ -62,6 +71,21 @@ export const listOne = (state = defaultState, action) => {
         ...state,
         activeTaskId: action.newActiveTaskId
       };
+    case actions.TOGGLE_SELECTED: {
+      const { cardId } = action;
+      const newCards = state.cards.map(card => {
+        if (card.id === cardId) {
+          return Object.assign(card, { isSelected: !card.isSelected });
+        }
+
+        return card;
+      })
+
+      return  {
+        ...state,
+        cards: newCards
+      };
+    }
     case actions.TOGGLE_NEW_CARDS_TO_TOP :
       return  {
         ...state,
