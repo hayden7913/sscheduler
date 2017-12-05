@@ -36,7 +36,7 @@ export function roundMinutes(hmm_aString, roundVal) {
   let [hours, minutes] = time.split(':');
 
   hours = minutes >= 60 - roundVal ? (parseInt(hours) + 1).toString() : hours;
-  minutes = minutes[0] === '0' ? 0 : minutes;
+  minutes = minutes[0] === '0' ? minutes[1] : minutes;
   minutes = minutes >= 60 - roundVal ? '0' : parseInt(minutes).toString();
   minutes = minutes < 60 - roundVal ? Math.ceil(minutes / roundVal) * roundVal : minutes;
   minutes = minutes < 10 ? '0' + minutes : minutes;
