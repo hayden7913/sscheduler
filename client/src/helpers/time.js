@@ -11,11 +11,11 @@ export function getMoment(inputTime) {
   }
 
   const dateToday = moment().format().split("T")[0];
-
-  const fTime = hours < 12
+  const formattedTime = hours < 10
     ? dateToday + "T" + "0" + hours + ":" + minutes
     : dateToday + "T" + hours + ":" + minutes;
-    return moment(fTime);
+
+  return moment(formattedTime);
 }
 
 export function getCummTimeStamp(startTime, cummTime) {
@@ -35,10 +35,9 @@ export function roundMinutes(hmm_aString, roundVal) {
   let [time, a] = hmm_aString.split(' ');
   let [hours, minutes] = time.split(':');
 
-
   hours = minutes >= 60 - roundVal ? (parseInt(hours) + 1).toString() : hours;
   minutes = minutes[0] === '0' ? 0 : minutes;
-  minutes = minutes >= 60 - roundVal ? '0' : (parseInt(minutes) + roundVal).toString();
+  minutes = minutes >= 60 - roundVal ? '0' : parseInt(minutes).toString();
   minutes = minutes < 60 - roundVal ? Math.ceil(minutes / roundVal) * roundVal : minutes;
   minutes = minutes < 10 ? '0' + minutes : minutes;
 

@@ -5,7 +5,9 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import { Card } from 'material-ui/Card';
 import Clock from 'react-live-clock';
+import Toggle from 'material-ui/Toggle';
 
+import NewCardForm from './NewCardForm';
 import Schedule from './Schedule';
 
 import
@@ -35,12 +37,12 @@ class App extends Component {
 	}
 
 	render() {
-		const { cards, updateCards } = this.props;
+		const { addCard, cards, saveCardState, toggleNewCardsToTop  } = this.props;
 
 		const style = {
 			display: "flex",
 			justifyContent: "center",
-			paddingTop: "10%",
+			paddingTop: "7%",
 		}
 
 		const clockStyle = {
@@ -54,11 +56,28 @@ class App extends Component {
 			fontSize: "20px",
 		};
 
+		const formStyle = {
+			borderRadius: "2px",
+	    zIndex: "1",
+	    height: "205px",
+	    padding: "10px",
+	    width: "300px",
+	    marginRight: "20px",
+		}
+
 		return (
 	  <MuiThemeProvider>
 			<div>
 				<div style={{...style}}>
-					<Card>
+					<Card style={{...formStyle}}>
+						<NewCardForm  addCard={addCard} saveCardState={saveCardState} />
+						<Toggle
+							label="Add cards to top"
+							style={{marginTop: "10px"}}
+							onToggle={toggleNewCardsToTop}
+						/>
+					</Card>
+					<Card style={{maxHeight: "85vh", overflowY: "auto"}}>
 						<Container id={1} list={cards} {...this.props} />
 					</Card>
 						<Schedule />

@@ -92,8 +92,8 @@ class Schedule extends Component {
     const cummDurationMap = this.getCummDurationMap();
     const durationColWidth = "220px";
 		return (
-			<Card style={{ marginLeft: "20px", padding: "10px", width: "375px"}}>
-        <div style={{marginLeft: "21px"}}>
+			<Card style={{ marginLeft: "20px", padding: "10px", width: "375px",  maxHeight: "85vh"}}>
+        <div style={{ marginLeft: "21px" }}>
           <span>Start Time: </span>
 						<EditInlineText
 							className="edit-inline edit-duration"
@@ -109,31 +109,33 @@ class Schedule extends Component {
           style={{marginLeft: "30px", marginBottom: "10px", width: "50px"}}
         />
         </div>
-        <Table>
-          <TableHeader
-            displaySelectAll={false}
-            adjustForCheckbox={false}
-            style={{tableLayout: "fixed", width: durationColWidth}}
-          >
-            <TableRow>
-              <TableHeaderColumn>Duration</TableHeaderColumn>
-              <TableHeaderColumn>Task</TableHeaderColumn>
-            </TableRow>
-          </TableHeader>
-          <TableBody
-            displayRowCheckbox={false}
-          >
-            {cards.map((card, index) => (
-              <TableRow
-                style={activeTaskId === card.id ? {backgroundColor: '#E8F5E9'} : {backgroundColor: 'transparent'}}
-                key={index}
-              >
-                <TableRowColumn>{getCummTimeStamp(startTimeMoment, cummDurationMap[index])}</TableRowColumn>
-                <TableRowColumn style={{tableLayout: "fixed", width: durationColWidth }}>{card.text}</TableRowColumn>
+        <div style={{ maxHeight: "76vh", overflowY: "auto"}}>
+          <Table>
+            <TableHeader
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+              style={{tableLayout: "fixed", width: durationColWidth}}
+            >
+              <TableRow>
+                <TableHeaderColumn>Duration</TableHeaderColumn>
+                <TableHeaderColumn>Task</TableHeaderColumn>
               </TableRow>
-              ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody
+              displayRowCheckbox={false}
+            >
+              {cards.map((card, index) => (
+                <TableRow
+                  style={activeTaskId === card.id ? {backgroundColor: '#E8F5E9'} : {backgroundColor: 'transparent'}}
+                  key={index}
+                >
+                  <TableRowColumn>{getCummTimeStamp(startTimeMoment, cummDurationMap[index])}</TableRowColumn>
+                  <TableRowColumn style={{tableLayout: "fixed", width: durationColWidth }}>{card.text}</TableRowColumn>
+                </TableRow>
+                ))}
+            </TableBody>
+          </Table>
+        </div>
 			</Card>
 		);
 	}
