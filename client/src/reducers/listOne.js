@@ -18,10 +18,6 @@ export const listOne = (state = defaultState, action) => {
       const a = [   ...state.cards, action.newCard ];
       const b = [  action.newCard, ...state.cards ];
 
-      console.table(a);
-      console.table(b);
-      console.log(state.newCardsToTop)
-
       return  {
         ...state,
         cards: newCards,
@@ -64,7 +60,7 @@ export const listOne = (state = defaultState, action) => {
     case actions.SET_ACTIVE_TASK:
       return  {
         ...state,
-        activeTaskId: action.cardId
+        activeTaskId: action.newActiveTaskId
       };
     case actions.TOGGLE_NEW_CARDS_TO_TOP :
       return  {

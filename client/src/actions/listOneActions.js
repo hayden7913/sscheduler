@@ -1,4 +1,5 @@
 import shortId from 'shortid';
+import { getCummDurationMap, isTimeBetweenInteveral } from '../helpers/time';
 
 export const ADD_CARD = 'ADD_CARD';
 export const addCard = (newCard) => ({
@@ -64,11 +65,31 @@ export function saveCardState() {
   }
 }
 
+
 export const SET_ACTIVE_TASK = 'SET_ACTIVE_TASK';
-export const setActiveTask = (cardId) => ({
-  type: 'SET_ACTIVE_TASK',
-  cardId,
-});
+export function setActiveTask() {
+  return (dispatch, getState) => {
+    let newActiveTaskId;
+    const { activeTaskId, cards, startTime  } = getState().listOne;
+    const cummDurationMap = getCummDurationMap(cards);
+
+    const activeIndex = cummDurationMap.findIndex((cummDuration, index) => {
+      return isTimeBetweenInteveral(startTime, cummDuration, cummDurationMap[index + 1]);
+    });
+
+    if ((activeIndex > -1) && (cards[activeIndex].id !== activeTaskId)) {
+      // console.log(cards[activeIndex]);
+      newActiveTaskId = cards[activeIndex].id
+    }
+
+    if (newActiveTaskId) {
+      dispatch( {
+        type: 'SET_ACTIVE_TASK',
+        newActiveTaskId,
+      });
+    }
+  }
+}
 
 export const TOGGLE_NEW_CARDS_TO_TOP = 'TOGGLE_NEW_CARDS_TO_TOP';
 export const toggleNewCardsToTop= () => ({

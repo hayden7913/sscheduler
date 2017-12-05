@@ -16,7 +16,7 @@ import {
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { getCummTimeStamp, getMoment, isTimeBetweenInteveral, roundMinutes } from '../helpers/time';
+import { getCummDurationMap, getCummTimeStamp, getMoment, isTimeBetweenInteveral, roundMinutes } from '../helpers/time';
 import {
   setActiveTask,
 	updateStartTime,
@@ -26,43 +26,14 @@ import Container from './Container';
 import EditInlineText from './EditInlineText';
 
 class Schedule extends Component {
-  componentDidUpdate(prevProps) {
-    const { activeTaskId, cards, setActiveTask, startTime } = this.props;
+  componentDidMount() {
+    const { setActiveTask } = this.props;
 
-    if (!activeTaskId && (cards.length > 0)) {
-      setActiveTask(cards[0].id);
-    }
-    if (prevProps.cards.length === 0 && this.props.cards.length > 0 ||
-        prevProps.startTime !== this.props.startTime
-    ) {
-      const startTimeMoment = getMoment(startTime);
-      const cummDurationMap = this.getCummDurationMap();
-
-      repeat(() => this.checkActiveTask(startTimeMoment, cummDurationMap)).every(1000, 'ms').start();
-    }
+    repeat(setActiveTask).every(1000, 'ms').start();
   }
 
-  getCummDurationMap() {
-    const { cards } = this.props;
-    const durationMap = [0];
-
-    if (cards.length === 0) {
-      return [];
-    }
-
-    durationMap.push(cards[0].duration)
-
-    cards.map(card => parseInt(card.duration))
-    .reduce((a, b) => {
-      durationMap.push(a+b);
-      return a + b;
-    });
-
-    return durationMap;
-  };
-
   handleNowButtonClick = () => {
-    const { dispatch, setActiveTask, updateStartTime } = this.props;
+    const { updateStartTime } = this.props;
     const newTime = roundMinutes(moment().format('h:mm a'), 5);
 
     updateStartTime(newTime);
@@ -74,23 +45,12 @@ class Schedule extends Component {
     updateStartTime(newStartTime);
   }
 
-  checkActiveTask = (startTime, cummDurationMap) => {
-    const { activeTaskId, cards, setActiveTask } = this.props;
-
-    const activeIndex = cummDurationMap.findIndex((value, index) => {
-        return isTimeBetweenInteveral(startTime, value, cummDurationMap[index + 1]);
-    });
-
-    if ((activeIndex > -1) && (cards[activeIndex].id !== activeTaskId)) {
-      setActiveTask(cards[activeIndex].id);
-    }
-  }
-
 	render() {
 		const { activeTaskId, cards, updateCards, startTime } = this.props;
     const startTimeMoment = getMoment(startTime);
-    const cummDurationMap = this.getCummDurationMap();
+    const cummDurationMap = getCummDurationMap(cards);
     const durationColWidth = "220px";
+
 		return (
 			<Card style={{ marginLeft: "20px", padding: "10px", width: "375px",  maxHeight: "85vh"}}>
         <div style={{ marginLeft: "21px" }}>

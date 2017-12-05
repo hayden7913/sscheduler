@@ -1,5 +1,23 @@
 import moment from 'moment';
 
+export function getCummDurationMap(cards) {
+  const durationMap = [0];
+
+  if (cards.length === 0) {
+    return [];
+  }
+
+  durationMap.push(cards[0].duration)
+
+  cards.map(card => parseInt(card.duration))
+  .reduce((a, b) => {
+    durationMap.push(a+b);
+    return a + b;
+  });
+
+  return durationMap;
+};
+
 export function getMoment(inputTime) {
   const isPM = /pm/.test(inputTime)
   const strippedTime = inputTime.replace(/(am)|(pm)/, "");
@@ -22,10 +40,10 @@ export function getCummTimeStamp(startTime, cummTime) {
   return startTime.clone().add(cummTime, 'minutes').format('h:mm a');
 }
 
-
 export const isTimeBetweenInteveral = (startTime, currDuration, nextDuration) => {
-  const taskStart = startTime.clone().add(currDuration, 'minutes');
-  const taskEnd = startTime.clone().add(nextDuration,  'minutes');
+  const startTimeMoment = getMoment(startTime);
+  const taskStart = startTimeMoment.clone().add(currDuration, 'minutes');
+  const taskEnd = startTimeMoment.clone().add(nextDuration,  'minutes');
   const now = moment();
 
   return now.isAfter(taskStart) && now.isBefore(taskEnd);
