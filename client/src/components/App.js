@@ -16,6 +16,7 @@ import
 	deleteCard,
 	fetchCards,
 	moveCard,
+	handleKeyDown,
 	insertCardBelow,
 	saveCardState,
 	toggleSelected,
@@ -29,13 +30,12 @@ import Container from './Container';
 
 class App extends Component {
 	componentDidMount() {
-		const { fetchCards } = this.props;
+		const { fetchCards, handleKeyDown } = this.props;
 
 		fetchCards();
 
-		if (!localStorage.startTime) {
-			localStorage.startTime = "12:00pm";
-		}
+		document.addEventListener('keydown', (evt) => handleKeyDown(evt.which));
+
 	}
 
 	render() {
@@ -53,7 +53,7 @@ class App extends Component {
 			paddingTop: "12px",
 			height:"50px",
 			display: "block",
-			width: "100px",
+			width: "150px",
 			marginLeft: "20px",
 			fontSize: "20px",
 		};
@@ -72,7 +72,7 @@ class App extends Component {
 			<div>
 				<div style={{...style}}>
 					<Card style={{...formStyle}}>
-						<NewCardForm  addCard={addCard} saveCardState={saveCardState} />
+						<NewCardForm  addCard={addCard} cards={cards} saveCardState={saveCardState} />
 						<Toggle
 							label="Add cards to top"
 							style={{marginTop: "10px"}}
@@ -109,6 +109,7 @@ export default connect(mapStateToProps, {
   deleteCard,
 	fetchCards,
 	insertCardBelow,
+	handleKeyDown,
 	moveCard,
 	saveCardState,
 	toggleNewCardsToTop,

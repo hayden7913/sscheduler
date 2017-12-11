@@ -1,5 +1,11 @@
 import shortId from 'shortid';
 import { getCummDurationMap, isTimeBetweenInteveral } from '../helpers/time';
+import { findIndices, filterConsec } from '../helpers/custom-immutable';
+
+const keymap = {
+  38: 'ARROW_UP',
+  40: 'ARROW_DOWN',
+}
 
 export const ADD_CARD = 'ADD_CARD';
 export const addCard = (newCard) => ({
@@ -19,11 +25,50 @@ export const moveCard = (payload) => ({
   payload
 });
 
+export const MOVE_CARDS_KEYBOARD = 'MOVE_CARDS_KEYBOARD';
+export const moveCardsKeyboard = (key) => {
+  return (dispatch, getState) => {
+    const cards = getState().listOne.cards;
+    let selectedIndices = findIndices(cards, (card) => card.isSelected);
+    let startIndex, endIndex;
+
+    if (selectedIndices.length > 1) {
+      selectedIndices = filterConsec(selectedIndices);
+      const startIndex = consecutiveIndices[0];
+      const endIndex = consecutiveIndices[consecutiveIndices.length - 1];
+    } else {
+      startIndex = endIndex = selectedIndices[0];
+    }
+
+      return dispatch(({
+        type: 'MOVE_CARDS_KEYBOARD',
+        key,
+        startIndex,
+        endIndex,
+      }));
+  }
+}
+
 export const FETCH_CARDS_SUCCESS = 'FETCH_CARDS_SUCCESS';
 export const fetchCardsSuccess = (payload) => ({
   type: 'FETCH_CARDS_SUCCESS',
   payload,
 });
+//user hit down arrow key
+//key handler checks to see if an item is highlighted
+//if yes, an actiion is dispathed to move the card down on element
+//the action creator finds the first and last indices of consecutive //selected elements dispatches and action with those indeces
+export const handleKeyDown = (keycode) => {
+  return (dispatch, getState) => {
+    const key = keymap[keycode];
+    switch(key) {
+      case 'ARROW_UP':
+      case 'ARROW_DOWN':
+        dispatch(moveCardsKeyboard(key));
+      break;
+    }
+  }
+}
 
 export function fetchCards() {
   return (dispatch) => {

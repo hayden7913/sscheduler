@@ -21,7 +21,7 @@ app.use('/cards', cardRouter);
 
 app.get('/deleteServer', (req, res) => {
   tearDownDb();
-  res.send({deleting: 'server'});
+
   Cards
     .create({
       cards: []
@@ -31,6 +31,8 @@ app.get('/deleteServer', (req, res) => {
         console.error(err);
         res.status(500).json({message: 'Internal server error'});
     });
+
+
 });
 
 function tearDownDb() {

@@ -10,7 +10,6 @@ const style = {
 	// padding: '0.5rem 1rem',
 	padding: "10px",
 	margin: '.5rem',
-	backgroundColor: 'white',
 	cursor: 'move'
 };
 
@@ -18,6 +17,7 @@ class TaskCard extends Component {
 	render() {
 		const {
 			card,
+			backgroundColor,
 			isDragging,
 			connectDragSource,
 			connectDropTarget,
@@ -29,9 +29,11 @@ class TaskCard extends Component {
 		} = this.props;
 		const opacity = isDragging ? 0 : 1;
 
+		const customStyle = Object.assign(style, {backgroundColor: backgroundColor || 'white'})
+
 		return connectDragSource(connectDropTarget(
 			<div className="card" onClick={handleClick} onDoubleClick={handleDblClick} >
-				<Card  style={{ ...style, opacity }}>
+				<Card  style={{ ...customStyle, opacity }}>
 					<div className="card-col card-col-1 card-col-text">
 						<EditInlineText className="edit-inline edit-text" handleChange={handleTextChange}  text={card.text} />
 					</div>

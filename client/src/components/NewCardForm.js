@@ -14,6 +14,9 @@ export default class NewCardForm extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidUpdate(prevProps) {
+  }
+
   handleChange = (event) => {
     const target = event.target;
     const value = target.value;

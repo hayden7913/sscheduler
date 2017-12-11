@@ -46,6 +46,7 @@ cardRouter.post('/', (req, res) => {
 });
 
 cardRouter.put('/:listId', (req, res) => {
+  console.log('put endpoint hit')
   const toUpdate = {
     cards: req.body.cards,
   }
@@ -53,7 +54,7 @@ cardRouter.put('/:listId', (req, res) => {
   Cards
     .findByIdAndUpdate(req.params.listId, {$set: toUpdate})
     .exec()
-    .then(project => res.status(204).end())
+    .then(project => res.status(204).json(toUpdate))
     .catch(err =>
       res.status(500).json({message: 'Internal server error'})
     );

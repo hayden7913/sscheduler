@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import shortId from 'shortid';
 import update from 'react/lib/update';
 import { DropTarget } from 'react-dnd';
+import { grey } from '../constants/colors';
 
 import Card from './Card';
 import NewCardForm from './NewCardForm';
@@ -67,15 +68,16 @@ class Container extends Component {
 	}
 
 	handleCardDblClick = (index) => () => {
-		const { insertCardBelow } = this.props;
+		const { insertCardBelow, saveCardState } = this.props;
 
 		const blankCard = {
 			duration: 0,
-			id: shortId.generate,
+			id: shortId.generate(),
 			text: 'new card',
 		}
 
 		insertCardBelow(index, blankCard );
+		saveCardState();
 	}
 
 	handleDeleteCard = (cardId) => () => {
@@ -104,6 +106,7 @@ class Container extends Component {
 							index={i}
 							listId={this.props.id}
 							card={card}
+							backgroundColor={card.isSelected ? grey : null}
 							handleClick={this.handleCardClick(card.id)}
 							handleDblClick={this.handleCardDblClick(i)}
 							handleTextChange={this.handleTextChange(card.id)}
@@ -114,7 +117,6 @@ class Container extends Component {
 						/>
 					);
 				})}
-				<NewCardForm addCard={addCard} saveCardState={saveCardState} />
 			</div>
 		);
   }

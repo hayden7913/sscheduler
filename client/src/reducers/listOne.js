@@ -1,6 +1,6 @@
 import shortId from 'shortid';
 import * as actions from '../actions/indexActions';
-import { insertAfterIndex } from '../helpers/custom-immutable';
+import { insertAfterIndex,  shiftElementsDown, shiftElementsUp } from '../helpers/custom-immutable';
 
 const defaultState = {
   activeTaskId: null,
@@ -66,7 +66,27 @@ export const listOne = (state = defaultState, action) => {
         cards: newCards,
       };
     }
-    case actions.SET_ACTIVE_TASK:
+    case actions.MOVE_CARDS_KEYBOARD: {
+      const { key, startIndex, endIndex } = action;
+
+      console.log(key, startIndex, endIndex);
+      if (key === 'ARROW_UP') {
+        return {
+          ...state,
+          cards: shiftElementsUp(state.cards, startIndex, endIndex),
+        }
+      }
+
+      if (key === 'ARROW_DOWN') {
+        return {
+          ...state,
+          cards: shiftElementsDown(state.cards, startIndex, endIndex),
+        }
+      }
+
+      return state;
+    }
+  case actions.SET_ACTIVE_TASK:
       return  {
         ...state,
         activeTaskId: action.newActiveTaskId
@@ -97,20 +117,20 @@ export const listOne = (state = defaultState, action) => {
         cards: action.newList
       };
     case actions.UPDATE_CARD_TEXT: {
-        const { cardId, newText } = action;
-        const newCards = state.cards.map(card => {
-          if (card.id === cardId) {
-            return Object.assign(card, { text : newText});
-          }
+      const { cardId, newText } = action;
+      const newCards = state.cards.map(card => {
+        if (card.id === cardId) {
+          return Object.assign(card, { text : newText});
+        }
 
-          return card;
-        })
+        return card;
+      })
 
-        return  {
-          ...state,
-          cards: newCards
-        };
-      }
+      return  {
+        ...state,
+        cards: newCards
+      };
+    }
 
     case actions.UPDATE_CARD_DURATION:
       const { cardId, newDuration } = action;

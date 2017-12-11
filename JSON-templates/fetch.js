@@ -1,4 +1,6 @@
-{
+const fetch = require('node-fetch');
+
+const cards = {
   "cards": [
     {
        "text": "start laundry", "duration": 15
@@ -53,3 +55,18 @@
     }
   ]
 }
+const listId = '5a2ebf7167c4a234f1e023be';
+
+fetch('http://localhost:3001/cards/' + listId, {
+	method: 'PUT',
+	headers: {
+		'Content-Type': 'application/json'
+	},
+  body: JSON.stringify(cards)
+})
+  .then((res) => {
+    if (res) {
+      // console.log(res.json())
+    }
+    console.log('posted')
+  })
