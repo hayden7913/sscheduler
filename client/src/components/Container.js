@@ -67,15 +67,16 @@ class Container extends Component {
 	}
 
 	handleCardDblClick = (index) => () => {
-		const { toggleSelected, saveCardState } = this.props;
+		const { toggleSelected, triggerFormFocus, saveCardState } = this.props;
 
 		toggleSelected(index);
+		triggerFormFocus();
 		saveCardState();
 	}
 
-	handleDeleteCard = (cardId) => () => {
+	handleDeleteCard = (cardId) => (evt) => {
 		const { deleteCard, saveCardState } = this.props;
-
+		evt.stopPropagation();
 		deleteCard(cardId);
 		saveCardState()
 	}

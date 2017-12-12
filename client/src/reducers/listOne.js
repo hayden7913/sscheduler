@@ -1,10 +1,12 @@
 import shortId from 'shortid';
 import * as actions from '../actions/indexActions';
 import { insertAfterIndex,  shiftElementsDown, shiftElementsUp } from '../helpers/custom-immutable';
-
+// import action into app
+// listen for trigger in form
 const defaultState = {
   activeTaskId: null,
   cards: [],
+  focusFormTrigger: false,
   listId: null,
   newCardsToTop: false,
   startTime: localStorage.startTime || "12:00pm",
@@ -69,7 +71,7 @@ export const listOne = (state = defaultState, action) => {
     }
     case actions.INSERT_BELOW_SELECTED: {
       const { index, newCard } = action;
-      console.log(index)
+
       const newCards = insertAfterIndex(state.cards, index, newCard);
       return  {
         ...state,
@@ -131,7 +133,7 @@ export const listOne = (state = defaultState, action) => {
   case actions.TOGGLE_SELECTED_MULTIPLE: {
     const { startIndex, endIndex } = action;
     const newCards = state.cards.map((card, i) => {
-      // console.log(startIndex, i, endIndex,(i >= startIndex) && ( i <= endIndex))
+      //
       if ((i >= startIndex) && ( i <= endIndex)) {
         return Object.assign(card, { isSelected: true });
       }
@@ -144,10 +146,15 @@ export const listOne = (state = defaultState, action) => {
       cards: newCards
     };
   }
-  case actions.TOGGLE_NEW_CARDS_TO_TOP :
+  case actions.TOGGLE_NEW_CARDS_TO_TOP:
     return  {
       ...state,
       newCardsToTop: !state.newCardsToTop
+    };
+  case actions.TRIGGER_FORM_FOCUS:
+    return  {
+      ...state,
+      focusFormTrigger: !state.focusFormTrigger
     };
   case actions.UPDATE_CARDS:
     return  {

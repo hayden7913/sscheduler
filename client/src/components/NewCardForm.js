@@ -15,6 +15,10 @@ export default class NewCardForm extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (prevProps.focusFormTrigger !== this.props.focusFormTrigger) {
+
+      this.firstInput.focus()
+    }
   }
 
   handleChange = (event) => {

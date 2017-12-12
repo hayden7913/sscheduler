@@ -8,6 +8,7 @@ const keymap = {
   38: 'ARROW_UP',
   40: 'ARROW_DOWN',
   68: 'D',
+  78: 'N',
 }
 
 
@@ -29,7 +30,7 @@ export const addCard = (newCard) => {
     return dispatch({
       type: 'INSERT_BELOW_SELECTED',
       index: endIndex,
-      newCard,
+      newCard: Object.assign(newCard, { isSelected: true})
     });
   }
 }
@@ -40,9 +41,9 @@ export const deselectAll = () => ({
 });
 
 export const DELETE_CARD = 'DELETE_CARD';
-export const deleteCard = (cardIndex) => ({
+export const deleteCard = (cardId) => ({
   type: 'DELETE_CARD',
-  cardIndex
+  cardId
 });
 
 export const MOVE_CARD = 'MOVE_CARD';
@@ -66,7 +67,7 @@ export const moveCardsKeyboard = (key) => {
       startIndex = endIndex = selectedIndices[0];
     }
 
-    if (!startIndex) {
+    if (startIndex == undefined) {
       console.error('move indices undefined')
       return null;
     }
@@ -86,6 +87,11 @@ export const fetchCardsSuccess = (payload) => ({
   payload,
 });
 
+export const TRIGGER_FORM_FOCUS = 'TRIGGER_FORM_FOCUS';
+export const triggerFormFocus = () => ({
+  type: 'TRIGGER_FORM_FOCUS',
+});
+
 export const DELETE_SELECTED = 'DELETE_SELECTED';
 export const handleKeyDown = (evt) => {
   return (dispatch, getState) => {
@@ -99,7 +105,7 @@ export const handleKeyDown = (evt) => {
     switch(key) {
       case 'ARROW_UP':
       case 'ARROW_DOWN':
-        dispatch(moveCardsKeyboard(key));
+        dispatch(moveCardsKeyboard(key, evt));
       break;
       case 'ESCAPE':
         dispatch(deselectAll());
@@ -108,6 +114,9 @@ export const handleKeyDown = (evt) => {
         dispatch({
           type: 'DELETE_SELECTED',
         });
+      break;
+      case 'N':
+        dispatch(triggerFormFocus());
       break;
     }
   }
@@ -171,7 +180,7 @@ export function setActiveTask() {
     }
 
     if ((activeIndex > -1) && (cards[activeIndex].id !== activeTaskId)) {
-      //       newActiveTaskId = cards[activeIndex].id
+        newActiveTaskId = cards[activeIndex].id
     }
 
     if (newActiveTaskId) {
@@ -219,17 +228,17 @@ export const updateCards = (newList) => ({
 
 
 export const UPDATE_CARD_TEXT = 'UPDATE_CARD_TEXT';
-export const updateCardText= (cardIndex, newText) => ({
+export const updateCardText= (cardId, newText) => ({
   type: 'UPDATE_CARD_TEXT',
-  cardIndex,
+  cardId,
   newText,
 });
 
 
 export const UPDATE_CARD_DURATION = 'UPDATE_CARD_DURATION';
-export const updateCardDuration = (cardIndex, newDuration) => ({
+export const updateCardDuration = (cardId, newDuration) => ({
   type: 'UPDATE_CARD_DURATION',
-  cardIndex,
+  cardId,
   newDuration,
 });
 

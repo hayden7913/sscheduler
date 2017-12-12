@@ -21,6 +21,7 @@ import
 	saveCardState,
 	toggleSelected,
 	toggleNewCardsToTop,
+	triggerFormFocus,
 	updateCards,
 	updateCardText,
 	updateCardDuration
@@ -37,7 +38,7 @@ class App extends Component {
 	}
 
 	render() {
-		const { addCard, cards, saveCardState, toggleNewCardsToTop  } = this.props;
+		const { addCard, cards, focusFormTrigger, saveCardState, toggleNewCardsToTop  } = this.props;
 
 		const style = {
 			display: "flex",
@@ -70,7 +71,7 @@ class App extends Component {
 			<div>
 				<div style={{...style}}>
 					<Card style={{...formStyle}}>
-						<NewCardForm  addCard={addCard} cards={cards} saveCardState={saveCardState} />
+						<NewCardForm  addCard={addCard} cards={cards} focusFormTrigger={focusFormTrigger} saveCardState={saveCardState} />
 						<Toggle
 							label="Add cards to top"
 							style={{marginTop: "10px"}}
@@ -95,10 +96,11 @@ App = DragDropContext(HTML5Backend)(App);
 
 const mapStateToProps = (state) => {
 	const { listOne } = state;
-	const { cards } = listOne;
+	const { focusFormTrigger, cards } = listOne;
 
   return {
-		cards
+		cards,
+		focusFormTrigger,
   };
 };
 
@@ -110,6 +112,7 @@ export default connect(mapStateToProps, {
 	handleKeyDown,
 	moveCard,
 	saveCardState,
+	triggerFormFocus,
 	toggleNewCardsToTop,
 	toggleSelected,
 	updateCards,
