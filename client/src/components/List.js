@@ -6,7 +6,7 @@ export default function List(props) {
   const { children, className, items, renderItem } = props;
 
   const list = items && items.map(renderItem);
-console.log(list)
+
   return (
     <TableBody>
       {list}

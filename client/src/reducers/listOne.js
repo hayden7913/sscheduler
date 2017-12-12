@@ -36,6 +36,28 @@ export const listOne = (state = defaultState, action) => {
         cards: newCards,
       };
     }
+    case actions.DELETE_SELECTED: {
+      const { cardId } = action;
+
+      const newCards = state.cards.filter(card => {
+        return !card.isSelected;
+      });
+
+      return  {
+        ...state,
+        cards: newCards,
+      };
+    }
+    case actions.DESELECT_ALL: {
+      const newCards = state.cards.map(card => {
+        return Object.assign(card, { isSelected: false })
+      });
+
+      return  {
+        ...state,
+        cards: newCards,
+      };
+    }
     case actions.FETCH_CARDS_SUCCESS: {
       const { cards, listId } = action.payload;
 
@@ -45,8 +67,9 @@ export const listOne = (state = defaultState, action) => {
         listId,
       };
     }
-    case actions.INSERT_CARD_BELOW: {
+    case actions.INSERT_BELOW_SELECTED: {
       const { index, newCard } = action;
+      console.log(index)
       const newCards = insertAfterIndex(state.cards, index, newCard);
       return  {
         ...state,
@@ -69,8 +92,7 @@ export const listOne = (state = defaultState, action) => {
     case actions.MOVE_CARDS_KEYBOARD: {
       const { key, startIndex, endIndex } = action;
 
-      console.log(key, startIndex, endIndex);
-      if (key === 'ARROW_UP') {
+            if (key === 'ARROW_UP') {
         return {
           ...state,
           cards: shiftElementsUp(state.cards, startIndex, endIndex),
@@ -91,66 +113,82 @@ export const listOne = (state = defaultState, action) => {
         ...state,
         activeTaskId: action.newActiveTaskId
       };
-    case actions.TOGGLE_SELECTED: {
-      const { cardId } = action;
-      const newCards = state.cards.map(card => {
-        if (card.id === cardId) {
-          return Object.assign(card, { isSelected: !card.isSelected });
-        }
+  case actions.TOGGLE_SELECTED: {
+    const { cardIndex } = action;
+    const newCards = state.cards.map((card, i) => {
+      if (cardIndex === i) {
+        return Object.assign(card, { isSelected: !card.isSelected });
+      }
 
-        return card;
-      })
+      return card;
+    })
 
-      return  {
-        ...state,
-        cards: newCards
-      };
-    }
-    case actions.TOGGLE_NEW_CARDS_TO_TOP :
-      return  {
-        ...state,
-        newCardsToTop: !state.newCardsToTop
-      };
-    case actions.UPDATE_CARDS:
-      return  {
-        ...state,
-        cards: action.newList
-      };
-    case actions.UPDATE_CARD_TEXT: {
-      const { cardId, newText } = action;
-      const newCards = state.cards.map(card => {
-        if (card.id === cardId) {
-          return Object.assign(card, { text : newText});
-        }
+    return  {
+      ...state,
+      cards: newCards
+    };
+  }
+  case actions.TOGGLE_SELECTED_MULTIPLE: {
+    const { startIndex, endIndex } = action;
+    const newCards = state.cards.map((card, i) => {
+      // console.log(startIndex, i, endIndex,(i >= startIndex) && ( i <= endIndex))
+      if ((i >= startIndex) && ( i <= endIndex)) {
+        return Object.assign(card, { isSelected: true });
+      }
 
-        return card;
-      })
+      return card;
+    })
 
-      return  {
-        ...state,
-        cards: newCards
-      };
-    }
+    return  {
+      ...state,
+      cards: newCards
+    };
+  }
+  case actions.TOGGLE_NEW_CARDS_TO_TOP :
+    return  {
+      ...state,
+      newCardsToTop: !state.newCardsToTop
+    };
+  case actions.UPDATE_CARDS:
+    return  {
+      ...state,
+      cards: action.newList
+    };
+  case actions.UPDATE_CARD_TEXT: {
+    const { cardId, newText } = action;
+    const newCards = state.cards.map(card => {
+      if (card.id === cardId) {
+        return Object.assign(card, { text : newText });
+      }
 
-    case actions.UPDATE_CARD_DURATION:
-      const { cardId, newDuration } = action;
-      const newCards = state.cards.map(card => {
-        if (card.id === cardId) {
-          return Object.assign(card, { duration: newDuration});
-        }
+      return card;
+    })
 
-        return card;
-      })
+    return  {
+      ...state,
+      cards: newCards
+    };
+  }
 
-      return  {
-        ...state,
-        cards: newCards
-      };
-    case actions.UPDATE_START_TIME:
-      return  {
-        ...state,
-        startTime: action.newStartTime,
-      };
+  case actions.UPDATE_CARD_DURATION:
+    const { cardId, newDuration } = action;
+    const newCards = state.cards.map(card => {
+      if (card.id === cardId) {
+        return Object.assign(card, { duration: newDuration });
+      }
+
+      return card;
+    })
+
+    return  {
+      ...state,
+      cards: newCards
+    };
+  case actions.UPDATE_START_TIME:
+    return  {
+      ...state,
+      startTime: action.newStartTime,
+    };
   }
   return state;
 }

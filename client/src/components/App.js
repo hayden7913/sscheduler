@@ -17,7 +17,7 @@ import
 	fetchCards,
 	moveCard,
 	handleKeyDown,
-	insertCardBelow,
+	insertBelowSelected,
 	saveCardState,
 	toggleSelected,
 	toggleNewCardsToTop,
@@ -32,10 +32,8 @@ class App extends Component {
 	componentDidMount() {
 		const { fetchCards, handleKeyDown } = this.props;
 
+		document.onkeydown = handleKeyDown;
 		fetchCards();
-
-		document.addEventListener('keydown', (evt) => handleKeyDown(evt.which));
-
 	}
 
 	render() {
@@ -108,7 +106,7 @@ export default connect(mapStateToProps, {
 	addCard,
   deleteCard,
 	fetchCards,
-	insertCardBelow,
+	insertBelowSelected,
 	handleKeyDown,
 	moveCard,
 	saveCardState,

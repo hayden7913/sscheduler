@@ -3,20 +3,46 @@ import { getCummDurationMap, isTimeBetweenInteveral } from '../helpers/time';
 import { findIndices, filterConsec } from '../helpers/custom-immutable';
 
 const keymap = {
+  17: 'CONTROL',
+  27: 'ESCAPE',
   38: 'ARROW_UP',
   40: 'ARROW_DOWN',
+  68: 'D',
 }
 
+
 export const ADD_CARD = 'ADD_CARD';
-export const addCard = (newCard) => ({
-  type: 'ADD_CARD',
-  newCard
+export const INSERT_BELOW_SELECTED = 'INSERT_BELOW_SELECTED';
+export const addCard = (newCard) => {
+  return (dispatch, getState) => {
+    const cards = getState().listOne.cards;
+    const selectedCardIndices = findIndices(cards, (card) => card.isSelected);
+
+    if (selectedCardIndices.length === 0 ) {
+      return dispatch({
+        type: 'ADD_CARD',
+        newCard
+      })
+    }
+
+    const endIndex = selectedCardIndices[selectedCardIndices.length - 1];
+    return dispatch({
+      type: 'INSERT_BELOW_SELECTED',
+      index: endIndex,
+      newCard,
+    });
+  }
+}
+
+export const DESELECT_ALL = 'DESELECT_ALL';
+export const deselectAll = () => ({
+  type: 'DESELECT_ALL',
 });
 
 export const DELETE_CARD = 'DELETE_CARD';
-export const deleteCard = (cardId) => ({
+export const deleteCard = (cardIndex) => ({
   type: 'DELETE_CARD',
-  cardId
+  cardIndex
 });
 
 export const MOVE_CARD = 'MOVE_CARD';
@@ -34,18 +60,23 @@ export const moveCardsKeyboard = (key) => {
 
     if (selectedIndices.length > 1) {
       selectedIndices = filterConsec(selectedIndices);
-      const startIndex = consecutiveIndices[0];
-      const endIndex = consecutiveIndices[consecutiveIndices.length - 1];
+      startIndex = selectedIndices[0];
+      endIndex = selectedIndices[selectedIndices.length - 1];
     } else {
       startIndex = endIndex = selectedIndices[0];
     }
 
-      return dispatch(({
-        type: 'MOVE_CARDS_KEYBOARD',
-        key,
-        startIndex,
-        endIndex,
-      }));
+    if (!startIndex) {
+      console.error('move indices undefined')
+      return null;
+    }
+
+    return dispatch(({
+      type: 'MOVE_CARDS_KEYBOARD',
+      key,
+      startIndex,
+      endIndex,
+    }));
   }
 }
 
@@ -54,17 +85,29 @@ export const fetchCardsSuccess = (payload) => ({
   type: 'FETCH_CARDS_SUCCESS',
   payload,
 });
-//user hit down arrow key
-//key handler checks to see if an item is highlighted
-//if yes, an actiion is dispathed to move the card down on element
-//the action creator finds the first and last indices of consecutive //selected elements dispatches and action with those indeces
-export const handleKeyDown = (keycode) => {
+
+export const DELETE_SELECTED = 'DELETE_SELECTED';
+export const handleKeyDown = (evt) => {
   return (dispatch, getState) => {
-    const key = keymap[keycode];
+    const evtobj = window.event? event : evt;
+    const keycode = evtobj.keyCode;
+
+    const key = evtobj.ctrlKey && keycode === 88
+    ? 'CTRL+X'
+    : keymap[keycode];
+
     switch(key) {
       case 'ARROW_UP':
       case 'ARROW_DOWN':
         dispatch(moveCardsKeyboard(key));
+      break;
+      case 'ESCAPE':
+        dispatch(deselectAll());
+      break;
+      case 'CTRL+X':
+        dispatch({
+          type: 'DELETE_SELECTED',
+        });
       break;
     }
   }
@@ -128,8 +171,7 @@ export function setActiveTask() {
     }
 
     if ((activeIndex > -1) && (cards[activeIndex].id !== activeTaskId)) {
-      // console.log(cards[activeIndex]);
-      newActiveTaskId = cards[activeIndex].id
+      //       newActiveTaskId = cards[activeIndex].id
     }
 
     if (newActiveTaskId) {
@@ -141,18 +183,28 @@ export function setActiveTask() {
   }
 }
 
-export const INSERT_CARD_BELOW = 'INSERT_CARD_BELOW';
-export const insertCardBelow = (index, newCard) => ({
-  type: 'INSERT_CARD_BELOW',
-  index,
-  newCard,
-});
-
 export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
-export const toggleSelected= (cardId) => ({
-  type: 'TOGGLE_SELECTED',
-  cardId
-});
+export const TOGGLE_SELECTED_MULTIPLE = 'TOGGLE_SELECTED_MULTIPLE';
+export const toggleSelected = (cardIndex, shouldToggleMultiple) => {
+  return (dispatch, getState) => {
+    if (shouldToggleMultiple) {
+      const cards = getState().listOne.cards;
+      let selectedCardIndices = findIndices(cards, (card) => card.isSelected);
+      selectedCardIndices = [...selectedCardIndices, cardIndex].sort((a, b) => a - b);
+
+      const startIndex = selectedCardIndices[0];
+      const endIndex = selectedCardIndices[selectedCardIndices.length - 1];
+
+      return dispatch({
+        type: 'TOGGLE_SELECTED_MULTIPLE',
+        startIndex,
+        endIndex,
+      });
+    }
+
+    return dispatch({ type: 'TOGGLE_SELECTED', cardIndex })
+  }
+}
 
 export const TOGGLE_NEW_CARDS_TO_TOP = 'TOGGLE_NEW_CARDS_TO_TOP';
 export const toggleNewCardsToTop= () => ({
@@ -167,17 +219,17 @@ export const updateCards = (newList) => ({
 
 
 export const UPDATE_CARD_TEXT = 'UPDATE_CARD_TEXT';
-export const updateCardText= (cardId, newText) => ({
+export const updateCardText= (cardIndex, newText) => ({
   type: 'UPDATE_CARD_TEXT',
-  cardId,
+  cardIndex,
   newText,
 });
 
 
 export const UPDATE_CARD_DURATION = 'UPDATE_CARD_DURATION';
-export const updateCardDuration = (cardId, newDuration) => ({
+export const updateCardDuration = (cardIndex, newDuration) => ({
   type: 'UPDATE_CARD_DURATION',
-  cardId,
+  cardIndex,
   newDuration,
 });
 

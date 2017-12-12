@@ -61,22 +61,15 @@ class Container extends Component {
 		saveCardState();
 	}
 
-	handleCardClick = (cardId) => () => {
+	handleCardClick = (cardIndex) => (evt) => {
 		const { toggleSelected } = this.props;
-
-		toggleSelected(cardId);
+		toggleSelected(cardIndex, evt.ctrlKey);
 	}
 
 	handleCardDblClick = (index) => () => {
-		const { insertCardBelow, saveCardState } = this.props;
+		const { toggleSelected, saveCardState } = this.props;
 
-		const blankCard = {
-			duration: 0,
-			id: shortId.generate(),
-			text: 'new card',
-		}
-
-		insertCardBelow(index, blankCard );
+		toggleSelected(index);
 		saveCardState();
 	}
 
@@ -107,7 +100,7 @@ class Container extends Component {
 							listId={this.props.id}
 							card={card}
 							backgroundColor={card.isSelected ? grey : null}
-							handleClick={this.handleCardClick(card.id)}
+							handleClick={this.handleCardClick(i)}
 							handleDblClick={this.handleCardDblClick(i)}
 							handleTextChange={this.handleTextChange(card.id)}
 							handleDurationChange={this.handleDurationChange(card.id)}
