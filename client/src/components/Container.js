@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import shortId from 'shortid';
 import update from 'react/lib/update';
 import { DropTarget } from 'react-dnd';
@@ -7,7 +7,7 @@ import { grey } from '../constants/colors';
 import Card from './Card';
 import NewCardForm from './NewCardForm';
 
-class Container extends Component {
+class Container extends PureComponent {
 	static defaultProps = {
 		cards:  []
 	}
@@ -35,7 +35,7 @@ class Container extends Component {
 		}));
 	}
 
-	moveCard(dragIndex, hoverIndex) {
+	moveCard = (dragIndex, hoverIndex) => {
 		const { updateCards, moveCard, saveCardState } = this.props;
 		const { cards } = this.state;
 		const dragCard = cards[dragIndex];
@@ -61,10 +61,11 @@ class Container extends Component {
 		saveCardState();
 	}
 
-	handleCardClick = (cardIndex) => (evt) => {
-		const { toggleSelected } = this.props;
-		toggleSelected(cardIndex, evt.ctrlKey);
-	}
+	// handleCardClick = (cardIndex) => (evt) => {
+	// 	const { toggleSelected } = this.props;
+	// 	toggleSelected(cardIndex, evt.ctrlKey);
+	// }
+	handleCardClick = () => console.log('hola');
 
 	handleCardDblClick = (index) => () => {
 		const { toggleSelected, triggerFormFocus, saveCardState } = this.props;
@@ -99,15 +100,17 @@ class Container extends Component {
 							key={card.id}
 							index={i}
 							listId={this.props.id}
-							card={card}
+							text={card.text}
+							duration={card.duration}
 							backgroundColor={card.isSelected ? grey : null}
-							handleClick={this.handleCardClick(i)}
-							handleDblClick={this.handleCardDblClick(i)}
-							handleTextChange={this.handleTextChange(card.id)}
-							handleDurationChange={this.handleDurationChange(card.id)}
-							handleDelete={this.handleDeleteCard(card.id)}
-							removeCard={this.removeCard.bind(this)}
-							moveCard={this.moveCard.bind(this)}
+							handleClick={this.handleCardClick}
+							// handleClick={this.handleCardClick(i)}
+							// handleDblClick={this.handleCardDblClick(i)}
+							// handleTextChange={this.handleTextChange(card.id)}
+							// handleDurationChange={this.handleDurationChange(card.id)}
+							// handleDelete={this.handleDeleteCard(card.id)}
+							// removeCard={this.removeCard.bind(this)}
+							moveCard={this.moveCard}
 						/>
 					);
 				})}

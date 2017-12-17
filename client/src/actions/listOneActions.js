@@ -9,8 +9,8 @@ const keymap = {
   40: 'ARROW_DOWN',
   68: 'D',
   78: 'N',
+  88: 'X',
 }
-
 
 export const ADD_CARD = 'ADD_CARD';
 export const INSERT_BELOW_SELECTED = 'INSERT_BELOW_SELECTED';
@@ -95,12 +95,16 @@ export const triggerFormFocus = () => ({
 export const DELETE_SELECTED = 'DELETE_SELECTED';
 export const handleKeyDown = (evt) => {
   return (dispatch, getState) => {
+
+    // evt.preventDefault();
+    // evt.stopPropagation();
     const evtobj = window.event? event : evt;
     const keycode = evtobj.keyCode;
 
-    const key = evtobj.ctrlKey && keycode === 88
-    ? 'CTRL+X'
-    : keymap[keycode];
+    // const key = evtobj.ctrlKey && keycode === 88
+    // ? 'CTRL+X'
+    // : keymap[keycode];
+    const key = keymap[keycode];
 
     switch(key) {
       case 'ARROW_UP':
@@ -110,13 +114,19 @@ export const handleKeyDown = (evt) => {
       case 'ESCAPE':
         dispatch(deselectAll());
       break;
-      case 'CTRL+X':
-        dispatch({
-          type: 'DELETE_SELECTED',
-        });
+      case 'X':
+        if (evtobj.ctrlKey) {
+          dispatch({
+            type: 'DELETE_SELECTED',
+          });
+        }
       break;
       case 'N':
-        dispatch(triggerFormFocus());
+        if (evtobj.ctrlKey) {
+          evtobj.preventDefault();
+          evtobj.stopPropagation();
+          dispatch(triggerFormFocus());
+        }
       break;
     }
   }

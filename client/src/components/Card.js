@@ -1,9 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import equals from 'is-equal-shallow';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
 import flow from 'lodash/flow';
 import { Card } from 'material-ui/Card';
 
+import { shallowEqual } from './shallowEqual';
 import EditInlineText from './EditInlineText';
 
 const style = {
@@ -13,10 +15,37 @@ const style = {
 	cursor: 'move'
 };
 
-class TaskCard extends Component {
+class TaskCard extends PureComponent {
+	shouldComponentUpdate(prevProps) {
+
+		// if (prevProps.text !== this.props.text) {
+		// 	return true;
+		// }
+		//
+		// if (prevProps.duration !== this.props.duration) {
+		// 	return true;
+		// }
+		//
+		// if (prevProps.index !== this.props.index) {
+		// 	return true;
+		// }
+		//
+		// if (prevProps.backgroundColor !== this.props.backgroundColor) {
+		// 	return true;
+		// }
+		//
+		// if (prevProps.isDragging !== this.props.isDragging) {
+		// 	return true;
+		// }
+		const objEqual = shallowEqual(prevProps, this.props);
+		console.log(prevProps == this.props)
+		return !objEqual;
+	}
+
 	render() {
 		const {
-			card,
+			text,
+			duration,
 			backgroundColor,
 			isDragging,
 			connectDragSource,
@@ -30,18 +59,18 @@ class TaskCard extends Component {
 		const opacity = isDragging ? 0 : 1;
 
 		const customStyle = Object.assign(style, {backgroundColor: backgroundColor || 'white'})
-
+		console.log(text)
 		return connectDragSource(connectDropTarget(
-			<div className="card" onClick={handleClick} onDoubleClick={handleDblClick} >
+			<div className="card" onClick={handleClick} onDoubleClick={handleDblClick}>
 				<Card  style={{ ...customStyle, opacity }}>
 					<div className="card-col card-col-1 card-col-text">
-						<EditInlineText className="edit-inline edit-text" handleChange={handleTextChange}  text={card.text} />
+						<EditInlineText className="edit-inline edit-text" handleChange={handleTextChange}  text={text} />
 					</div>
 					<div className="card-col card-col-2 card-col-duration">
 						<EditInlineText
 							className="edit-inline edit-duration"
 							handleChange={handleDurationChange}
-							text={isNaN(card.duration) ? card.duration : card.duration.toString()}
+							text={isNaN(duration) ? duration : duration.toString()}
 						/>
 					</div>
 					<div className="card-col card-col-3 card-col-delete">
