@@ -1,24 +1,28 @@
 const fetch = require('node-fetch');
 
+const cards  = require('./Monday');
+const listId = '5a3852dc88f09628ae02d3d3';
 
-// cards should be an array of objects
-const cards = require('./inoculation.js');
-const listId = '5a3154e5be60da38a7ab17cc';
+(function updateCards() {
+  if (!Array.isArray(cards)) {
+    return console.error('cards must be an array');
+  }
 
-if (!Array.isArray(cards)) {
-  console.error('cards must be an array');
-}
+  if (cards == null) {
+    return console.error('cards in undefined');
+  }
 
-fetch('http://localhost:3001/cards/' + listId, {
-	method: 'PUT',
-	headers: {
-		'Content-Type': 'application/json'
-	},
-  body: JSON.stringify({ cards }),
-})
+  fetch('http://localhost:3001/cards/' + listId, {
+  	method: 'PUT',
+  	headers: {
+  		'Content-Type': 'application/json'
+  	},
+    body: JSON.stringify({ cards })
+  })
   .then((res) => {
     if (res) {
       // console.log(res.json())
     }
     console.log('posted')
   })
+})()

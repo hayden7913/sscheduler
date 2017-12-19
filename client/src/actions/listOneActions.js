@@ -142,13 +142,15 @@ export function fetchCards() {
       if (data.length === 0) {
         return null;
       }
-
-      const cardsWithIds = data[0].cards.map(card => {
+      console.log(data[0].cards)
+      const cardsWithIds = data[0].cards
+      .filter(card => card)
+      .map(card => {
         if (!card.id) {
           return Object.assign(card, { id: shortId.generate() })
         }
 
-        return card;
+        return card || {};
       })
       dispatch(fetchCardsSuccess({
         listId: data[0]._id,
