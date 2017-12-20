@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const cards  = require('./Monday');
+const cards  = require('./Tuesday');
 const listId = '5a3852dc88f09628ae02d3d3';
 
 (function updateCards() {

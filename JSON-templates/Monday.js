@@ -2,6 +2,7 @@ cards = [
     {
        "text": "start laundry", "duration": 15
     },
+    {"duration": "10", "text": "fetch/measure/soak grains"},
     {"duration": "10", "text": "fetch bucket, coir, verm, scale, gallon jug"},
     {"duration": "10", "text": "open/break up/weigh coir"},
     {"duration": "5", "text": "add water"},
