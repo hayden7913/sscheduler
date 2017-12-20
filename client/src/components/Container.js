@@ -61,11 +61,10 @@ class Container extends PureComponent {
 		saveCardState();
 	}
 
-	// handleCardClick = (cardIndex) => (evt) => {
-	// 	const { toggleSelected } = this.props;
-	// 	toggleSelected(cardIndex, evt.ctrlKey);
-	// }
-	handleCardClick = () => console.log('hola');
+	handleCardClick = (cardIndex) => (evt) => {
+		const { toggleSelected } = this.props;
+		toggleSelected(cardIndex, evt.ctrlKey);
+	}
 
 	handleCardDblClick = (index) => () => {
 		const { toggleSelected, triggerFormFocus, saveCardState } = this.props;
@@ -104,12 +103,12 @@ class Container extends PureComponent {
 							duration={card.duration}
 							backgroundColor={card.isSelected ? grey : null}
 							handleClick={this.handleCardClick}
-							// handleClick={this.handleCardClick(i)}
-							// handleDblClick={this.handleCardDblClick(i)}
-							// handleTextChange={this.handleTextChange(card.id)}
-							// handleDurationChange={this.handleDurationChange(card.id)}
-							// handleDelete={this.handleDeleteCard(card.id)}
-							// removeCard={this.removeCard.bind(this)}
+							handleClick={this.handleCardClick(i)}
+							handleDblClick={this.handleCardDblClick(i)}
+							handleTextChange={this.handleTextChange(card.id)}
+							handleDurationChange={this.handleDurationChange(card.id)}
+							handleDelete={this.handleDeleteCard(card.id)}
+							removeCard={this.removeCard.bind(this)}
 							moveCard={this.moveCard}
 						/>
 					);
