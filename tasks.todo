@@ -1,6 +1,12 @@
 **Tasks**:
 
+☐
+☐ fix card css
+  ☐ adjust col width
+  ☐ make delete icon smaller
 ☐ save db on card move and on card add
+
+☐ add start time and now button
 
 ☐ place card list inside of a ui card
   ☐ alos do this for cards

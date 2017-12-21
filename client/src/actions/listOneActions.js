@@ -142,7 +142,7 @@ export function fetchCards() {
       if (data.length === 0) {
         return null;
       }
-      console.log(data[0].cards)
+
       const cardsWithIds = data[0].cards
       .filter(card => card)
       .map(card => {

@@ -4,6 +4,8 @@ import update from 'react/lib/update';
 import { DropTarget } from 'react-dnd';
 import { grey } from '../constants/colors';
 
+import { getCummDurationMap, getCummTimeStamp, getMoment, isTimeBetweenInteveral, roundMinutes } from '../helpers/time';
+
 import Card from './Card';
 import NewCardForm from './NewCardForm';
 
@@ -82,14 +84,16 @@ class Container extends PureComponent {
 	}
 
 	render() {
-		const { cards } = this.props;
-		const { addCard, canDrop, isOver, connectDropTarget, saveCardState } = this.props;
+		const { addCard, canDrop, cards, isOver, connectDropTarget, saveCardState, startTime } = this.props;
 
 		const isActive = canDrop && isOver;
 		const style = {
-			width: "300px",
+			width: "350px",
 			padding: "10px",
 		};
+
+    const startTimeMoment = getMoment(startTime);
+    const cummDurationMap = getCummDurationMap(cards);
 
 		return connectDropTarget(
 			<div style={{ ...style }}>
@@ -100,6 +104,7 @@ class Container extends PureComponent {
 							index={i}
 							listId={this.props.id}
 							text={card.text}
+							startTime={getCummTimeStamp(startTimeMoment, cummDurationMap[i])}
 							duration={card.duration}
 							backgroundColor={card.isSelected ? grey : null}
 							handleClick={this.handleCardClick}

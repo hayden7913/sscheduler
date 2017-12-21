@@ -46,6 +46,7 @@ class TaskCard extends PureComponent {
 		const {
 			text,
 			duration,
+			startTime,
 			backgroundColor,
 			isDragging,
 			connectDragSource,
@@ -59,21 +60,24 @@ class TaskCard extends PureComponent {
 		const opacity = isDragging ? 0 : 1;
 
 		const customStyle = Object.assign(style, {backgroundColor: backgroundColor || 'white'})
-		console.log(text)
+
 		return connectDragSource(connectDropTarget(
 			<div className="card" onClick={handleClick} onDoubleClick={handleDblClick}>
 				<Card  style={{ ...customStyle, opacity }}>
 					<div className="card-col card-col-1 card-col-text">
+						<div>{startTime}</div>
+					</div>
+					<div className="card-col card-col-2 card-col-text">
 						<EditInlineText className="edit-inline edit-text" handleChange={handleTextChange}  text={text} />
 					</div>
-					<div className="card-col card-col-2 card-col-duration">
+					<div className="card-col card-col-3 card-col-duration">
 						<EditInlineText
 							className="edit-inline edit-duration"
 							handleChange={handleDurationChange}
 							text={isNaN(duration) ? duration : duration.toString()}
 						/>
 					</div>
-					<div className="card-col card-col-3 card-col-delete">
+					<div className="card-col card-col-4 card-col-delete">
 						<span className="icon-trash" onClick={handleDelete}></span>
 					</div>
 				</Card>

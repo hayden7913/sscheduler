@@ -62,7 +62,7 @@ class App extends Component {
 	    zIndex: "1",
 	    height: "205px",
 	    padding: "10px",
-	    width: "300px",
+	    width: "221px",
 	    marginRight: "20px",
 		}
 
@@ -78,10 +78,10 @@ class App extends Component {
 							onToggle={toggleNewCardsToTop}
 						/>
 					</Card>
-					<Card style={{maxHeight: "85vh", overflowY: "auto"}}>
+					<Card style={{maxHeight: "85vh", overflowY: "auto", backgroundColor: "#e2e4e6" }}>
 						<Container id={1} list={cards} {...this.props} />
 					</Card>
-						<Schedule />
+					{/* <Schedule /> */}
 					<Card style={{ ...clockStyle }}>
 						<Clock format={'h:mm a'} ticking={true} timezone={'US/Pacific'} />
 					</Card>
@@ -96,11 +96,12 @@ App = DragDropContext(HTML5Backend)(App);
 
 const mapStateToProps = (state) => {
 	const { listOne } = state;
-	const { focusFormTrigger, cards } = listOne;
+	const { focusFormTrigger, cards, startTime } = listOne;
 
   return {
 		cards,
 		focusFormTrigger,
+		startTime,
   };
 };
 
