@@ -11,30 +11,33 @@ import NewCardForm from './NewCardForm';
 
 class Container extends PureComponent {
 	static defaultProps = {
-		cards:  []
+		cards:  [],
 	}
 
 	constructor(props) {
 		super(props);
-		this.state = { cards: props.list };
+
+		this.state = {
+			timeStampMap: [],
+		}
 	}
 
-	pushCard(card) {
-		this.setState(update(this.state, {
-			cards: {
-				$push: [ card ]
-			}
-		}));
+	componentDidUpdate(prevProps) {
+		if (prevProps.cards.length !== this.props.cards.length) {
+			console.log('lenght changed')
+			this.setTimeStampMap();
+		}
 	}
 
-	removeCard(index) {
-		this.setState(update(this.state, {
-			cards: {
-				$splice: [
-					[index, 1]
-				]
-			}
-		}));
+	setTimeStampMap() {
+		const { cards, startTime } = this.props;
+    const startTimeMoment = getMoment(startTime);
+		// console.log(startTimeMoment)
+    const cummDurationMap = getCummDurationMap(cards);
+		console.log(cummDurationMap)
+		const timeStampMap = cummDurationMap.map(duration => getCummTimeStamp(startTimeMoment, duration));
+		console.log(timeStampMap)
+		this.setState({timeStampMap});
 	}
 
 	moveCard = (dragIndex, hoverIndex) => {
@@ -46,6 +49,8 @@ class Container extends PureComponent {
 			dragIndex,
 			hoverIndex,
 		});
+
+		// this.setTimeStampMap();
 		saveCardState();
 	}
 
@@ -85,15 +90,14 @@ class Container extends PureComponent {
 
 	render() {
 		const { addCard, canDrop, cards, isOver, connectDropTarget, saveCardState, startTime } = this.props;
+		const { timeStampMap } = this.state;
 
 		const isActive = canDrop && isOver;
+
 		const style = {
 			width: "350px",
 			padding: "10px",
 		};
-
-    const startTimeMoment = getMoment(startTime);
-    const cummDurationMap = getCummDurationMap(cards);
 
 		return connectDropTarget(
 			<div style={{ ...style }}>
@@ -104,16 +108,15 @@ class Container extends PureComponent {
 							index={i}
 							listId={this.props.id}
 							text={card.text}
-							startTime={getCummTimeStamp(startTimeMoment, cummDurationMap[i])}
+							startTime={timeStampMap[i]}
+							// startTime={"12:00pm"}
 							duration={card.duration}
 							backgroundColor={card.isSelected ? grey : null}
-							handleClick={this.handleCardClick}
 							handleClick={this.handleCardClick(i)}
 							handleDblClick={this.handleCardDblClick(i)}
 							handleTextChange={this.handleTextChange(card.id)}
 							handleDurationChange={this.handleDurationChange(card.id)}
 							handleDelete={this.handleDeleteCard(card.id)}
-							removeCard={this.removeCard.bind(this)}
 							moveCard={this.moveCard}
 						/>
 					);
