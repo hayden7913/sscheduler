@@ -60,12 +60,12 @@ class Schedule extends Component {
 							handleChange={this.handleStartTimeChange}
 							text={startTime}
 						/>
-        <RaisedButton
-          type="button"
-          label="Now"
-          onClick={this.handleNowButtonClick}
-          style={{marginLeft: "30px", marginBottom: "10px", width: "50px"}}
-        />
+          <RaisedButton
+            type="button"
+            label="Now"
+            onClick={this.handleNowButtonClick}
+            style={{marginLeft: "30px", marginBottom: "10px", width: "50px"}}
+          />
         </div>
         <div style={{ maxHeight: "76vh", overflowY: "auto"}}>
           <Table>

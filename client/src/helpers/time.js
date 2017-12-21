@@ -19,7 +19,6 @@ export function getCummDurationMap(cards) {
 };
 
 export function getMoment(inputTime) {
-  console.log(inputTime)
   const isPM = /pm/.test(inputTime)
   const strippedTime = inputTime.replace(/(am)|(pm)/, "");
   const splitTime = strippedTime.split(":");
