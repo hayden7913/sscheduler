@@ -15,9 +15,9 @@ export default class EditInlineText extends Component {
   }
 
   dataChanged = (data) => {
-    const { handleChange } = this.props;
+    const { handleChange, cardId } = this.props;
 
-    handleChange(data.message);
+    handleChange(cardId, data.message);
   }
 
   customValidateText(text) {

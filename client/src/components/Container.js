@@ -46,29 +46,30 @@ class Container extends PureComponent {
 			dragIndex,
 			hoverIndex,
 		});
+
 		saveCardState();
 	}
 
-	handleTextChange = (cardId) => (newText) => {
+	handleTextChange = (cardId, newText) => {
 		const { updateCardText, saveCardState } = this.props;
-
 		updateCardText(cardId, newText);
 		saveCardState();
 	}
 
-	handleDurationChange = (cardId) => (newDuration) => {
+	handleDurationChange = (cardId, newDuration) => {
 		const { updateCardDuration, saveCardState } = this.props;
 
 		updateCardDuration(cardId, newDuration);
 		saveCardState();
 	}
 
-	handleCardClick = (cardIndex) => (evt) => {
+	handleCardClick = (evt, cardIndex) => {
 		const { toggleSelected } = this.props;
+
 		toggleSelected(cardIndex, evt.ctrlKey);
 	}
 
-	handleCardDblClick = (index) => () => {
+	handleCardDblClick = (index) => {
 		const { toggleSelected, triggerFormFocus, saveCardState } = this.props;
 
 		toggleSelected(index);
@@ -76,8 +77,9 @@ class Container extends PureComponent {
 		saveCardState();
 	}
 
-	handleDeleteCard = (cardId) => (evt) => {
+	handleDeleteCard = (cardId, evt) => {
 		const { deleteCard, saveCardState } = this.props;
+
 		evt.stopPropagation();
 		deleteCard(cardId);
 		saveCardState()
@@ -102,18 +104,17 @@ class Container extends PureComponent {
 						<Card
 							key={card.id}
 							index={i}
+							cardId={card.id}
 							listId={this.props.id}
 							text={card.text}
 							startTime={getCummTimeStamp(startTimeMoment, cummDurationMap[i])}
 							duration={card.duration}
 							backgroundColor={card.isSelected ? grey : null}
 							handleClick={this.handleCardClick}
-							handleClick={this.handleCardClick(i)}
-							handleDblClick={this.handleCardDblClick(i)}
-							handleTextChange={this.handleTextChange(card.id)}
-							handleDurationChange={this.handleDurationChange(card.id)}
-							handleDelete={this.handleDeleteCard(card.id)}
-							removeCard={this.removeCard.bind(this)}
+							handleDblClick={this.handleCardDblClick}
+							handleTextChange={this.handleTextChange}
+							handleDurationChange={this.handleDurationChange}
+							handleDelete={this.handleDeleteCard}
 							moveCard={this.moveCard}
 						/>
 					);

@@ -16,34 +16,33 @@ const style = {
 };
 
 class TaskCard extends PureComponent {
-	shouldComponentUpdate(prevProps) {
+	// shouldComponentUpdate(prevProps) {
+	// 	const objEqual = shallowEqual(prevProps, this.props);
+	// 	// console.log(objEqual)
+	// 	return !objEqual;
+	// 	// return true;
+	// }
 
-		// if (prevProps.text !== this.props.text) {
-		// 	return true;
-		// }
-		//
-		// if (prevProps.duration !== this.props.duration) {
-		// 	return true;
-		// }
-		//
-		// if (prevProps.index !== this.props.index) {
-		// 	return true;
-		// }
-		//
-		// if (prevProps.backgroundColor !== this.props.backgroundColor) {
-		// 	return true;
-		// }
-		//
-		// if (prevProps.isDragging !== this.props.isDragging) {
-		// 	return true;
-		// }
-		const objEqual = shallowEqual(prevProps, this.props);
-		console.log(prevProps == this.props)
-		return !objEqual;
+	handleCardClick = (evt) =>  {
+		const { handleClick, index } = this.props;
+
+		handleClick(evt, index);
+	}
+
+	handleCardDblClick = () =>  {
+		const { handleDblClick, index } = this.props;
+
+		handleDblClick(index);
+	}
+
+	handleDeleteCard = (evt) => {
+		const { cardId, handleDelete } = this.props
+		handleDelete(cardId, evt);
 	}
 
 	render() {
 		const {
+			cardId,
 			text,
 			duration,
 			startTime,
@@ -55,30 +54,33 @@ class TaskCard extends PureComponent {
 			handleDblClick,
 			handleTextChange,
 			handleDelete,
-			handleDurationChange
+			handleDurationChange,
+			index
 		} = this.props;
+
 		const opacity = isDragging ? 0 : 1;
 
 		const customStyle = Object.assign(style, {backgroundColor: backgroundColor || 'white'})
 
 		return connectDragSource(connectDropTarget(
-			<div className="card" onClick={handleClick} onDoubleClick={handleDblClick}>
+			<div className="card" onClick={this.handleCardClick} onDoubleClick={this.handleCardDblClick} value={index}>
 				<Card  style={{ ...customStyle, opacity }}>
 					<div className="card-col card-col-1 card-col-text">
 						<div>{startTime}</div>
 					</div>
 					<div className="card-col card-col-2 card-col-text">
-						<EditInlineText className="edit-inline edit-text" handleChange={handleTextChange}  text={text} />
+						<EditInlineText className="edit-inline edit-text" cardId={cardId} handleChange={handleTextChange}  text={text} />
 					</div>
 					<div className="card-col card-col-3 card-col-duration">
 						<EditInlineText
+							cardId={cardId}
 							className="edit-inline edit-duration"
 							handleChange={handleDurationChange}
 							text={isNaN(duration) ? duration : duration.toString()}
 						/>
 					</div>
 					<div className="card-col card-col-4 card-col-delete">
-						<span className="icon-trash" onClick={handleDelete}></span>
+						<span className="icon-trash" onClick={this.handleDeleteCard}></span>
 					</div>
 				</Card>
 			</div>
