@@ -43,6 +43,7 @@ class TaskCard extends PureComponent {
 	render() {
 		const {
 			cardId,
+			className,
 			text,
 			duration,
 			startTime,
@@ -63,8 +64,8 @@ class TaskCard extends PureComponent {
 		const customStyle = Object.assign(style, {backgroundColor: backgroundColor || 'white'})
 
 		return connectDragSource(connectDropTarget(
-			<div className="card" onClick={this.handleCardClick} onDoubleClick={this.handleCardDblClick} value={index}>
-				<Card  style={{ ...customStyle, opacity }}>
+			<div className={`card`} onClick={this.handleCardClick} onDoubleClick={this.handleCardDblClick} value={index}>
+				<Card className={`${className}`} style={{ ...customStyle, opacity }}>
 					<div className="card-col card-col-1 card-col-text">
 						<div>{startTime}</div>
 					</div>

@@ -19,24 +19,6 @@ class Container extends PureComponent {
 		this.state = { cards: props.list };
 	}
 
-	pushCard(card) {
-		this.setState(update(this.state, {
-			cards: {
-				$push: [ card ]
-			}
-		}));
-	}
-
-	removeCard(index) {
-		this.setState(update(this.state, {
-			cards: {
-				$splice: [
-					[index, 1]
-				]
-			}
-		}));
-	}
-
 	moveCard = (dragIndex, hoverIndex) => {
 		const { updateCards, moveCard, saveCardState } = this.props;
 		const { cards } = this.state;
@@ -86,7 +68,7 @@ class Container extends PureComponent {
 	}
 
 	render() {
-		const { addCard, canDrop, cards, isOver, connectDropTarget, saveCardState, startTime } = this.props;
+		const { activeTaskId, addCard, canDrop, cards, isOver, connectDropTarget, saveCardState, startTime } = this.props;
 
 		const isActive = canDrop && isOver;
 		const style = {
@@ -97,19 +79,23 @@ class Container extends PureComponent {
     const startTimeMoment = getMoment(startTime);
     const cummDurationMap = getCummDurationMap(cards);
 
+		console.log(activeTaskId)
 		return connectDropTarget(
 			<div style={{ ...style }}>
 				{cards.map((card, i) => {
+					const isCardActive = card.id === activeTaskId ? 'is-active' : '';
+					const isCardSelected = card.isSelected ? 'is-selected' : '';
+
 					return (
 						<Card
 							key={card.id}
 							index={i}
 							cardId={card.id}
+							className={`${isCardActive} ${isCardSelected }`}
 							listId={this.props.id}
 							text={card.text}
 							startTime={getCummTimeStamp(startTimeMoment, cummDurationMap[i])}
 							duration={card.duration}
-							backgroundColor={card.isSelected ? grey : null}
 							handleClick={this.handleCardClick}
 							handleDblClick={this.handleCardDblClick}
 							handleTextChange={this.handleTextChange}
