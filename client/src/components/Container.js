@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import repeat from 'repeat';
 import shortId from 'shortid';
 import update from 'react/lib/update';
 import { DropTarget } from 'react-dnd';
@@ -10,14 +11,20 @@ import Card from './Card';
 import NewCardForm from './NewCardForm';
 
 class Container extends PureComponent {
-	static defaultProps = {
-		cards:  []
-	}
-
 	constructor(props) {
 		super(props);
 		this.state = { cards: props.list };
 	}
+
+	static defaultProps = {
+		cards:  []
+	}
+
+  componentDidMount() {
+    const { setActiveTask } = this.props;
+
+    repeat(setActiveTask).every(1000, 'ms').start();
+  }
 
 	moveCard = (dragIndex, hoverIndex) => {
 		const { updateCards, moveCard, saveCardState } = this.props;
@@ -79,7 +86,6 @@ class Container extends PureComponent {
     const startTimeMoment = getMoment(startTime);
     const cummDurationMap = getCummDurationMap(cards);
 
-		console.log(activeTaskId)
 		return connectDropTarget(
 			<div style={{ ...style }}>
 				{cards.map((card, i) => {

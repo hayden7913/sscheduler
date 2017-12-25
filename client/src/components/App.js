@@ -24,6 +24,7 @@ import
 	handleKeyDown,
 	insertBelowSelected,
 	saveCardState,
+	setActiveTask,
 	toggleSelected,
 	toggleNewCardsToTop,
 	triggerFormFocus,
@@ -129,9 +130,10 @@ App = DragDropContext(HTML5Backend)(App);
 
 const mapStateToProps = (state) => {
 	const { listOne } = state;
-	const { focusFormTrigger, cards, startTime } = listOne;
+	const { activeTaskId, focusFormTrigger, cards, startTime } = listOne;
 
   return {
+		activeTaskId,
 		cards,
 		focusFormTrigger,
 		startTime,
@@ -146,6 +148,7 @@ export default connect(mapStateToProps, {
 	handleKeyDown,
 	moveCard,
 	saveCardState,
+	setActiveTask,
 	triggerFormFocus,
 	toggleNewCardsToTop,
 	toggleSelected,
