@@ -100,11 +100,11 @@ class App extends Component {
 					<Card style={{maxHeight: "85vh", overflowY: "auto", backgroundColor: "#e2e4e6" }}>
 						<Container id={1} list={cards} {...this.props} />
 					</Card>
-					<div style={{ marginLeft: "20px", width: "150px" }}>
+					<div className="widget-bar-right" style={{ marginLeft: "20px", width: "150px" }}>
 						<Card style={{ ...clockStyle }}>
 							<Clock format={'h:mm a'} ticking={true} timezone={'US/Pacific'} />
 						</Card>
-						<Card style={{ padding: '10px', width: '100%', marginTop: '30px', textAlign: 'center' }}>
+						<Card className='start-time-widget' style={{ padding: '10px', width: '100%', marginTop: '30px', textAlign: 'center' }}>
 							<span>Start Time: </span>
 							<EditInlineText
 								className="edit-inline edit-duration"
