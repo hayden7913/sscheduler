@@ -1,21 +1,42 @@
-**Tasks**:
+**Groups**:
+  ☐ when create a card I have an option in the form to assign it to a group
+  ☐ by default cards are not assigned to a group
+  ☐ I can use a keyboard command to open a group menu
+  ☐ From this menu I can select an active group which is saved in local storage
+  ☐ I can select the group by typing the group name
 
-☐
-☐ fix card css
-  ☐ adjust col width
-  ☐ make delete icon smaller
-☐ save db on card move and on card add
+  ☐  group auto search
+    ☐ I have a list of words
+      ☐ apple
+      ☐ ant
+      ☐ ball
+      ☐ banter
+    ☐ when I type a then the a's are bold
+    ☐ when I type ap then the ap on apple is bold
+    ☐>
 
-☐ add start time and now button
+  ☐ I have a component partialBoldWord that takes two strings.
+  ☐ it returns a concatenated string with the first string bold
 
-☐ place card list inside of a ui card
-  ☐ alos do this for cards
-☐ write schege
-  ☐ write schedge item component
-  ☐ copy list component
-  ☐ write scedge container?
+  ☐  Another function test beginning will take a two strings (string1: the search query, string2: an element from an array of strings)
+  ☐  This function will use regex to check how many of the first characters string1 match string2
+  ☐ This returns a bool that indicates whether or not there is a match
 
+  ☐ I map over over my list of words
+  ☐ On each iteration I check if my the current word matches the search query
+  ☐ If so I pass the word through splitByElement with the query string length as the second argument
+    then pass that result  to the partialBoldWord Component return the final result wrapped in an LI
+  ☐ Otherwise I return the word wrapped in an li element
 
+  ☐ when I hit the enter key I find the first group in the list that matches the query
+  ☐ If I get a match, I fire an action to change the selected group
 
+  ☐ I have a component that takes an array of strings and a search query string
+    ☐
 
-  ☐ increase width of task list
+  function splitByElement(string, number) {
+  const firstEl = string.slice(0, number+1);
+  const secondEl = string.slice(number+1, string.length);
+
+  return [ firstEl, secondEl ]
+}
