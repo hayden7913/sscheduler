@@ -19,6 +19,13 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use('/cards', cardRouter);
 
+app.get('/getRaw', (req, res) => {
+  Cards
+    .find()
+    .exec()
+    .then(data => res.json(data))
+});
+
 app.get('/deleteServer', (req, res) => {
   tearDownDb();
 

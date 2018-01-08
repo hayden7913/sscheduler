@@ -1,7 +1,8 @@
 const fetch = require('node-fetch');
 
-const cards  = require('./Tuesday');
-const listId = '5a3852dc88f09628ae02d3d3';
+const cards  = require('./misc');
+
+const listId = '5a53b185f674756479d4bc1c';
 
 (function updateCards() {
   if (!Array.isArray(cards)) {
@@ -17,7 +18,10 @@ const listId = '5a3852dc88f09628ae02d3d3';
   	headers: {
   		'Content-Type': 'application/json'
   	},
-    body: JSON.stringify({ cards })
+    body: JSON.stringify({
+      cards,
+      fromFetch: true
+    })
   })
   .then((res) => {
     if (res) {
