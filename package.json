@@ -37,6 +37,10 @@
     "server": "babel-node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build:client": "cd client && npm run build",
+    "push:git": "git add . && git commit -m \"updating build for deployment\" && git push origin master || exit 0",
+    "push:heroku": "git push heroku master",
+    "deploy": "npm run build:client && npm run push:git && npm run push:heroku"
   }
 }

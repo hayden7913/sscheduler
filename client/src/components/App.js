@@ -20,6 +20,7 @@ import
 {
 	addCard,
 	deleteCard,
+	deselectAll,
 	fetchCards,
 	moveCard,
 	handleKeyDown,
@@ -167,6 +168,7 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
 	addCard,
   deleteCard,
+	deselectAll,
 	fetchCards,
 	insertBelowSelected,
 	handleKeyDown,

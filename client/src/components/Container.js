@@ -59,8 +59,9 @@ class Container extends PureComponent {
 	}
 
 	handleCardDblClick = (index) => {
-		const { toggleSelected, triggerFormFocus, saveCardState } = this.props;
+		const { deselectAll, toggleSelected, triggerFormFocus, saveCardState } = this.props;
 
+		deselectAll();
 		toggleSelected(index);
 		triggerFormFocus();
 		saveCardState();
