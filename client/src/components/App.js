@@ -14,6 +14,7 @@ import { roundMinutes } from '../helpers/time';
 
 import EditInlineText from './EditInlineText';
 import NewCardForm from './NewCardForm';
+import TextArea from './TextArea';
 
 import
 {
@@ -83,20 +84,26 @@ class App extends Component {
 	    padding: "10px",
 	    width: "221px",
 	    marginRight: "20px",
+			marginBottom: "20px",
 		}
 
 		return (
 	  <MuiThemeProvider>
 			<div>
 				<div style={{...style}}>
-					<Card style={{...formStyle}}>
-						<NewCardForm  addCard={addCard} cards={cards} focusFormTrigger={focusFormTrigger} saveCardState={saveCardState} />
-						<Toggle
-							label="Add cards to top"
-							style={{marginTop: "10px"}}
-							onToggle={toggleNewCardsToTop}
-						/>
-					</Card>
+					<div className="left-col-wrapper">
+						<Card style={{...formStyle}}>
+							<NewCardForm  addCard={addCard} cards={cards} focusFormTrigger={focusFormTrigger} saveCardState={saveCardState} />
+							<Toggle
+								label="Add cards to top"
+								style={{marginTop: "10px"}}
+								onToggle={toggleNewCardsToTop}
+							/>
+						</Card>
+						<Card style={{padding: "20px",  width: "221px"}}>
+							<TextArea />
+						</Card>
+					</div>
 					<Card style={{maxHeight: "85vh", overflowY: "auto", backgroundColor: "#e2e4e6" }}>
 						<Container id={1} list={cards} {...this.props} />
 					</Card>
