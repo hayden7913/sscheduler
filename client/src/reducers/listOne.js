@@ -7,6 +7,7 @@ const defaultState = {
   activeTaskId: null,
   cards: [],
   focusFormTrigger: false,
+  featureRequests: '',
   listId: null,
   newCardsToTop: false,
   startTime: localStorage.startTime || "12:00pm",
@@ -160,6 +161,11 @@ export const listOne = (state = defaultState, action) => {
     return  {
       ...state,
       cards: action.newList
+    };
+  case actions.UPDATE_FEATURE_REQUESTS:
+    return  {
+      ...state,
+      cards: action.fr
     };
   case actions.UPDATE_CARD_TEXT: {
     const { cardId, newText } = action;

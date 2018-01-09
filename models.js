@@ -8,8 +8,13 @@ const testSchema = mongoose.Schema({
   }],
 });
 
+featureRequestSchema = mongoose.Schema({
+  featureRequests: {
+    type: String, required: true,
+  }
+});
 
 const Cards = mongoose.model('cards', testSchema);
-//const Projects = mongoose.model('Projects', projectSchema);
+const FeatureRequests = mongoose.model('featureRequests', featureRequestSchema);
 
-module.exports = {Cards /*, Projects*/};
+module.exports = { Cards, FeatureRequests };

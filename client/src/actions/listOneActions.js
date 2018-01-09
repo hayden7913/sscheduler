@@ -254,6 +254,18 @@ export const updateCardDuration = (cardId, newDuration) => ({
   newDuration,
 });
 
+export const UPDATE_FEATURE_REQUESTS = 'UPDATE_FEATURE_REQUESTS';
+export const updateFeatureRequests = (updatedFeatures, frId) => () =>  {
+  fetch(`/cards/${frId}`, {
+    method: 'put',
+    body: JSON.stringify({ featureRequests: updatedFeatures }),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  });
+}
+
 export const UPDATE_START_TIME = 'UPDATE_START_TIME';
 export function updateStartTime(newStartTime) {
   return (dispatch, getState) => {

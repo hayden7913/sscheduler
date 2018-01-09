@@ -38,6 +38,12 @@ import
 import Container from './Container';
 
 class App extends Component {
+	constructor() {
+		super();
+		this.state = {
+      isFRVisible: false,
+		}
+	}
 	componentDidMount() {
 		const { fetchCards, handleKeyDown } = this.props;
 
@@ -58,8 +64,15 @@ class App extends Component {
     updateStartTime(newStartTime);
   }
 
+	toggleFeatureRequests = () => {
+		const { isFRVisible } = this.state;
+
+		this.setState({ isFRVisible: !isFRVisible });
+	}
+
 	render() {
 		const { addCard, cards, focusFormTrigger, saveCardState, toggleNewCardsToTop, startTime  } = this.props;
+		const { isFRVisible } = this.state;
 
 		const style = {
 			display: "flex",
@@ -100,9 +113,13 @@ class App extends Component {
 								onToggle={toggleNewCardsToTop}
 							/>
 						</Card>
-						<Card style={{padding: "20px",  width: "221px"}}>
-							<TextArea />
-						</Card>
+						{
+							isFRVisible
+								 ? <Card  style={{padding: "20px",  width: "221px"}}>
+										<TextArea hideTextArea={this.toggleFeatureRequests} />
+									</Card>
+								: <span onClick={this.toggleFeatureRequests} style={{ cursor: "pointer", color: "#386771", textDecoration: "underline"}}>...Show FR</span>
+						}
 					</div>
 					<Card style={{maxHeight: "85vh", overflowY: "auto", backgroundColor: "#e2e4e6" }}>
 						<Container id={1} list={cards} {...this.props} />
