@@ -32,13 +32,14 @@ export default class NewCardForm extends React.Component {
   }
 
   handleSubmit = (event) => {
-    const { addCard, saveCardState } = this.props;
+    const { addCard, newCardsToTop, saveCardState } = this.props;
     const { durationValue, textValue } = this.state;
 
     addCard({
       id: shortId.generate(),
       text: textValue,
       duration: durationValue === '' ? 0 :  parseInt(durationValue),
+      isSelected: newCardsToTop,
     });
 
     saveCardState();

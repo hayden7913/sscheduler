@@ -72,9 +72,9 @@ class App extends Component {
 	}
 
 	render() {
-		const { addCard, cards, focusFormTrigger, saveCardState, toggleNewCardsToTop, startTime  } = this.props;
+		const { addCard, cards, focusFormTrigger, newCardsToTop, saveCardState, toggleNewCardsToTop, startTime  } = this.props;
 		const { isFRVisible } = this.state;
-
+		console.log(newCardsToTop)
 		const style = {
 			display: "flex",
 			justifyContent: "center",
@@ -107,11 +107,18 @@ class App extends Component {
 				<div style={{...style}}>
 					<div className="left-col-wrapper">
 						<Card style={{...formStyle}}>
-							<NewCardForm  addCard={addCard} cards={cards} focusFormTrigger={focusFormTrigger} saveCardState={saveCardState} />
+							<NewCardForm
+								addCard={addCard}
+								cards={cards}
+								focusFormTrigger={focusFormTrigger}
+								newCardsToTop={newCardsToTop}
+								saveCardState={saveCardState}
+							/>
 							<Toggle
 								label="Add cards to top"
 								style={{marginTop: "10px"}}
 								onToggle={toggleNewCardsToTop}
+								toggled={newCardsToTop}
 							/>
 						</Card>
 						{
@@ -155,12 +162,13 @@ App = DragDropContext(HTML5Backend)(App);
 
 const mapStateToProps = (state) => {
 	const { listOne } = state;
-	const { activeTaskId, focusFormTrigger, cards, startTime } = listOne;
+	const { activeTaskId, newCardsToTop, focusFormTrigger, cards, startTime } = listOne;
 
   return {
 		activeTaskId,
 		cards,
 		focusFormTrigger,
+		newCardsToTop,
 		startTime,
   };
 };

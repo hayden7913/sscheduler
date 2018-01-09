@@ -25,6 +25,7 @@ export const listOne = (state = defaultState, action) => {
       return  {
         ...state,
         cards: newCards,
+        newCardsToTop: false,
       };
     }
     case actions.DELETE_CARD: {
