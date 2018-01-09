@@ -47,7 +47,7 @@ cardRouter.post('/', (req, res) => {
 
 cardRouter.put('/:listId', (req, res) => {
   console.log('put endpoint hit')
-  console.log(req.body.fromFetch)
+
   const toUpdate = {
     cards: req.body.cards,
   }
