@@ -59,7 +59,7 @@ class App extends Component {
     updateStartTime(newTime);
   }
 
-  handleStartTimeChange = (newStartTime) => {
+  handleStartTimeChange = (cardId ,newStartTime) => {
     const { updateStartTime } = this.props;
 
     updateStartTime(newStartTime);
@@ -74,7 +74,7 @@ class App extends Component {
 	render() {
 		const { addCard, cards, focusFormTrigger, newCardsToTop, saveCardState, toggleNewCardsToTop, startTime  } = this.props;
 		const { isFRVisible } = this.state;
-		console.log(newCardsToTop)
+
 		const style = {
 			display: "flex",
 			justifyContent: "center",

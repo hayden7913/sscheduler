@@ -1,3 +1,11 @@
+**Strikethough**:
+
+  ☐ when I click a card I want to dispatch an action that adds a completed prop to the clicked card
+  ☐ I want to generalized a reducer handler that takes a callback and applys that callback to the targeted card
+  ☐ it takes two callback, the first returns a boolean indicating that the targeted card has been found.
+  ☐
+  ☐
+
 **Groups**:
   ☐ when create a card I have an option in the form to assign it to a group
   ☐ by default cards are not assigned to a group
@@ -13,7 +21,6 @@
       ☐ banter
     ☐ when I type a then the a's are bold
     ☐ when I type ap then the ap on apple is bold
-    ☐>
 
   ☐ I have a component partialBoldWord that takes two strings.
   ☐ it returns a concatenated string with the first string bold
