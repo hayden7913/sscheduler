@@ -75,6 +75,12 @@ class Container extends PureComponent {
 		saveCardState()
 	}
 
+	handleTimeClick = (cardId) => {
+		const { toggleCompleted } = this.props;
+
+		toggleCompleted(cardId);
+	}
+
 	render() {
 		const { activeTaskId, addCard, canDrop, cards, isOver, connectDropTarget, saveCardState, startTime } = this.props;
 
@@ -89,26 +95,31 @@ class Container extends PureComponent {
 
 		return connectDropTarget(
 			<div style={{ ...style }}>
-				{cards.map((card, i) => {
+				{
+					cards.filter(card => !card.isCompleted).map((card, i) => {
+					// cards.filter(card => true).map((card, i) => {
 					const isCardActive = card.id === activeTaskId ? 'is-active' : '';
 					const isCardSelected = card.isSelected ? 'is-selected' : '';
+					const isCardCompleted = card.isCompleted ? 'is-completed' : '';
 
 					return (
 						<Card
-							key={card.id}
-							index={i}
 							cardId={card.id}
-							className={`${isCardActive} ${isCardSelected }`}
-							listId={this.props.id}
-							text={card.text}
-							startTime={getCummTimeStamp(startTimeMoment, cummDurationMap[i])}
+							className={`${isCardActive} ${isCardSelected} ${isCardCompleted}`}
 							duration={card.duration}
 							handleClick={this.handleCardClick}
 							handleDblClick={this.handleCardDblClick}
-							handleTextChange={this.handleTextChange}
-							handleDurationChange={this.handleDurationChange}
 							handleDelete={this.handleDeleteCard}
+							handleDurationChange={this.handleDurationChange}
+							handleTextChange={this.handleTextChange}
+							handleTimeClick={this.handleTimeClick}
+							index={i}
+							key={card.id}
+							listId={this.props.id}
 							moveCard={this.moveCard}
+							startTime={getCummTimeStamp(startTimeMoment, cummDurationMap[i])}
+							text={card.text}
+							textClass={isCardCompleted}
 						/>
 					);
 				})}

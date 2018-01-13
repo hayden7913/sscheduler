@@ -1,3 +1,13 @@
+export function modifyListItem(array, finder, modifier) {
+  return array.map((item, i) => {
+    if (finder(item, i)) {
+      return modifier(item)
+    }
+
+    return item;
+  });
+}
+
 export function insertAfterIndex(arr, index, newVal) {
   const firstHalfArr = arr.slice(0, index + 1);
   const secondHalfArr = arr.slice(index + 1, arr.length);

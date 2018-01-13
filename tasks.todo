@@ -3,8 +3,10 @@
   ☐ when I click a card I want to dispatch an action that adds a completed prop to the clicked card
   ☐ I want to generalized a reducer handler that takes a callback and applys that callback to the targeted card
   ☐ it takes two callback, the first returns a boolean indicating that the targeted card has been found.
-  ☐
-  ☐
+
+  ☐ add new reducer handler
+  ☐ create toggleCompleted action
+  ☐ add toggleCompleted action as click handler for card
 
 **Groups**:
   ☐ when create a card I have an option in the form to assign it to a group

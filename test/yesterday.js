@@ -22,16 +22,30 @@ function modifyListItem(array, finder, modifier) {
     }
 
     return item;
-  })
+  });
+}
+
+
+function toggleCompleted(cardId) {
+  return (dispatch, getState) => {
+    const matcher = (card, i) =>  cardId === card.id;
+    const modifier = card => Object.assign({}, card, { completed: !card.completed} )
+
+    dispatch({
+      type: 'TOGGLE_COMPLETED',
+      matcher,
+      modifier,
+    })
+  }
 }
 
 describe('', function() {
   it('should add completed:true to the specified item', function() {
+    cardId = '2'
+    const matcher = (card, i) =>  cardId === card.id;
+    const modifier = card => Object.assign({}, card, { completed: !card.completed} )
 
-    const cardIndex = 1;
-    const finder = (card, i) => cardIndex === i;
-    const modifier = card => Object.assign({}, card, { completed: true } )
-    const result = modifyListItem(data, finder, modifier );
+    const result = modifyListItem(data, matcher, modifier);
     console.log(result)
     // assert.equal(result, 'hola');
   });

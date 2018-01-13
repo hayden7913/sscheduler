@@ -36,41 +36,50 @@ class TaskCard extends PureComponent {
 	}
 
 	handleDeleteCard = (evt) => {
-		const { cardId, handleDelete } = this.props
+		const { cardId, handleDelete } = this.props;
+
 		handleDelete(cardId, evt);
+	}
+
+	handleTimeClick = (evt) => {
+		const { cardId, handleTimeClick } = this.props;
+
+		evt.stopPropagation();
+		handleTimeClick(cardId);
 	}
 
 	render() {
 		const {
+			backgroundColor,
 			cardId,
 			className,
-			text,
-			duration,
-			startTime,
-			backgroundColor,
-			isDragging,
 			connectDragSource,
 			connectDropTarget,
+			duration,
 			handleClick,
 			handleDblClick,
-			handleTextChange,
 			handleDelete,
 			handleDurationChange,
-			index
+			handleTextChange,
+			index,
+			isDragging,
+			startTime,
+			text,
+			textClass,
 		} = this.props;
 
 		const opacity = isDragging ? 0 : 1;
 
-		const customStyle = Object.assign(style, {backgroundColor: backgroundColor || 'white'})
+		const customStyle = Object.assign(style, { backgroundColor: backgroundColor || 'white' });
 
 		return connectDragSource(connectDropTarget(
 			<div className={`card`} onClick={this.handleCardClick} onDoubleClick={this.handleCardDblClick} value={index}>
 				<Card className={`${className}`} style={{ ...customStyle, opacity }}>
 					<div className="card-col card-col-1 card-col-text">
-						<div>{startTime}</div>
+						<div style={{"cursor": "pointer"}} onClick={this.handleTimeClick}>{startTime}</div>
 					</div>
 					<div className="card-col card-col-2 card-col-text">
-						<EditInlineText className="edit-inline edit-text" cardId={cardId} handleChange={handleTextChange}  text={text} />
+						<EditInlineText className={`${textClass} edit-inline edit-text`} cardId={cardId} handleChange={handleTextChange}  text={text} />
 					</div>
 					<div className="card-col card-col-3 card-col-duration">
 						<EditInlineText

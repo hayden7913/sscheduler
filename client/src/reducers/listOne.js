@@ -1,6 +1,6 @@
 import shortId from 'shortid';
 import * as actions from '../actions/indexActions';
-import { insertAfterIndex,  shiftElementsDown, shiftElementsUp } from '../helpers/custom-immutable';
+import { modifyListItem, insertAfterIndex,  shiftElementsDown, shiftElementsUp } from '../helpers/custom-immutable';
 // import action into app
 // listen for trigger in form
 const defaultState = {
@@ -117,6 +117,14 @@ export const listOne = (state = defaultState, action) => {
         ...state,
         activeTaskId: action.newActiveTaskId
       };
+  case actions.TOGGLE_COMPLETED: {
+    const { matcher, modifier } = action;
+
+    return  {
+      ...state,
+      cards: modifyListItem(state.cards, matcher, modifier),
+    };
+  }
   case actions.TOGGLE_SELECTED: {
     const { cardIndex } = action;
     const newCards = state.cards.map((card, i) => {

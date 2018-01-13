@@ -174,7 +174,6 @@ export function saveCardState() {
   }
 }
 
-
 export const SET_ACTIVE_TASK = 'SET_ACTIVE_TASK';
 export function setActiveTask() {
   return (dispatch, getState) => {
@@ -201,6 +200,20 @@ export function setActiveTask() {
         newActiveTaskId,
       });
     }
+  }
+}
+
+export const TOGGLE_COMPLETED = 'TOGGLE_COMPLETED';
+export function toggleCompleted(cardId) {
+  return (dispatch, getState) => {
+    const matcher = (card, i) =>  cardId === card.id;
+    const modifier = card => Object.assign({}, card, { isCompleted: !card.isCompleted });
+
+    dispatch({
+      type: 'TOGGLE_COMPLETED',
+      matcher,
+      modifier,
+    })
   }
 }
 
