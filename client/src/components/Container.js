@@ -82,7 +82,7 @@ class Container extends PureComponent {
 	}
 
 	render() {
-		const { activeTaskId, addCard, canDrop, cards, isOver, connectDropTarget, saveCardState, startTime } = this.props;
+		const { activeTaskId, addCard, canDrop, cards, isOver, hideCompleted, connectDropTarget, saveCardState, startTime } = this.props;
 
 		const isActive = canDrop && isOver;
 		const style = {
@@ -95,9 +95,7 @@ class Container extends PureComponent {
 
 		return connectDropTarget(
 			<div style={{ ...style }}>
-				{
-					cards.filter(card => !card.isCompleted).map((card, i) => {
-					// cards.filter(card => true).map((card, i) => {
+				{cards.map((card, i) => {
 					const isCardActive = card.id === activeTaskId ? 'is-active' : '';
 					const isCardSelected = card.isSelected ? 'is-selected' : '';
 					const isCardCompleted = card.isCompleted ? 'is-completed' : '';
@@ -114,6 +112,7 @@ class Container extends PureComponent {
 							handleTextChange={this.handleTextChange}
 							handleTimeClick={this.handleTimeClick}
 							index={i}
+							isCompleted={card.isCompleted}
 							key={card.id}
 							listId={this.props.id}
 							moveCard={this.moveCard}
@@ -122,7 +121,9 @@ class Container extends PureComponent {
 							textClass={isCardCompleted}
 						/>
 					);
-				})}
+				})
+				.filter((card, i) => hideCompleted ? !card.props.isCompleted : true)
+			}
 			</div>
 		);
   }

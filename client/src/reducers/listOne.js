@@ -6,8 +6,9 @@ import { modifyListItem, insertAfterIndex,  shiftElementsDown, shiftElementsUp }
 const defaultState = {
   activeTaskId: null,
   cards: [],
-  focusFormTrigger: false,
   featureRequests: '',
+  focusFormTrigger: false,
+  hideCompleted: false,
   listId: null,
   newCardsToTop: false,
   startTime: localStorage.startTime || "12:00pm",
@@ -156,6 +157,11 @@ export const listOne = (state = defaultState, action) => {
       cards: newCards
     };
   }
+  case actions.TOGGLE_HIDE_COMPLETED:
+    return  {
+      ...state,
+      hideCompleted: !state.hideCompleted
+    };
   case actions.TOGGLE_NEW_CARDS_TO_TOP:
     return  {
       ...state,

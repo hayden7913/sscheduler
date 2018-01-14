@@ -245,6 +245,11 @@ export const toggleNewCardsToTop= () => ({
   type: 'TOGGLE_NEW_CARDS_TO_TOP',
 });
 
+export const TOGGLE_HIDE_COMPLETED = 'TOGGLE_HIDE_COMPLETED';
+export const toggleHideCompleted= () => ({
+  type: 'TOGGLE_HIDE_COMPLETED',
+});
+
 export const UPDATE_CARDS = 'UPDATE_CARDS';
 export const updateCards = (newList) => ({
   type: 'UPDATE_CARDS',

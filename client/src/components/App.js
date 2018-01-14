@@ -28,6 +28,7 @@ import
 	saveCardState,
 	setActiveTask,
 	toggleCompleted,
+	toggleHideCompleted,
 	toggleSelected,
 	toggleNewCardsToTop,
 	triggerFormFocus,
@@ -73,7 +74,7 @@ class App extends Component {
 	}
 
 	render() {
-		const { addCard, cards, focusFormTrigger, newCardsToTop, saveCardState, toggleNewCardsToTop, startTime  } = this.props;
+		const { addCard, cards, focusFormTrigger, newCardsToTop, saveCardState, toggleHideCompleted, toggleNewCardsToTop, startTime  } = this.props;
 		const { isFRVisible } = this.state;
 
 		const style = {
@@ -95,7 +96,7 @@ class App extends Component {
 		const formStyle = {
 			borderRadius: "2px",
 	    zIndex: "1",
-	    height: "205px",
+	    height: "225px",
 	    padding: "10px",
 	    width: "221px",
 	    marginRight: "20px",
@@ -120,6 +121,11 @@ class App extends Component {
 								style={{marginTop: "10px"}}
 								onToggle={toggleNewCardsToTop}
 								toggled={newCardsToTop}
+							/>
+							<Toggle
+								label="Hide completed"
+								style={{marginTop: "10px"}}
+								onToggle={toggleHideCompleted}
 							/>
 						</Card>
 						{
@@ -163,12 +169,13 @@ App = DragDropContext(HTML5Backend)(App);
 
 const mapStateToProps = (state) => {
 	const { listOne } = state;
-	const { activeTaskId, newCardsToTop, focusFormTrigger, cards, startTime } = listOne;
+	const { activeTaskId, newCardsToTop, focusFormTrigger, cards, hideCompleted, startTime } = listOne;
 
   return {
 		activeTaskId,
 		cards,
 		focusFormTrigger,
+		hideCompleted,
 		newCardsToTop,
 		startTime,
   };
@@ -187,6 +194,7 @@ export default connect(mapStateToProps, {
 	triggerFormFocus,
 	toggleNewCardsToTop,
 	toggleCompleted,
+	toggleHideCompleted,
 	toggleSelected,
 	updateCards,
 	updateCardText,
