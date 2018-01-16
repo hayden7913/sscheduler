@@ -76,7 +76,7 @@ class TaskCard extends PureComponent {
 			<div className={`card`} onClick={this.handleCardClick} onDoubleClick={this.handleCardDblClick} value={index}>
 				<Card className={`${className}`} style={{ ...customStyle, opacity }}>
 					<div className="card-col card-col-1 card-col-text">
-						<div style={{"cursor": "pointer"}} onClick={this.handleTimeClick}>{startTime}</div>
+						<div style={{ cursor: "pointer",  display: "inline-block" }} onClick={this.handleTimeClick}>{startTime}</div>
 					</div>
 					<div className="card-col card-col-2 card-col-text">
 						<EditInlineText className={`${textClass} edit-inline edit-text`} cardId={cardId} handleChange={handleTextChange}  text={text} />
