@@ -276,3 +276,5 @@ const cards = [
     duration: 0
   }
 ]
+
+module.exports = cards;
