@@ -1,5 +1,5 @@
-{
-  "cards": [
+
+  cards = [
     {
 
       text: 'grains',
@@ -61,4 +61,5 @@
       duration: 0
     }
   ]
-}
+
+module.exports = cards;
