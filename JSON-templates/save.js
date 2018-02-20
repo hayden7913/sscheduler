@@ -12,11 +12,11 @@ fetch(herokuGetCardsURL)
     const newFilePath = __dirname + '/' + newFileName
     const doesFileExist = fs.existsSync(newFilePath);
 
-    if (doesFileExist) {
+    if (false) {
       throw new Error("File already exists. Choose a different name.")
     }
 
-    const message = `cards = ${cards} \n\nmodule.exports = cards;`
+    const message = `const cards = ${cards} \n\nmodule.exports = cards;`
     fs.writeFile(newFileName, message, (err) => {
       if (err) throw err;
       console.log('The file has been saved!');
