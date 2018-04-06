@@ -16,43 +16,43 @@ import EditInlineText from './EditInlineText';
 import NewCardForm from './NewCardForm';
 import TextArea from './TextArea';
 
-import
-{
-	addCard,
-	deleteCard,
-	deselectAll,
-	fetchCards,
-	moveCard,
-	handleKeyDown,
-	insertBelowSelected,
-	saveCardState,
-	setActiveTask,
-	toggleCompleted,
-	toggleHideCompleted,
-	toggleSelected,
-	toggleNewCardsToTop,
-	triggerFormFocus,
-	updateCards,
-	updateCardText,
-	updateCardDuration,
-	updateStartTime,
+import {
+  addCard,
+  deleteCard,
+  deselectAll,
+  fetchCards,
+  moveCard,
+  handleKeyDown,
+  insertBelowSelected,
+  importCards,
+  saveCardState,
+  setActiveTask,
+  toggleCompleted,
+  toggleHideCompleted,
+  toggleSelected,
+  toggleNewCardsToTop,
+  triggerFormFocus,
+  updateCards,
+  updateCardText,
+  updateCardDuration,
+  updateStartTime,
 } from '../actions/indexActions';
 
 import Container from './Container';
 
 class App extends Component {
-	constructor() {
-		super();
-		this.state = {
+  constructor() {
+    super();
+    this.state = {
       isFRVisible: false,
-		}
-	}
-	componentDidMount() {
-		const { fetchCards, handleKeyDown } = this.props;
+    }
+  }
 
-		document.onkeydown = handleKeyDown;
-		fetchCards();
-	}
+  componentDidMount() {
+    const { fetchCards, handleKeyDown } = this.props;
+    document.onkeydown = handleKeyDown;
+    fetchCards();
+  }
 
   handleNowButtonClick = () => {
     const { updateStartTime } = this.props;
@@ -61,143 +61,170 @@ class App extends Component {
     updateStartTime(newTime);
   }
 
+  handleFileSelect = (evt) => {
+    const file = evt.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      console.log(evt.target.result)
+    }
+
+    reader.readAsText(file);
+  }
+
   handleStartTimeChange = (cardId ,newStartTime) => {
     const { updateStartTime } = this.props;
 
     updateStartTime(newStartTime);
   }
 
-	toggleFeatureRequests = () => {
-		const { isFRVisible } = this.state;
+  toggleFeatureRequests = () => {
+    const { isFRVisible } = this.state;
 
-		this.setState({ isFRVisible: !isFRVisible });
-	}
+    this.setState({ isFRVisible: !isFRVisible });
+  }
 
-	render() {
-		const { addCard, cards, focusFormTrigger, newCardsToTop, saveCardState, toggleHideCompleted, toggleNewCardsToTop, startTime  } = this.props;
-		const { isFRVisible } = this.state;
+  render() {
+    const {
+      addCard,
+      cards,
+      importCards,
+      focusFormTrigger,
+      newCardsToTop,
+      saveCardState,
+      toggleHideCompleted,
+      toggleNewCardsToTop,
+      startTime
+    } = this.props;
 
-		const style = {
-			display: "flex",
-			justifyContent: "center",
-			paddingTop: "7%",
-		}
+    const { isFRVisible } = this.state;
 
-		const clockStyle = {
-			textAlign: "center",
-			padding: "10px",
-			paddingTop: "12px",
-			height:"50px",
-			display: "block",
-			width: "100%",
-			fontSize: "20px",
-		};
+    const style = {
+      display: "flex",
+      justifyContent: "center",
+      paddingTop: "7%",
+    }
 
-		const formStyle = {
-			borderRadius: "2px",
-	    zIndex: "1",
-	    height: "225px",
-	    padding: "10px",
-	    width: "221px",
-	    marginRight: "20px",
-			marginBottom: "20px",
-		}
+    const clockStyle = {
+      textAlign: "center",
+      padding: "10px",
+      paddingTop: "12px",
+      height:"50px",
+      display: "block",
+      width: "100%",
+      fontSize: "20px",
+    };
 
-		return (
-	  <MuiThemeProvider>
-			<div>
-				<div style={{...style}}>
-					<div className="left-col-wrapper">
-						<Card style={{...formStyle}}>
-							<NewCardForm
-								addCard={addCard}
-								cards={cards}
-								focusFormTrigger={focusFormTrigger}
-								newCardsToTop={newCardsToTop}
-								saveCardState={saveCardState}
-							/>
-							<Toggle
-								label="Add cards to top"
-								style={{marginTop: "10px"}}
-								onToggle={toggleNewCardsToTop}
-								toggled={newCardsToTop}
-							/>
-							<Toggle
-								label="Hide completed"
-								style={{marginTop: "10px"}}
-								onToggle={toggleHideCompleted}
-							/>
-						</Card>
-						{
-							isFRVisible
-								 ? <Card  style={{padding: "20px",  width: "221px"}}>
-										<TextArea hideTextArea={this.toggleFeatureRequests} />
-									</Card>
-								: <span onClick={this.toggleFeatureRequests} style={{ cursor: "pointer", color: "#386771", textDecoration: "underline"}}>...Show FR</span>
-						}
-					</div>
-					<Card style={{maxHeight: "85vh", overflowY: "auto", backgroundColor: "#e2e4e6" }}>
-						<Container id={1} list={cards} {...this.props} />
-					</Card>
-					<div className="widget-bar-right" style={{ marginLeft: "20px", width: "150px" }}>
-						<Card style={{ ...clockStyle }}>
-							<Clock format={'h:mm a'} ticking={true} timezone={'US/Pacific'} />
-						</Card>
-						<Card className='start-time-widget' style={{ padding: '10px', width: '100%', marginTop: '30px', textAlign: 'center' }}>
-							<span>Start Time: </span>
-							<EditInlineText
-								className="edit-inline edit-duration"
-								handleChange={this.handleStartTimeChange}
-								text={startTime}
-							/>
-							<RaisedButton
-								type="button"
-								label="Now"
-								onClick={this.handleNowButtonClick}
-								style={{ marginTop: "10px", marginBottom: "10px", width: "50px"}}
-							/>
-						</Card>
-					</div>
-				</div>
-			</div>
-	  </MuiThemeProvider>
-		);
-	}
+    const formStyle = {
+      borderRadius: "2px",
+      zIndex: "1",
+      height: "225px",
+      padding: "10px",
+      width: "221px",
+      marginRight: "20px",
+      marginBottom: "20px",
+    }
+
+    return (
+    <MuiThemeProvider>
+      <div>
+        <div style={{...style}}>
+          <div className="left-col-wrapper">
+            <Card style={{...formStyle}}>
+              <input
+                onChange={importCards}
+                type="file"
+                name="files"
+              />
+              <NewCardForm
+                addCard={addCard}
+                cards={cards}
+                focusFormTrigger={focusFormTrigger}
+                newCardsToTop={newCardsToTop}
+                saveCardState={saveCardState}
+              />
+              <Toggle
+                label="Add cards to top"
+                style={{marginTop: "10px"}}
+                onToggle={toggleNewCardsToTop}
+                toggled={newCardsToTop}
+              />
+              <Toggle
+                label="Hide completed"
+                style={{marginTop: "10px"}}
+                onToggle={toggleHideCompleted}
+              />
+            </Card>
+            {
+              isFRVisible
+                 ? <Card  style={{padding: "20px",  width: "221px"}}>
+                    <TextArea hideTextArea={this.toggleFeatureRequests} />
+                  </Card>
+                : <span onClick={this.toggleFeatureRequests} style={{ cursor: "pointer", color: "#386771", textDecoration: "underline"}}>...Show FR</span>
+            }
+          </div>
+          <Card style={{maxHeight: "85vh", overflowY: "auto", backgroundColor: "#e2e4e6" }}>
+            <Container id={1} list={cards} {...this.props} />
+          </Card>
+          <div className="widget-bar-right" style={{ marginLeft: "20px", width: "150px" }}>
+            <Card style={{ ...clockStyle }}>
+              <Clock format={'h:mm a'} ticking={true} timezone={'US/Pacific'} />
+            </Card>
+            <Card className='start-time-widget' style={{ padding: '10px', width: '100%', marginTop: '30px', textAlign: 'center' }}>
+              <span>Start Time: </span>
+              <EditInlineText
+                className="edit-inline edit-duration"
+                handleChange={this.handleStartTimeChange}
+                text={startTime}
+              />
+              <RaisedButton
+                type="button"
+                label="Now"
+                onClick={this.handleNowButtonClick}
+                style={{ marginTop: "10px", marginBottom: "10px", width: "50px"}}
+              />
+            </Card>
+          </div>
+        </div>
+      </div>
+    </MuiThemeProvider>
+    );
+  }
 }
 
 App = DragDropContext(HTML5Backend)(App);
 
 const mapStateToProps = (state) => {
-	const { listOne } = state;
-	const { activeTaskId, newCardsToTop, focusFormTrigger, cards, hideCompleted, startTime } = listOne;
+  const { listOne } = state;
+  const { activeTaskId, newCardsToTop, focusFormTrigger, cards, hideCompleted, startTime } = listOne;
 
   return {
-		activeTaskId,
-		cards,
-		focusFormTrigger,
-		hideCompleted,
-		newCardsToTop,
-		startTime,
+    activeTaskId,
+    cards,
+    focusFormTrigger,
+    hideCompleted,
+    newCardsToTop,
+    startTime,
   };
 };
 
 export default connect(mapStateToProps, {
-	addCard,
+  addCard,
   deleteCard,
-	deselectAll,
-	fetchCards,
-	insertBelowSelected,
-	handleKeyDown,
-	moveCard,
-	saveCardState,
-	setActiveTask,
-	triggerFormFocus,
-	toggleNewCardsToTop,
-	toggleCompleted,
-	toggleHideCompleted,
-	toggleSelected,
-	updateCards,
-	updateCardText,
-	updateCardDuration,
-	updateStartTime,
+  deselectAll,
+  fetchCards,
+  importCards,
+  insertBelowSelected,
+  handleKeyDown,
+  moveCard,
+  saveCardState,
+  setActiveTask,
+  triggerFormFocus,
+  toggleNewCardsToTop,
+  toggleCompleted,
+  toggleHideCompleted,
+  toggleSelected,
+  updateCards,
+  updateCardText,
+  updateCardDuration,
+  updateStartTime,
 })(App);

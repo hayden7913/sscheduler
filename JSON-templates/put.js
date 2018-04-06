@@ -1,9 +1,10 @@
-const fetch = require('node-fetch');
+const axios = require('axios');
 const filePath = process.argv[2];
 const cards = require('./' + filePath);
 
-const herokuCardsURL = 'https://sscheduler.herokuapp.com/cards';
-const herokuGetCardsURL = 'https://sscheduler.herokuapp.com/getRaw';
+const baseUrl = 'https://sscheduler-199817.appspot.com/';
+const putCardsUrl = baseUrl + 'cards';
+const getCardUrl = baseUrl + 'getRaw';
 
 (function updateCards() {
   if (!Array.isArray(cards)) {
@@ -16,20 +17,20 @@ const herokuGetCardsURL = 'https://sscheduler.herokuapp.com/getRaw';
 
   let listId;
 
-  fetch(herokuGetCardsURL)
+  axios(getCardUrl)
     .then(function(response) {
-  	// Convert to JSON
-    	return response.json();
+      return response.data;
     })
     .then(function(data) {
       listId = data[0]._id;
 
-    fetch(herokuCardsURL + '/' + listId, {
-    	method: 'PUT',
-    	headers: {
-    		'Content-Type': 'application/json'
-    	},
-      body: JSON.stringify({
+    axios({
+      method: 'put',
+      url: putCardsUrl + '/' + listId,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: JSON.stringify({
         cards,
         fromFetch: true
       })

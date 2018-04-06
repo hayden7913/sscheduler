@@ -11,14 +11,14 @@ import Card from './Card';
 import NewCardForm from './NewCardForm';
 
 class Container extends PureComponent {
-	constructor(props) {
-		super(props);
-		this.state = { cards: props.list };
-	}
+  constructor(props) {
+    super(props);
+    this.state = { cards: props.list };
+  }
 
-	static defaultProps = {
-		cards:  []
-	}
+  static defaultProps = {
+    cards:  []
+  }
 
   componentDidMount() {
     const { setActiveTask } = this.props;
@@ -26,122 +26,122 @@ class Container extends PureComponent {
     repeat(setActiveTask).every(1000, 'ms').start();
   }
 
-	moveCard = (dragIndex, hoverIndex) => {
-		const { updateCards, moveCard, saveCardState } = this.props;
-		const { cards } = this.state;
-		const dragCard = cards[dragIndex];
+  moveCard = (dragIndex, hoverIndex) => {
+    const { updateCards, moveCard, saveCardState } = this.props;
+    const { cards } = this.state;
+    const dragCard = cards[dragIndex];
 
-		moveCard({
-			dragIndex,
-			hoverIndex,
-		});
+    moveCard({
+      dragIndex,
+      hoverIndex,
+    });
 
-		saveCardState();
-	}
+    saveCardState();
+  }
 
-	handleTextChange = (cardId, newText) => {
-		const { updateCardText, saveCardState } = this.props;
-		updateCardText(cardId, newText);
-		saveCardState();
-	}
+  handleTextChange = (cardId, newText) => {
+    const { updateCardText, saveCardState } = this.props;
+    updateCardText(cardId, newText);
+    saveCardState();
+  }
 
-	handleDurationChange = (cardId, newDuration) => {
-		const { updateCardDuration, saveCardState } = this.props;
+  handleDurationChange = (cardId, newDuration) => {
+    const { updateCardDuration, saveCardState } = this.props;
 
-		updateCardDuration(cardId, newDuration);
-		saveCardState();
-	}
+    updateCardDuration(cardId, newDuration);
+    saveCardState();
+  }
 
-	handleCardClick = (evt, cardIndex) => {
-		const { toggleSelected } = this.props;
+  handleCardClick = (evt, cardIndex) => {
+    const { toggleSelected } = this.props;
 
-		toggleSelected(cardIndex, evt.ctrlKey);
-	}
+    toggleSelected(cardIndex, evt.ctrlKey);
+  }
 
-	handleCardDblClick = (index) => {
-		const { deselectAll, toggleSelected, triggerFormFocus, saveCardState } = this.props;
+  handleCardDblClick = (index) => {
+    const { deselectAll, toggleSelected, triggerFormFocus, saveCardState } = this.props;
 
-		deselectAll();
-		toggleSelected(index);
-		triggerFormFocus();
-		saveCardState();
-	}
+    deselectAll();
+    toggleSelected(index);
+    triggerFormFocus();
+    saveCardState();
+  }
 
-	handleDeleteCard = (cardId, evt) => {
-		const { deleteCard, saveCardState } = this.props;
+  handleDeleteCard = (cardId, evt) => {
+    const { deleteCard, saveCardState } = this.props;
 
-		evt.stopPropagation();
-		deleteCard(cardId);
-		saveCardState()
-	}
+    evt.stopPropagation();
+    deleteCard(cardId);
+    saveCardState()
+  }
 
-	handleTimeClick = (cardId) => {
-		const { toggleCompleted } = this.props;
+  handleTimeClick = (cardId) => {
+    const { toggleCompleted } = this.props;
 
-		toggleCompleted(cardId);
-	}
+    toggleCompleted(cardId);
+  }
 
-	render() {
-		const { activeTaskId, addCard, canDrop, cards, isOver, hideCompleted, connectDropTarget, saveCardState, startTime } = this.props;
+  render() {
+    const { activeTaskId, addCard, canDrop, cards, isOver, hideCompleted, connectDropTarget, saveCardState, startTime } = this.props;
 
-		const isActive = canDrop && isOver;
-		const style = {
-			width: "350px",
-			padding: "10px",
-		};
+    const isActive = canDrop && isOver;
+    const style = {
+      width: "350px",
+      padding: "10px",
+    };
 
     const startTimeMoment = getMoment(startTime);
     const cummDurationMap = getCummDurationMap(cards);
 
-		return connectDropTarget(
-			<div style={{ ...style }}>
-				{cards.map((card, i) => {
-					const isCardActive = card.id === activeTaskId ? 'is-active' : '';
-					const isCardSelected = card.isSelected ? 'is-selected' : '';
-					const isCardCompleted = card.isCompleted ? 'is-completed' : '';
+    return connectDropTarget(
+      <div style={{ ...style }}>
+        {cards.map((card, i) => {
+          const isCardActive = card.id === activeTaskId ? 'is-active' : '';
+          const isCardSelected = card.isSelected ? 'is-selected' : '';
+          const isCardCompleted = card.isCompleted ? 'is-completed' : '';
 
-					return (
-						<Card
-							cardId={card.id}
-							className={`${isCardActive} ${isCardSelected} ${isCardCompleted}`}
-							duration={card.duration}
-							handleClick={this.handleCardClick}
-							handleDblClick={this.handleCardDblClick}
-							handleDelete={this.handleDeleteCard}
-							handleDurationChange={this.handleDurationChange}
-							handleTextChange={this.handleTextChange}
-							handleTimeClick={this.handleTimeClick}
-							index={i}
-							isCompleted={card.isCompleted}
-							key={card.id}
-							listId={this.props.id}
-							moveCard={this.moveCard}
-							startTime={getCummTimeStamp(startTimeMoment, cummDurationMap[i])}
-							text={card.text}
-							textClass={isCardCompleted}
-						/>
-					);
-				})
-				.filter((card, i) => hideCompleted ? !card.props.isCompleted : true)
-			}
-			</div>
-		);
+          return (
+            <Card
+              cardId={card.id}
+              className={`${isCardActive} ${isCardSelected} ${isCardCompleted}`}
+              duration={card.duration}
+              handleClick={this.handleCardClick}
+              handleDblClick={this.handleCardDblClick}
+              handleDelete={this.handleDeleteCard}
+              handleDurationChange={this.handleDurationChange}
+              handleTextChange={this.handleTextChange}
+              handleTimeClick={this.handleTimeClick}
+              index={i}
+              isCompleted={card.isCompleted}
+              key={card.id}
+              listId={this.props.id}
+              moveCard={this.moveCard}
+              startTime={getCummTimeStamp(startTimeMoment, cummDurationMap[i])}
+              text={card.text}
+              textClass={isCardCompleted}
+            />
+          );
+        })
+        .filter((card, i) => hideCompleted ? !card.props.isCompleted : true)
+      }
+      </div>
+    );
   }
 }
 
 const cardTarget = {
-	drop(props, monitor, component ) {
-		const { id } = props;
-		const sourceObj = monitor.getItem();
-		if ( id !== sourceObj.listId ) component.pushCard(sourceObj.card);
-		return {
-			listId: id
-		};
-	}
+  drop(props, monitor, component ) {
+    const { id } = props;
+    const sourceObj = monitor.getItem();
+    if ( id !== sourceObj.listId ) component.pushCard(sourceObj.card);
+    return {
+      listId: id
+    };
+  }
 }
 
 export default DropTarget("CARD", cardTarget, (connect, monitor) => ({
-	connectDropTarget: connect.dropTarget(),
-	isOver: monitor.isOver(),
-	canDrop: monitor.canDrop()
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver(),
+  canDrop: monitor.canDrop()
 }))(Container);

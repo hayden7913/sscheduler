@@ -1,4 +1,4 @@
-  cards= [
+ [
     {"duration": "30", "text": "get desssed"},
     {"duration": "30", "text": "brush teeth"},
     {"duration": "30", "text": "harvest"},
@@ -41,5 +41,3 @@
     {"duration": "10", "text": "put tubs away"},
     {"duration": "30", "text": "clean up"}
   ]
-
-module.exports = cards;

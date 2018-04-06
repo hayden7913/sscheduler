@@ -12,6 +12,26 @@ const keymap = {
   88: 'X',
 }
 
+const readFile = (evt) => {
+  return new Promise(resolve => {
+    const file = evt.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      resolve(reader.result)
+    }
+
+    reader.readAsText(file);
+  });
+}
+
+const assignIdsToCards = (cards) => cards.map(card => {
+  if (!card.id) {
+    return Object.assign(card, { id: shortId.generate() })
+  }
+
+  return card || {};
+});
+
 export const ADD_CARD = 'ADD_CARD';
 export const INSERT_BELOW_SELECTED = 'INSERT_BELOW_SELECTED';
 export const addCard = (newCard) => {
@@ -45,6 +65,15 @@ export const deleteCard = (cardId) => ({
   type: 'DELETE_CARD',
   cardId
 });
+
+export const importCards = (evt) => (dispatch) => {
+  readFile(evt).then(cardsFile => {
+    const cards = JSON.parse(cardsFile)
+    const cardsWithIds = assignIdsToCards(cards);
+
+    dispatch(fetchCardsSuccess({ cards }));
+  });
+}
 
 export const MOVE_CARD = 'MOVE_CARD';
 export const moveCard = (payload) => ({
@@ -143,15 +172,8 @@ export function fetchCards() {
         return null;
       }
 
-      const cardsWithIds = data[0].cards
-      .filter(card => card)
-      .map(card => {
-        if (!card.id) {
-          return Object.assign(card, { id: shortId.generate() })
-        }
+      const cardsWithIds = assignIdsToCards(data[0].cards) ;
 
-        return card || {};
-      })
       dispatch(fetchCardsSuccess({
         listId: data[0]._id,
         cards: cardsWithIds,
