@@ -72,6 +72,7 @@ export const importCards = (evt) => (dispatch) => {
     const cardsWithIds = assignIdsToCards(cards);
 
     dispatch(fetchCardsSuccess({ cards }));
+    dispatch(saveCardState());
   });
 }
 
@@ -139,6 +140,7 @@ export const handleKeyDown = (evt) => {
       case 'ARROW_UP':
       case 'ARROW_DOWN':
         dispatch(moveCardsKeyboard(key, evt));
+        dispatch(saveCardState());
       break;
       case 'ESCAPE':
         dispatch(deselectAll());
@@ -148,6 +150,8 @@ export const handleKeyDown = (evt) => {
           dispatch({
             type: 'DELETE_SELECTED',
           });
+
+          dispatch(saveCardState());
         }
       break;
       case 'N':

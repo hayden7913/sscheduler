@@ -65,11 +65,11 @@ export const listOne = (state = defaultState, action) => {
     }
     case actions.FETCH_CARDS_SUCCESS: {
       const { cards, listId } = action.payload;
-      console.log(cards)
+
       return  {
         ...state,
         cards,
-        listId,
+        listId: state.listId ? state.listId : listId,
       };
     }
     case actions.INSERT_BELOW_SELECTED: {

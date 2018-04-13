@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-dnd';
 import { connect } from 'react-redux';
+import FileSaver from 'file-saver';
 import HTML5Backend from 'react-dnd-html5-backend';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import moment from 'moment';
@@ -40,7 +41,14 @@ import {
 
 import Container from './Container';
 
+const exportCards =  cards =>  {
+  const stringifiedCards = JSON.stringify(cards);
+  var blob = new Blob([stringifiedCards], {type: "application/json"});
+  FileSaver.saveAs(blob, "untitled.json");
+}
+
 class App extends Component {
+
   constructor() {
     super();
     this.state = {
@@ -52,6 +60,12 @@ class App extends Component {
     const { fetchCards, handleKeyDown } = this.props;
     document.onkeydown = handleKeyDown;
     fetchCards();
+  }
+
+  handleExportClick = () => {
+    const { cards } = this.props;
+
+    exportCards(cards);
   }
 
   handleNowButtonClick = () => {
@@ -127,14 +141,20 @@ class App extends Component {
     return (
     <MuiThemeProvider>
       <div>
+        <input
+          onChange={importCards}
+          type="file"
+          name="files"
+        />
+        <button
+          onClick={this.handleExportClick}
+        >
+          Export
+        </button>
+
         <div style={{...style}}>
           <div className="left-col-wrapper">
             <Card style={{...formStyle}}>
-              <input
-                onChange={importCards}
-                type="file"
-                name="files"
-              />
               <NewCardForm
                 addCard={addCard}
                 cards={cards}
