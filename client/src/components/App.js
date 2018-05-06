@@ -10,7 +10,6 @@ import { Card } from 'material-ui/Card';
 import Clock from 'react-live-clock';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
 import Toggle from 'material-ui/Toggle';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -120,7 +119,7 @@ class App extends Component {
       startTime
     } = this.props;
 
-    const { isFRVisible } = this.state;
+    const { isFRVisible, showSidebar } = this.state;
 
     const style = {
       display: "flex",
@@ -162,7 +161,6 @@ class App extends Component {
       marginBottom: "20px",
     }
 
-    const { showSidebar } = this.state;
 
     return (
       <MuiThemeProvider>
