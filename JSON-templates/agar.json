@@ -1,4 +1,4 @@
-const cards = [
+[
   {
     "text": "set up PC",
     "duration": 5
@@ -49,5 +49,3 @@ const cards = [
     "duration": "5"
   }
 ]
-
-module.exports = cards;

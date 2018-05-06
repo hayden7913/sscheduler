@@ -8,6 +8,9 @@ import moment from 'moment';
 
 import { Card } from 'material-ui/Card';
 import Clock from 'react-live-clock';
+import AppBar from 'material-ui/AppBar';
+import Drawer from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
 import Toggle from 'material-ui/Toggle';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -53,6 +56,7 @@ class App extends Component {
     super();
     this.state = {
       isFRVisible: false,
+      showSidebar: false,
     }
   }
 
@@ -91,10 +95,16 @@ class App extends Component {
     updateStartTime(newStartTime);
   }
 
+  handleSidebarClose = () => this.setState({open: false});
+
   toggleFeatureRequests = () => {
     const { isFRVisible } = this.state;
-
     this.setState({ isFRVisible: !isFRVisible });
+  }
+
+  toggleSidebar = () => {
+    const { showSidebar } = this.state;
+    this.setState({ showSidebar: !showSidebar });
   }
 
   render() {
@@ -118,6 +128,20 @@ class App extends Component {
       paddingTop: "7%",
     }
 
+    const appBarStyle = {
+      backgroundColor: "rgba(0,0,0,0.2)",
+      fontFamily: "'Dancing Script', cursive",
+      fontSize: "60px",
+    }
+
+    const hamburgerIconStyle = {
+      padding: 0,
+    }
+
+    const titleStyle = {
+
+    }
+
     const clockStyle = {
       textAlign: "center",
       padding: "10px",
@@ -138,75 +162,91 @@ class App extends Component {
       marginBottom: "20px",
     }
 
-    return (
-    <MuiThemeProvider>
-      <div>
-        <input
-          onChange={importCards}
-          type="file"
-          name="files"
-        />
-        <button
-          onClick={this.handleExportClick}
-        >
-          Export
-        </button>
+    const { showSidebar } = this.state;
 
-        <div style={{...style}}>
-          <div className="left-col-wrapper">
-            <Card style={{...formStyle}}>
-              <NewCardForm
-                addCard={addCard}
-                cards={cards}
-                focusFormTrigger={focusFormTrigger}
-                newCardsToTop={newCardsToTop}
-                saveCardState={saveCardState}
+    return (
+      <MuiThemeProvider>
+        <div>
+          <Drawer
+            docked={false}
+            open={showSidebar}
+            onRequestChange={(open) => this.setState({ showSidebar: open })}
+            overlayStyle={{ backgroundColor: "transparent"}}
+            >
+              <input
+                onChange={importCards}
+                type="file"
+                name="files"
               />
-              <Toggle
-                label="Add cards to top"
-                style={{marginTop: "10px"}}
-                onToggle={toggleNewCardsToTop}
-                toggled={newCardsToTop}
-              />
-              <Toggle
-                label="Hide completed"
-                style={{marginTop: "10px"}}
-                onToggle={toggleHideCompleted}
-              />
+              <button
+                onClick={this.handleExportClick}
+              >
+                Export
+              </button>
+          </Drawer>
+          <AppBar
+            showMenuIconButton
+            title="Sscheduler"
+            iconStyleLeft={hamburgerIconStyle}
+            style={appBarStyle}
+            onLeftIconButtonClick={this.toggleSidebar}
+          />
+
+          <div style={{...style}}>
+            <div className="left-col-wrapper">
+              <Card style={{...formStyle}}>
+                <NewCardForm
+                  addCard={addCard}
+                  cards={cards}
+                  focusFormTrigger={focusFormTrigger}
+                  newCardsToTop={newCardsToTop}
+                  saveCardState={saveCardState}
+                />
+                <Toggle
+                  label="Add cards to top"
+                  style={{marginTop: "10px"}}
+                  onToggle={toggleNewCardsToTop}
+                  toggled={newCardsToTop}
+                />
+                <Toggle
+                  label="Hide completed"
+                  style={{marginTop: "10px"}}
+                  onToggle={toggleHideCompleted}
+                />
+              </Card>
+              {
+                isFRVisible
+                   ? <Card  style={{padding: "20px",  width: "221px"}}>
+                      <TextArea hideTextArea={this.toggleFeatureRequests} />
+                    </Card>
+                  : <span onClick={this.toggleFeatureRequests} style={{ cursor: "pointer", color: "#386771", textDecoration: "underline"}}>...Show FR</span>
+              }
+            </div>
+            <Card style={{maxHeight: "85vh", overflowY: "auto", backgroundColor: "#e2e4e6" }}>
+              <Container id={1} list={cards} {...this.props} />
             </Card>
-            {
-              isFRVisible
-                 ? <Card  style={{padding: "20px",  width: "221px"}}>
-                    <TextArea hideTextArea={this.toggleFeatureRequests} />
-                  </Card>
-                : <span onClick={this.toggleFeatureRequests} style={{ cursor: "pointer", color: "#386771", textDecoration: "underline"}}>...Show FR</span>
-            }
-          </div>
-          <Card style={{maxHeight: "85vh", overflowY: "auto", backgroundColor: "#e2e4e6" }}>
-            <Container id={1} list={cards} {...this.props} />
-          </Card>
-          <div className="widget-bar-right" style={{ marginLeft: "20px", width: "150px" }}>
-            <Card style={{ ...clockStyle }}>
-              <Clock format={'h:mm a'} ticking={true} timezone={'US/Pacific'} />
-            </Card>
-            <Card className='start-time-widget' style={{ padding: '10px', width: '100%', marginTop: '30px', textAlign: 'center' }}>
-              <span>Start Time: </span>
-              <EditInlineText
-                className="edit-inline edit-duration"
-                handleChange={this.handleStartTimeChange}
-                text={startTime}
-              />
-              <RaisedButton
-                type="button"
-                label="Now"
-                onClick={this.handleNowButtonClick}
-                style={{ marginTop: "10px", marginBottom: "10px", width: "50px"}}
-              />
-            </Card>
+            <div className="widget-bar-right" style={{ marginLeft: "20px", width: "150px" }}>
+              <Card style={{ ...clockStyle }}>
+                <Clock format={'h:mm a'} ticking={true} timezone={'US/Pacific'} />
+              </Card>
+              <Card className='start-time-widget' style={{ padding: '10px', width: '100%', marginTop: '30px', textAlign: 'center' }}>
+                <span>Start Time: </span>
+                <EditInlineText
+                  className="edit-inline edit-duration"
+                  handleChange={this.handleStartTimeChange}
+                  text={startTime}
+                />
+                <RaisedButton
+                  type="button"
+                  label="Now"
+                  onClick={this.handleNowButtonClick}
+                  style={{ marginTop: "10px", marginBottom: "10px", width: "50px"}}
+                />
+              </Card>
+            </div>
           </div>
         </div>
-      </div>
-    </MuiThemeProvider>
+      </MuiThemeProvider>
     );
   }
 }

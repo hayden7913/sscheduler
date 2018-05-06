@@ -1,10 +1,11 @@
 [
   {"duration": "10", "text": "fetch bucket, coir, verm, scale, gallon jug"},
-  {"duration": "10", "text": "open/ break up coir"},
+  {"duration": "10", "text": "open/break up/weigh coir"},
   {"duration": "5", "text": "add water"},
   {"duration": "10", "text": "prep pressure cookers/  timers"},
   {"duration": "30", "text": "mix/adjust substrate "},
   {"duration": "10", "text": "load bags"},
   {"duration": "10", "text": "insert timers/ tie bags"},
-  {"duration": "10", "text": "start PC / set timer"}
+  {"duration": "10", "text": "start PC / set timer"},
+  {"duration": "10", "text": "cleanup"}
 ]

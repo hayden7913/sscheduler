@@ -1,5 +1,9 @@
+const cards = [
+    {
 
-  cards = [
+      text: 'nutrients',
+      duration: 0
+    },
     {
 
       text: 'grains',
@@ -18,11 +22,6 @@
     {
 
       text: 'agar',
-      duration: '0'
-    },
-    {
-
-      text: '.5" mp tape',
       duration: '0'
     },
     {
@@ -62,4 +61,5 @@
     }
   ]
 
+// cards.forEach(card => { console.log(card.text) });
 module.exports = cards;
