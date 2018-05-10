@@ -9,7 +9,6 @@ import moment from 'moment';
 import { Card } from 'material-ui/Card';
 import Clock from 'react-live-clock';
 import AppBar from 'material-ui/AppBar';
-import Drawer from 'material-ui/Drawer';
 import Toggle from 'material-ui/Toggle';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -17,6 +16,7 @@ import { roundMinutes } from '../helpers/time';
 
 import EditInlineText from './EditInlineText';
 import NewCardForm from './NewCardForm';
+import Sidebar from './Sidebar';
 import TextArea from './TextArea';
 
 import {
@@ -94,7 +94,7 @@ class App extends Component {
     updateStartTime(newStartTime);
   }
 
-  handleSidebarClose = () => this.setState({open: false});
+  handleSidebarRequestChange = (isActive) => this.setState({ showSidebar: isActive });
 
   toggleFeatureRequests = () => {
     const { isFRVisible } = this.state;
@@ -165,23 +165,6 @@ class App extends Component {
     return (
       <MuiThemeProvider>
         <div>
-          <Drawer
-            docked={false}
-            open={showSidebar}
-            onRequestChange={(open) => this.setState({ showSidebar: open })}
-            overlayStyle={{ backgroundColor: "transparent"}}
-            >
-              <input
-                onChange={importCards}
-                type="file"
-                name="files"
-              />
-              <button
-                onClick={this.handleExportClick}
-              >
-                Export
-              </button>
-          </Drawer>
           <AppBar
             showMenuIconButton
             title="Sscheduler"
@@ -189,7 +172,12 @@ class App extends Component {
             style={appBarStyle}
             onLeftIconButtonClick={this.toggleSidebar}
           />
-
+          <Sidebar
+            isActive={showSidebar}
+            onRequestChange={this.handleSidebarRequestChange}
+            importCards={importCards}
+            handleExportClick={this.handleExportClick}
+          />
           <div style={{...style}}>
             <div className="left-col-wrapper">
               <Card style={{...formStyle}}>
