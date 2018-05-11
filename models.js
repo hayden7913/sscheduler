@@ -5,6 +5,7 @@ const testSchema = mongoose.Schema({
     text: String,
     id: String,
     duration: Number,
+    isCompleted: Boolean,
   }],
 });
 

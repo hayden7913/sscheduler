@@ -76,9 +76,10 @@ class Container extends PureComponent {
   }
 
   handleTimeClick = (cardId) => {
-    const { toggleCompleted } = this.props;
+    const { saveCardState, toggleCompleted } = this.props;
 
     toggleCompleted(cardId);
+    saveCardState();
   }
 
   render() {

@@ -1,9 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Drawer from 'material-ui/Drawer';
+import MenuItem from 'material-ui/MenuItem';
 
-export default function Sidebar({ onSidebar, handleExportClick, isActive, importCards, onRequestChange }) {
-
+export default function Sidebar({
+  deleteAll,
+  onSidebar,
+  handleExportClick,
+  isActive,
+  importCards,
+  onRequestChange
+}) {
   return (
     <div>
       <Drawer
@@ -22,6 +29,11 @@ export default function Sidebar({ onSidebar, handleExportClick, isActive, import
         >
           Export
         </button>
+        <MenuItem
+          onClick={deleteAll}
+        >
+          Delete All
+        </MenuItem>
       </Drawer>
     </div>
   );

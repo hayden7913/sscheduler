@@ -21,6 +21,7 @@ import TextArea from './TextArea';
 
 import {
   addCard,
+  deleteAll,
   deleteCard,
   deselectAll,
   fetchCards,
@@ -110,6 +111,7 @@ class App extends Component {
     const {
       addCard,
       cards,
+      deleteAll,
       importCards,
       focusFormTrigger,
       newCardsToTop,
@@ -173,6 +175,7 @@ class App extends Component {
             onLeftIconButtonClick={this.toggleSidebar}
           />
           <Sidebar
+            deleteAll={deleteAll}
             isActive={showSidebar}
             onRequestChange={this.handleSidebarRequestChange}
             importCards={importCards}
@@ -255,6 +258,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   addCard,
+  deleteAll,
   deleteCard,
   deselectAll,
   fetchCards,

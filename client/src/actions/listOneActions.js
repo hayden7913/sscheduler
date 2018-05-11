@@ -56,15 +56,35 @@ export const addCard = (newCard) => {
 }
 
 export const DESELECT_ALL = 'DESELECT_ALL';
-export const deselectAll = () => ({
-  type: 'DESELECT_ALL',
-});
+export const deselectAll = () => (dispatch) => {
+  dispatch({
+    type: 'DESELECT_ALL',
+  });
+};
 
 export const DELETE_CARD = 'DELETE_CARD';
 export const deleteCard = (cardId) => ({
   type: 'DELETE_CARD',
   cardId
 });
+
+export const DELETE_COMPLETED = 'DELETE_COMPLETED';
+export const deleteCompleted= () => dispatch => {
+  dispatch({
+    type: 'DELETE_COMPLETED',
+  })
+
+  dispatch(saveCardState());
+};
+
+export const DELETE_ALL = 'DELETE_ALL';
+export const deleteAll = () => dispatch => {
+  dispatch({
+    type: 'DELETE_ALL',
+  })
+
+  dispatch(saveCardState());
+};
 
 export const importCards = (evt) => (dispatch) => {
   readFile(evt).then(cardsFile => {
@@ -177,7 +197,7 @@ export function fetchCards() {
       }
 
       const cardsWithIds = assignIdsToCards(data[0].cards) ;
-
+      console.log(data);
       dispatch(fetchCardsSuccess({
         listId: data[0]._id,
         cards: cardsWithIds,
@@ -189,6 +209,8 @@ export function fetchCards() {
 export function saveCardState() {
   return (dispatch, getState) => {
     const { cards, listId } = getState().listOne;
+    // console.log(cards);
+    console.log(listId)
     fetch(`/cards/${listId}`, {
         method: 'put',
         body: JSON.stringify({ cards }),

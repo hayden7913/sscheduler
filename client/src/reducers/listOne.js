@@ -29,6 +29,14 @@ export const listOne = (state = defaultState, action) => {
         newCardsToTop: false,
       };
     }
+
+    case actions.DELETE_ALL: {
+      return  {
+        ...state,
+        cards: [],
+      };
+    }
+
     case actions.DELETE_CARD: {
       const { cardId } = action;
 
