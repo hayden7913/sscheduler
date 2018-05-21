@@ -7,6 +7,7 @@ const keymap = {
   27: 'ESCAPE',
   38: 'ARROW_UP',
   40: 'ARROW_DOWN',
+  67: 'C',
   68: 'D',
   78: 'N',
   88: 'X',
@@ -69,6 +70,7 @@ export const deleteCard = (cardId) => ({
 });
 
 export const DELETE_COMPLETED = 'DELETE_COMPLETED';
+export const DELETE_HOVERED = 'DELETE_HOVERED';
 export const deleteCompleted= () => dispatch => {
   dispatch({
     type: 'DELETE_COMPLETED',
@@ -150,18 +152,22 @@ export const handleKeyDown = (evt) => {
     // evt.stopPropagation();
     const evtobj = window.event? event : evt;
     const keycode = evtobj.keyCode;
-
     // const key = evtobj.ctrlKey && keycode === 88
     // ? 'CTRL+X'
     // : keymap[keycode];
     const key = keymap[keycode];
-
     switch(key) {
       case 'ARROW_UP':
       case 'ARROW_DOWN':
         dispatch(moveCardsKeyboard(key, evt));
         dispatch(saveCardState());
       break;
+      case 'C':
+        dispatch({
+          type: 'DELETE_HOVERED'
+        });
+
+        dispatch(saveCardState());
       case 'ESCAPE':
         dispatch(deselectAll());
       break;
@@ -197,7 +203,7 @@ export function fetchCards() {
       }
 
       const cardsWithIds = assignIdsToCards(data[0].cards) ;
-      console.log(data);
+
       dispatch(fetchCardsSuccess({
         listId: data[0]._id,
         cards: cardsWithIds,
@@ -209,8 +215,7 @@ export function fetchCards() {
 export function saveCardState() {
   return (dispatch, getState) => {
     const { cards, listId } = getState().listOne;
-    // console.log(cards);
-    console.log(listId)
+
     fetch(`/cards/${listId}`, {
         method: 'put',
         body: JSON.stringify({ cards }),
@@ -250,6 +255,12 @@ export function setActiveTask() {
     }
   }
 }
+
+export const SET_HOVERED_CARD = 'SET_HOVERED_CARD';
+export const setHoveredCard = (newHoveredCard) => ({
+  type: 'SET_HOVERED_CARD',
+  newHoveredCard,
+});
 
 export const TOGGLE_COMPLETED = 'TOGGLE_COMPLETED';
 export function toggleCompleted(cardId) {

@@ -31,6 +31,7 @@ import {
   importCards,
   saveCardState,
   setActiveTask,
+  setHoveredCard,
   toggleCompleted,
   toggleHideCompleted,
   toggleSelected,
@@ -116,6 +117,7 @@ class App extends Component {
       focusFormTrigger,
       newCardsToTop,
       saveCardState,
+      setHoveredCard,
       toggleHideCompleted,
       toggleNewCardsToTop,
       startTime
@@ -273,6 +275,7 @@ export default connect(mapStateToProps, {
   toggleCompleted,
   toggleHideCompleted,
   toggleSelected,
+  setHoveredCard,
   updateCards,
   updateCardText,
   updateCardDuration,

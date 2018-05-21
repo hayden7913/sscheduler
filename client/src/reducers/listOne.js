@@ -9,6 +9,7 @@ const defaultState = {
   featureRequests: '',
   focusFormTrigger: false,
   hideCompleted: false,
+  hoveredCardId: null,
   listId: null,
   newCardsToTop: false,
   startTime: localStorage.startTime || "12:00pm",
@@ -54,6 +55,17 @@ export const listOne = (state = defaultState, action) => {
 
       const newCards = state.cards.filter(card => {
         return !card.isSelected;
+      });
+
+      return  {
+        ...state,
+        cards: newCards,
+      };
+    }
+
+    case actions.DELETE_HOVERED: {
+      const newCards = state.cards.filter(card => {
+        return card.id !== state.hoveredCardId;
       });
 
       return  {
@@ -125,6 +137,11 @@ export const listOne = (state = defaultState, action) => {
       return  {
         ...state,
         activeTaskId: action.newActiveTaskId
+      };
+  case actions.SET_HOVERED_CARD:
+      return  {
+        ...state,
+        hoveredCardId: action.newHoveredCard
       };
   case actions.TOGGLE_COMPLETED: {
     const { matcher, modifier } = action;

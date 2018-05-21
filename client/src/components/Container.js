@@ -5,7 +5,13 @@ import update from 'react/lib/update';
 import { DropTarget } from 'react-dnd';
 import { grey } from '../constants/colors';
 
-import { getCummDurationMap, getCummTimeStamp, getMoment, isTimeBetweenInteveral, roundMinutes } from '../helpers/time';
+import {
+  getCummDurationMap,
+  getCummTimeStamp,
+  getMoment,
+  isTimeBetweenInteveral,
+  roundMinutes
+} from '../helpers/time';
 
 import Card from './Card';
 import NewCardForm from './NewCardForm';
@@ -67,6 +73,12 @@ class Container extends PureComponent {
     saveCardState();
   }
 
+  handleCardHover = (cardId) => {
+    const { setHoveredCard } = this.props;
+
+    setHoveredCard(cardId);
+  }
+
   handleDeleteCard = (cardId, evt) => {
     const { deleteCard, saveCardState } = this.props;
 
@@ -110,6 +122,7 @@ class Container extends PureComponent {
               handleDblClick={this.handleCardDblClick}
               handleDelete={this.handleDeleteCard}
               handleDurationChange={this.handleDurationChange}
+              handleHover={this.handleCardHover}
               handleTextChange={this.handleTextChange}
               handleTimeClick={this.handleTimeClick}
               index={i}

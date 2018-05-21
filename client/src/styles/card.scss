@@ -9,11 +9,19 @@
     border: 1px  dashed grey !important;
   }
 
+  .is-hovered {
+    background-color: #EFEBE9 !important;
+    border: 1px  dashed grey !important;
+  }
+
   .is-completed {
     text-decoration: line-through;
   }
+
 }
 
-.edit-text {
-
+.card-body {
+  &:hover {
+    background-color: #EFEBE9 !important;
+  }
 }

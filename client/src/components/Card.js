@@ -9,171 +9,187 @@ import { shallowEqual } from './shallowEqual';
 import EditInlineText from './EditInlineText';
 
 const style = {
-	// padding: '0.5rem 1rem',
-	padding: "10px",
-	margin: '.5rem',
-	cursor: 'move'
+  padding: "10px",
+  margin: '.5rem',
+  cursor: 'move'
 };
 
 class TaskCard extends PureComponent {
-	// shouldComponentUpdate(prevProps) {
-	// 	const objEqual = shallowEqual(prevProps, this.props);
-	// 	// console.log(objEqual)
-	// 	return !objEqual;
-	// 	// return true;
-	// }
+  // shouldComponentUpdate(prevProps) {
+  // 	const objEqual = shallowEqual(prevProps, this.props);
+  // 	// console.log(objEqual)
+  // 	return !objEqual;
+  // 	// return true;
+  // }
 
-	handleCardClick = (evt) =>  {
-		const { handleClick, index } = this.props;
+  handleCardClick = (evt) =>  {
+    const { handleClick, index } = this.props;
 
-		handleClick(evt, index);
-	}
+    handleClick(evt, index);
+  }
 
-	handleCardDblClick = () =>  {
-		const { handleDblClick, index } = this.props;
+  handleCardDblClick = () =>  {
+    const { handleDblClick, index } = this.props;
+    handleDblClick(index);
+  }
 
-		handleDblClick(index);
-	}
+  handleCardHover = () =>  {
+    const { handleHover, cardId } = this.props;
+    handleHover(cardId);
+  }
 
-	handleDeleteCard = (evt) => {
-		const { cardId, handleDelete } = this.props;
+  handleCardMouseLeave = () =>  {
+    const { handleHover } = this.props;
+    handleHover(null);
+  }
 
-		handleDelete(cardId, evt);
-	}
+  handleDeleteCard = (evt) => {
+    const { cardId, handleDelete } = this.props;
 
-	handleTimeClick = (evt) => {
-		const { cardId, handleTimeClick } = this.props;
+    handleDelete(cardId, evt);
+  }
 
-		evt.stopPropagation();
-		handleTimeClick(cardId);
-	}
+  handleTimeClick = (evt) => {
+    const { cardId, handleTimeClick } = this.props;
 
-	render() {
-		const {
-			backgroundColor,
-			cardId,
-			className,
-			connectDragSource,
-			connectDropTarget,
-			duration,
-			handleClick,
-			handleDblClick,
-			handleDelete,
-			handleDurationChange,
-			handleTextChange,
-			index,
-			isDragging,
-			startTime,
-			text,
-			textClass,
-		} = this.props;
+    evt.stopPropagation();
+    handleTimeClick(cardId);
+  }
 
-		const opacity = isDragging ? 0 : 1;
+  render() {
+    const {
+      backgroundColor,
+      cardId,
+      className,
+      connectDragSource,
+      connectDropTarget,
+      duration,
+      handleClick,
+      handleHover,
+      handleDblClick,
+      handleDelete,
+      handleDurationChange,
+      handleTextChange,
+      index,
+      isDragging,
+      startTime,
+      text,
+      textClass,
+    } = this.props;
 
-		const customStyle = Object.assign(style, { backgroundColor: backgroundColor || 'white' });
+    const opacity = isDragging ? 0 : 1;
 
-		return connectDragSource(connectDropTarget(
-			<div className={`card`} onClick={this.handleCardClick} onDoubleClick={this.handleCardDblClick} value={index}>
-				<Card className={`${className}`} style={{ ...customStyle, opacity }}>
-					<div className="card-col card-col-1 card-col-text">
-						<div style={{ cursor: "pointer",  display: "inline-block" }} onClick={this.handleTimeClick}>{startTime}</div>
-					</div>
-					<div className="card-col card-col-2 card-col-text">
-						<EditInlineText className={`${textClass} edit-inline edit-text`} cardId={cardId} handleChange={handleTextChange}  text={text} />
-					</div>
-					<div className="card-col card-col-3 card-col-duration">
-						<EditInlineText
-							cardId={cardId}
-							className="edit-inline edit-duration"
-							handleChange={handleDurationChange}
-							text={isNaN(duration) ? duration : duration.toString()}
-						/>
-					</div>
-					<div className="card-col card-col-4 card-col-delete">
-						<span className="icon-trash" onClick={this.handleDeleteCard}></span>
-					</div>
-				</Card>
-			</div>
-		));
-	}
+    const customStyle = Object.assign(style, { backgroundColor: backgroundColor || 'white' });
+
+    return connectDragSource(connectDropTarget(
+     <div
+       className={`card`}
+       onClick={this.handleCardClick}
+       onDoubleClick={this.handleCardDblClick}
+       onMouseOver={this.handleCardHover}
+       onMouseLeave={this.handleCardMouseLeave}
+       value={index}
+       >
+        <Card className={`card-body ${className}`} style={{ ...customStyle, opacity }}>
+          <div className="card-col card-col-1 card-col-text">
+            <div style={{ cursor: "pointer",  display: "inline-block" }} onClick={this.handleTimeClick}>{startTime}</div>
+          </div>
+          <div className="card-col card-col-2 card-col-text">
+            <EditInlineText className={`${textClass} edit-inline edit-text`} cardId={cardId} handleChange={handleTextChange}  text={text} />
+          </div>
+          <div className="card-col card-col-3 card-col-duration">
+            <EditInlineText
+              cardId={cardId}
+              className="edit-inline edit-duration"
+              handleChange={handleDurationChange}
+              text={isNaN(duration) ? duration : duration.toString()}
+            />
+          </div>
+          <div className="card-col card-col-4 card-col-delete">
+            <span className="icon-trash" onClick={this.handleDeleteCard}></span>
+          </div>
+        </Card>
+      </div>
+    ));
+  }
 }
 
 const cardSource = {
-	beginDrag(props) {
-		return {
-			index: props.index,
-			listId: props.listId,
-			card: props.card
-		};
-	},
+  beginDrag(props) {
+    return {
+      index: props.index,
+      listId: props.listId,
+      card: props.card
+    };
+  },
 
-	endDrag(props, monitor) {
-		const item = monitor.getItem();
-		const dropResult = monitor.getDropResult();
+  endDrag(props, monitor) {
+    const item = monitor.getItem();
+    const dropResult = monitor.getDropResult();
 
-		if ( dropResult && dropResult.listId !== item.listId ) {
-			props.removeCard(item.index);
-		}
-	}
+    if ( dropResult && dropResult.listId !== item.listId ) {
+      props.removeCard(item.index);
+    }
+  }
 };
 
 const cardTarget = {
 
-	hover(props, monitor, component) {
-		const dragIndex = monitor.getItem().index;
-		const hoverIndex = props.index;
-		const sourceListId = monitor.getItem().listId;
+  hover(props, monitor, component) {
+    const dragIndex = monitor.getItem().index;
+    const hoverIndex = props.index;
+    const sourceListId = monitor.getItem().listId;
 
-		// Don't replace items with themselves
-		if (dragIndex === hoverIndex) {
-			return;
-		}
+    // Don't replace items with themselves
+    if (dragIndex === hoverIndex) {
+      return;
+    }
 
-		// Determine rectangle on screen
-		const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
+    // Determine rectangle on screen
+    const hoverBoundingRect = findDOMNode(component).getBoundingClientRect();
 
-		// Get vertical middle
-		const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+    // Get vertical middle
+    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
 
-		// Determine mouse position
-		const clientOffset = monitor.getClientOffset();
+    // Determine mouse position
+    const clientOffset = monitor.getClientOffset();
 
-		// Get pixels to the top
-		const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+    // Get pixels to the top
+    const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-		// Only perform the move when the mouse has crossed half of the items height
-		// When dragging downwards, only move when the cursor is below 50%
-		// When dragging upwards, only move when the cursor is above 50%
+    // Only perform the move when the mouse has crossed half of the items height
+    // When dragging downwards, only move when the cursor is below 50%
+    // When dragging upwards, only move when the cursor is above 50%
 
-		// Dragging downwards
-		if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-			return;
-		}
+    // Dragging downwards
+    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+      return;
+    }
 
-		// Dragging upwards
-		if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-			return;
-		}
+    // Dragging upwards
+    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+      return;
+    }
 
-		// Time to actually perform the action
-		if ( props.listId === sourceListId ) {
-			props.moveCard(dragIndex, hoverIndex);
+    // Time to actually perform the action
+    if ( props.listId === sourceListId ) {
+      props.moveCard(dragIndex, hoverIndex);
 
-			// Note: we're mutating the monitor item here!
-			// Generally it's better to avoid mutations,
-			// but it's good here for the sake of performance
-			// to avoid expensive index searches.
-			monitor.getItem().index = hoverIndex;
-		}
-	}
+      // Note: we're mutating the monitor item here!
+      // Generally it's better to avoid mutations,
+      // but it's good here for the sake of performance
+      // to avoid expensive index searches.
+      monitor.getItem().index = hoverIndex;
+    }
+  }
 };
 
 export default flow(
-	DropTarget("CARD", cardTarget, connect => ({
-		connectDropTarget: connect.dropTarget()
-	})),
-	DragSource("CARD", cardSource, (connect, monitor) => ({
-		connectDragSource: connect.dragSource(),
-		isDragging: monitor.isDragging()
-	}))
+  DropTarget("CARD", cardTarget, connect => ({
+    connectDropTarget: connect.dropTarget()
+  })),
+  DragSource("CARD", cardSource, (connect, monitor) => ({
+    connectDragSource: connect.dragSource(),
+    isDragging: monitor.isDragging()
+  }))
 )(TaskCard);
