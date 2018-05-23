@@ -37,7 +37,7 @@ export const ADD_CARD = 'ADD_CARD';
 export const INSERT_BELOW_SELECTED = 'INSERT_BELOW_SELECTED';
 export const addCard = (newCard) => {
   return (dispatch, getState) => {
-    const cards = getState().listOne.cards;
+    const cards = getState().listOne.present.cards;
     const selectedCardIndices = findIndices(cards, (card) => card.isSelected);
 
     if (selectedCardIndices.length === 0 ) {
@@ -107,7 +107,7 @@ export const moveCard = (payload) => ({
 export const MOVE_CARDS_KEYBOARD = 'MOVE_CARDS_KEYBOARD';
 export const moveCardsKeyboard = (key) => {
   return (dispatch, getState) => {
-    const cards = getState().listOne.cards;
+    const cards = getState().listOne.present.cards;
     let selectedIndices = findIndices(cards, (card) => card.isSelected);
     let startIndex, endIndex;
 
@@ -217,7 +217,7 @@ export function fetchCards() {
 
 export function saveCardState() {
   return (dispatch, getState) => {
-    const { cards, listId } = getState().listOne;
+    const { cards, listId } = getState().listOne.present;
 
     fetch(`/cards/${listId}`, {
         method: 'put',
@@ -234,7 +234,7 @@ export const SET_ACTIVE_TASK = 'SET_ACTIVE_TASK';
 export function setActiveTask() {
   return (dispatch, getState) => {
     let newActiveTaskId;
-    const { activeTaskId, cards, startTime  } = getState().listOne;
+    const { activeTaskId, cards, startTime  } = getState().listOne.present;
     const cummDurationMap = getCummDurationMap(cards);
 
     const activeIndex = cummDurationMap.findIndex((cummDuration, index) => {
@@ -284,7 +284,7 @@ export const TOGGLE_SELECTED_MULTIPLE = 'TOGGLE_SELECTED_MULTIPLE';
 export const toggleSelected = (cardIndex, shouldToggleMultiple) => {
   return (dispatch, getState) => {
     if (shouldToggleMultiple) {
-      const cards = getState().listOne.cards;
+      const cards = getState().listOne.present.cards;
       let selectedCardIndices = findIndices(cards, (card) => card.isSelected);
       selectedCardIndices = [...selectedCardIndices, cardIndex].sort((a, b) => a - b);
 

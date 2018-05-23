@@ -251,7 +251,14 @@ App = DragDropContext(HTML5Backend)(App);
 
 const mapStateToProps = (state) => {
   const { listOne } = state;
-  const { activeTaskId, newCardsToTop, focusFormTrigger, cards, hideCompleted, startTime } = listOne;
+  const {
+    activeTaskId,
+    newCardsToTop,
+    focusFormTrigger,
+    cards,
+    hideCompleted,
+    startTime
+  } = listOne.present;
 
   return {
     activeTaskId,

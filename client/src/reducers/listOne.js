@@ -1,8 +1,9 @@
 import shortId from 'shortid';
 import * as actions from '../actions/indexActions';
 import { modifyListItem, insertAfterIndex,  shiftElementsDown, shiftElementsUp } from '../helpers/custom-immutable';
-// import action into app
-// listen for trigger in form
+
+import { undoable } from '../helpers/undoable';
+
 const defaultState = {
   activeTaskId: null,
   cards: [],
@@ -15,7 +16,7 @@ const defaultState = {
   startTime: localStorage.startTime || "12:00pm",
 }
 
-export const listOne = (state = defaultState, action) => {
+const listOne = (state = defaultState, action) => {
   switch(action.type) {
     case actions.ADD_CARD: {
       const newCards = state.newCardsToTop
@@ -232,7 +233,6 @@ export const listOne = (state = defaultState, action) => {
       cards: newCards
     };
   }
-
   case actions.UPDATE_CARD_DURATION:
     const { cardId, newDuration } = action;
     const newCards = state.cards.map(card => {
@@ -255,3 +255,5 @@ export const listOne = (state = defaultState, action) => {
   }
   return state;
 }
+
+export const undoableListOne = undoable(listOne);

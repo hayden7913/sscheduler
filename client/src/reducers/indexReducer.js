@@ -1,9 +1,8 @@
 import { combineReducers } from 'redux';
-
-import { listOne } from './listOne';
+import { undoableListOne } from './listOne';
 import { ui } from './ui';
 
 export default combineReducers({
-  listOne,
+  listOne: undoableListOne,
   ui,
 });
