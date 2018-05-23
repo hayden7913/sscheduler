@@ -23,6 +23,7 @@ import {
   addCard,
   deleteAll,
   deleteCard,
+  deleteCompleted,
   deselectAll,
   fetchCards,
   moveCard,
@@ -38,6 +39,7 @@ import {
   toggleSelected,
   toggleNewCardsToTop,
   triggerFormFocus,
+  uncompleteAll,
   updateCards,
   updateCardText,
   updateCardDuration,
@@ -114,12 +116,14 @@ class App extends Component {
       addCard,
       cards,
       deleteAll,
+      deleteCompleted,
       importCards,
       toggleIsEditing,
       focusFormTrigger,
       newCardsToTop,
       saveCardState,
       setHoveredCard,
+      uncompleteAll,
       toggleHideCompleted,
       toggleNewCardsToTop,
       startTime
@@ -179,10 +183,9 @@ class App extends Component {
             onLeftIconButtonClick={this.toggleSidebar}
           />
           <Sidebar
-            deleteAll={deleteAll}
+            {...this.props}
             isActive={showSidebar}
             onRequestChange={this.handleSidebarRequestChange}
-            importCards={importCards}
             handleExportClick={this.handleExportClick}
           />
           <div style={{...style}}>
@@ -264,6 +267,7 @@ export default connect(mapStateToProps, {
   addCard,
   deleteAll,
   deleteCard,
+  deleteCompleted,
   deselectAll,
   fetchCards,
   importCards,
@@ -279,6 +283,7 @@ export default connect(mapStateToProps, {
   toggleHideCompleted,
   toggleSelected,
   setHoveredCard,
+  uncompleteAll,
   updateCards,
   updateCardText,
   updateCardDuration,

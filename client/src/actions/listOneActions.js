@@ -164,9 +164,7 @@ export const handleKeyDown = (evt) => {
       break;
       case 'C':
         const { isEditingCard } = getState().ui;
-        console.log(isEditingCard)
         if (!isEditingCard) {
-          console.log('deleteing')
           dispatch({
             type: 'DELETE_HOVERED'
           });
@@ -313,6 +311,17 @@ export const TOGGLE_HIDE_COMPLETED = 'TOGGLE_HIDE_COMPLETED';
 export const toggleHideCompleted= () => ({
   type: 'TOGGLE_HIDE_COMPLETED',
 });
+
+export const UNCOMPLETE_ALL = 'UNCOMPLETE_ALL';
+export const uncompleteAll = (matcher, modifier) => (dispatch) => {
+  dispatch({
+    type: 'UNCOMPLETE_ALL',
+    matcher: (card) => card.isCompleted,
+    modifier: (card) => Object.assign(card, { isCompleted: false }),
+  });
+
+  dispatch(saveCardState());
+};
 
 export const UPDATE_CARDS = 'UPDATE_CARDS';
 export const updateCards = (newList) => ({

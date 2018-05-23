@@ -37,12 +37,21 @@ export const listOne = (state = defaultState, action) => {
         cards: [],
       };
     }
-
     case actions.DELETE_CARD: {
       const { cardId } = action;
 
       const newCards = state.cards.filter(card => {
         return card.id !== cardId;
+      });
+
+      return  {
+        ...state,
+        cards: newCards,
+      };
+    }
+    case actions.DELETE_COMPLETED: {
+      const newCards = state.cards.filter(card => {
+        return !card.isCompleted;
       });
 
       return  {
@@ -143,14 +152,6 @@ export const listOne = (state = defaultState, action) => {
         ...state,
         hoveredCardId: action.newHoveredCard
       };
-  case actions.TOGGLE_COMPLETED: {
-    const { matcher, modifier } = action;
-
-    return  {
-      ...state,
-      cards: modifyListItem(state.cards, matcher, modifier),
-    };
-  }
   case actions.TOGGLE_SELECTED: {
     const { cardIndex } = action;
     const newCards = state.cards.map((card, i) => {
@@ -197,6 +198,15 @@ export const listOne = (state = defaultState, action) => {
       ...state,
       focusFormTrigger: !state.focusFormTrigger
     };
+  case actions.TOGGLE_COMPLETED:
+  case actions.UNCOMPLETE_ALL: {
+    const { matcher, modifier } = action;
+
+    return  {
+      ...state,
+      cards: modifyListItem(state.cards, matcher, modifier),
+    };
+  }
   case actions.UPDATE_CARDS:
     return  {
       ...state,

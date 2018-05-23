@@ -5,11 +5,13 @@ import MenuItem from 'material-ui/MenuItem';
 
 export default function Sidebar({
   deleteAll,
+  deleteCompleted,
   onSidebar,
   handleExportClick,
   isActive,
   importCards,
-  onRequestChange
+  onRequestChange,
+  uncompleteAll,
 }) {
   return (
     <div>
@@ -33,6 +35,16 @@ export default function Sidebar({
           onClick={deleteAll}
         >
           Delete All
+        </MenuItem>
+        <MenuItem
+          onClick={deleteCompleted}
+        >
+          Delete Completed
+        </MenuItem>
+        <MenuItem
+          onClick={uncompleteAll}
+        >
+          Uncomplete All
         </MenuItem>
       </Drawer>
     </div>
