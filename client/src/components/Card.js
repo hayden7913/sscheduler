@@ -21,6 +21,11 @@ class TaskCard extends PureComponent {
   // 	return !objEqual;
   // 	// return true;
   // }
+  componentDidUpdate() {
+    const { handleCardUpdate } = this.props;
+
+    handleCardUpdate(this.cardRef);
+  }
 
   handleCardClick = (evt) =>  {
     const { handleClick, index } = this.props;
@@ -88,6 +93,7 @@ class TaskCard extends PureComponent {
        onDoubleClick={this.handleCardDblClick}
        onMouseOver={this.handleCardHover}
        onMouseLeave={this.handleCardMouseLeave}
+       ref={(node) => { this.cardRef = node }}
        value={index}
        >
         <Card className={`card-body ${className}`} style={{ ...customStyle, opacity }}>
@@ -95,7 +101,12 @@ class TaskCard extends PureComponent {
             <div style={{ cursor: "pointer",  display: "inline-block" }} onClick={this.handleTimeClick}>{startTime}</div>
           </div>
           <div className="card-col card-col-2 card-col-text">
-            <EditInlineText className={`${textClass} edit-inline edit-text`} cardId={cardId} handleChange={handleTextChange}  text={text} />
+           <EditInlineText
+              className={`${textClass} edit-inline edit-text`}
+              cardId={cardId}
+              handleChange={handleTextChange}
+              text={text}
+           />
           </div>
           <div className="card-col card-col-3 card-col-duration">
             <EditInlineText

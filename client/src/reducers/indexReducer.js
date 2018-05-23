@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
 
 import { listOne } from './listOne';
-// import 'listTwo' from './listTwo';
+import { ui } from './ui';
+
 export default combineReducers({
   listOne,
-  // listTwo,
+  ui,
 });

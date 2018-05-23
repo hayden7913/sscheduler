@@ -1,14 +1,14 @@
+☐ add redux prop that tells whether a inline text edit element is active
+  ☐ get card ref
+  ☐ write function that iterates through child classes
+  ☐ add a ui reducer with isEditingCard prop
+  ☐ add a toggla isEditingCard action
+  ☐ import action into container
 
-☐ fetch makes get request to getRaw  to get db ID.
-  ☐ in separte file write a request to get raw data
-  ☐ copy the fetch file
-  ☐ make some test data
-  ☐ set up a log statement in the put endpoint to print the data
-  ☐ have fetch.js import and try to post it
-☐ fetch takes list file name as an argument
-
-
-
+☐ add delete completed card feature
+☐ add a uncheck all feature
+☐ replace card delete button with an auto adjust time button
+☐ set hide completed to be on by default
 **Strikethough**:
 
   ☐ when I click a card I want to dispatch an action that adds a completed prop to the clicked card

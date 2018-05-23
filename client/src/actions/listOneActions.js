@@ -11,7 +11,7 @@ const keymap = {
   68: 'D',
   78: 'N',
   88: 'X',
-}
+};
 
 const readFile = (evt) => {
   return new Promise(resolve => {
@@ -44,7 +44,7 @@ export const addCard = (newCard) => {
       return dispatch({
         type: 'ADD_CARD',
         newCard
-      })
+      });
     }
 
     const endIndex = selectedCardIndices[selectedCardIndices.length - 1];
@@ -163,11 +163,16 @@ export const handleKeyDown = (evt) => {
         dispatch(saveCardState());
       break;
       case 'C':
-        dispatch({
-          type: 'DELETE_HOVERED'
-        });
+        const { isEditingCard } = getState().ui;
+        console.log(isEditingCard)
+        if (!isEditingCard) {
+          console.log('deleteing')
+          dispatch({
+            type: 'DELETE_HOVERED'
+          });
 
-        dispatch(saveCardState());
+          dispatch(saveCardState());
+        }
       case 'ESCAPE':
         dispatch(deselectAll());
       break;

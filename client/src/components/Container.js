@@ -5,6 +5,8 @@ import update from 'react/lib/update';
 import { DropTarget } from 'react-dnd';
 import { grey } from '../constants/colors';
 
+import { isEditingCard } from '../helpers/cardHelpers';
+
 import {
   getCummDurationMap,
   getCummTimeStamp,
@@ -79,6 +81,12 @@ class Container extends PureComponent {
     setHoveredCard(cardId);
   }
 
+  handleCardUpdate = (cardRef) => {
+    const { toggleIsEditing } = this.props;
+
+    toggleIsEditing(isEditingCard(cardRef));
+  }
+
   handleDeleteCard = (cardId, evt) => {
     const { deleteCard, saveCardState } = this.props;
 
@@ -95,7 +103,17 @@ class Container extends PureComponent {
   }
 
   render() {
-    const { activeTaskId, addCard, canDrop, cards, isOver, hideCompleted, connectDropTarget, saveCardState, startTime } = this.props;
+    const {
+      activeTaskId,
+      addCard,
+      canDrop,
+      cards ,
+      isOver,
+      hideCompleted,
+      connectDropTarget,
+      saveCardState,
+      startTime
+     } = this.props;
 
     const isActive = canDrop && isOver;
     const style = {
@@ -119,6 +137,7 @@ class Container extends PureComponent {
               className={`${isCardActive} ${isCardSelected} ${isCardCompleted}`}
               duration={card.duration}
               handleClick={this.handleCardClick}
+              handleCardUpdate={this.handleCardUpdate}
               handleDblClick={this.handleCardDblClick}
               handleDelete={this.handleDeleteCard}
               handleDurationChange={this.handleDurationChange}

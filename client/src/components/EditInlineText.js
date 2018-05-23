@@ -16,28 +16,36 @@ export default class EditInlineText extends Component {
 
   dataChanged = (data) => {
     const { handleChange, cardId } = this.props;
-
+    console.log('helo')
     handleChange(cardId, data.message);
   }
 
   customValidateText(text) {
-
-
     return true;
+  }
+
+  handleClick = (evt) =>  {
+    const { onClick } = this.props;
+    evt.stopPropagation();
+    console.log('inner function called');
+    onClick();
   }
 
   render() {
     const { className, text } = this.props;
 
     return (
-      <InlineEdit
-        validate={this.customValidateText}
-        className={className}
-        activeClassName="editing"
-        text={text || ''}
-        paramName="message"
-        change={this.dataChanged}
-      />
+      <div
+      >
+        <InlineEdit
+          activeClassName="editing"
+          change={this.dataChanged}
+          className={className}
+          paramName="message"
+          text={text || ''}
+          validate={this.customValidateText}
+        />
+      </div>
     );
   }
 }
