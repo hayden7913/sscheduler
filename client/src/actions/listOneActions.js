@@ -73,7 +73,6 @@ export const deleteCard = (cardId) => ({
 });
 
 export const DELETE_COMPLETED = 'DELETE_COMPLETED';
-export const DELETE_HOVERED = 'DELETE_HOVERED';
 export const deleteCompleted= () => dispatch => {
   dispatch({
     type: 'DELETE_COMPLETED',
@@ -153,6 +152,8 @@ export const triggerFormBlur= () => ({
 });
 
 export const DELETE_SELECTED = 'DELETE_SELECTED';
+export const DELETE_HOVERED = 'DELETE_HOVERED';
+export const COMPLETE_HOVERED = 'COMPLETE_HOVERED';
 export const UNDO = 'UNDO';
 export const REDO = 'REDO';
 
@@ -173,17 +174,25 @@ export const handleKeyDown = (evt) => {
         dispatch(triggerFormBlur());
       break;
       case 'C':
+      case 'D':
         const { isEditingCard, isFormFocused } = getState().ui;
         if (!isEditingCard && ! isFormFocused) {
-          dispatch({
-            type: 'DELETE_HOVERED'
-          });
+          if (key === 'C') {
+            dispatch({
+              type: 'DELETE_HOVERED'
+            });
+          }
+
+          if (key === 'D') {
+            dispatch({
+              type: 'COMPLETE_HOVERED',
+            });
+          }
 
           dispatch(saveCardState());
         }
         break;
       case 'E':
-        console.log('focusing');
         if (evtobj.ctrlKey) {
           evtobj.preventDefault();
           evtobj.stopPropagation();

@@ -84,6 +84,18 @@ const listOne = (state = defaultState, action) => {
         cards: newCards,
       };
     }
+    case actions.COMPLETE_HOVERED: {
+      const newCards = state.cards.map(card => {
+        return card.id === state.hoveredCardId
+          ? Object.assign(card, { isCompleted: !card.isCompleted })
+          : card;
+      });
+
+      return  {
+        ...state,
+        cards: newCards,
+      };
+    }
     case actions.DESELECT_ALL: {
       const newCards = state.cards.map(card => {
         return Object.assign(card, { isSelected: false })
