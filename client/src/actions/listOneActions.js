@@ -9,8 +9,11 @@ const keymap = {
   40: 'ARROW_DOWN',
   67: 'C',
   68: 'D',
+  69: 'E',
   78: 'N',
   88: 'X',
+  89: 'Y',
+  90: 'Z',
 };
 
 const readFile = (evt) => {
@@ -144,36 +147,48 @@ export const triggerFormFocus = () => ({
   type: 'TRIGGER_FORM_FOCUS',
 });
 
+export const TRIGGER_FORM_BLUR = 'TRIGGER_FORM_BLUR';
+export const triggerFormBlur= () => ({
+  type: 'TRIGGER_FORM_BLUR',
+});
+
 export const DELETE_SELECTED = 'DELETE_SELECTED';
+export const UNDO = 'UNDO';
+export const REDO = 'REDO';
+
 export const handleKeyDown = (evt) => {
   return (dispatch, getState) => {
-
-    // evt.preventDefault();
-    // evt.stopPropagation();
     const evtobj = window.event? event : evt;
     const keycode = evtobj.keyCode;
-    // const key = evtobj.ctrlKey && keycode === 88
-    // ? 'CTRL+X'
-    // : keymap[keycode];
     const key = keymap[keycode];
+
     switch(key) {
       case 'ARROW_UP':
       case 'ARROW_DOWN':
         dispatch(moveCardsKeyboard(key, evt));
         dispatch(saveCardState());
       break;
+      case 'ESCAPE':
+        dispatch(deselectAll());
+        dispatch(triggerFormBlur());
+      break;
       case 'C':
-        const { isEditingCard } = getState().ui;
-        if (!isEditingCard) {
+        const { isEditingCard, isFormFocused } = getState().ui;
+        if (!isEditingCard && ! isFormFocused) {
           dispatch({
             type: 'DELETE_HOVERED'
           });
 
           dispatch(saveCardState());
         }
-      case 'ESCAPE':
-        dispatch(deselectAll());
-      break;
+        break;
+      case 'E':
+        console.log('focusing');
+        if (evtobj.ctrlKey) {
+          evtobj.preventDefault();
+          evtobj.stopPropagation();
+          dispatch(triggerFormFocus());
+        }
       case 'X':
         if (evtobj.ctrlKey) {
           dispatch({
@@ -183,11 +198,22 @@ export const handleKeyDown = (evt) => {
           dispatch(saveCardState());
         }
       break;
-      case 'N':
+      case 'Y':
         if (evtobj.ctrlKey) {
-          evtobj.preventDefault();
-          evtobj.stopPropagation();
-          dispatch(triggerFormFocus());
+          dispatch({
+            type: 'REDO',
+          });
+
+          dispatch(saveCardState());
+        }
+      break;
+      case 'Z':
+        if (evtobj.ctrlKey) {
+          dispatch({
+            type: 'UNDO',
+          });
+
+          dispatch(saveCardState());
         }
       break;
     }
@@ -310,6 +336,11 @@ export const toggleNewCardsToTop= () => ({
 export const TOGGLE_HIDE_COMPLETED = 'TOGGLE_HIDE_COMPLETED';
 export const toggleHideCompleted= () => ({
   type: 'TOGGLE_HIDE_COMPLETED',
+});
+
+export const TOGGLE_IS_FORM_FOCUSED = 'TOGGLE_IS_FORM_FOCUSED';
+export const toggleIsFormFocused = () => ({
+  type: 'TOGGLE_IS_FORM_FOCUSED',
 });
 
 export const UNCOMPLETE_ALL = 'UNCOMPLETE_ALL';

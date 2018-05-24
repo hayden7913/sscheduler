@@ -16,7 +16,6 @@ export default class EditInlineText extends Component {
 
   dataChanged = (data) => {
     const { handleChange, cardId } = this.props;
-    console.log('helo')
     handleChange(cardId, data.message);
   }
 

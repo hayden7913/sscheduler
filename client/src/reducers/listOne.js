@@ -6,6 +6,7 @@ import { undoable } from '../helpers/undoable';
 
 const defaultState = {
   activeTaskId: null,
+  blurFormTrigger: false,
   cards: [],
   featureRequests: '',
   focusFormTrigger: false,
@@ -144,10 +145,12 @@ const listOne = (state = defaultState, action) => {
       return state;
     }
   case actions.SET_ACTIVE_TASK:
-      return  {
+      return action.newActiveTaskId !== state.activeTaskId
+      ? {
         ...state,
         activeTaskId: action.newActiveTaskId
-      };
+      }
+      : state;
   case actions.SET_HOVERED_CARD:
       return  {
         ...state,
@@ -198,6 +201,11 @@ const listOne = (state = defaultState, action) => {
     return  {
       ...state,
       focusFormTrigger: !state.focusFormTrigger
+    };
+  case actions.TRIGGER_FORM_BLUR:
+    return  {
+      ...state,
+      blurFormTrigger: !state.blurFormTrigger
     };
   case actions.TOGGLE_COMPLETED:
   case actions.UNCOMPLETE_ALL: {

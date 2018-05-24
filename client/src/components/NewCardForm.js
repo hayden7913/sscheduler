@@ -16,8 +16,11 @@ export default class NewCardForm extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.focusFormTrigger !== this.props.focusFormTrigger) {
-
       this.firstInput.focus()
+    }
+
+    if (prevProps.blurFormTrigger !== this.props.blurFormTrigger) {
+      this.firstInput.blur()
     }
   }
 
@@ -54,20 +57,24 @@ export default class NewCardForm extends React.Component {
   }
 
   render() {
+    const { toggleIsFormFocused } = this.props;
     const inputStyle = {
       width: '175px',
       marginLeft: '10px',
     }
+
     return (
       <form onSubmit={this.handleSubmit}>
           <TextField
-            ref={(input) => { this.firstInput = input; }}
-            type="text"
             name="textValue"
-            value={this.state.textValue}
-            placeholder="New Task"
+            onBlur={toggleIsFormFocused}
             onChange={this.handleChange}
+            onFocus={toggleIsFormFocused}
+            placeholder="New Task"
+            ref={(input) => { this.firstInput = input; }}
             style={inputStyle}
+            type="text"
+            value={this.state.textValue}
           />
           <TextField
             type="text"

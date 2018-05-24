@@ -36,6 +36,7 @@ import {
   setHoveredCard,
   toggleCompleted,
   toggleHideCompleted,
+  toggleIsFormFocused,
   toggleSelected,
   toggleNewCardsToTop,
   triggerFormFocus,
@@ -114,6 +115,7 @@ class App extends Component {
   render() {
     const {
       addCard,
+      blurFormTrigger,
       cards,
       deleteAll,
       deleteCompleted,
@@ -125,6 +127,7 @@ class App extends Component {
       setHoveredCard,
       uncompleteAll,
       toggleHideCompleted,
+      toggleIsFormFocused,
       toggleNewCardsToTop,
       startTime
     } = this.props;
@@ -194,9 +197,11 @@ class App extends Component {
                 <NewCardForm
                   addCard={addCard}
                   cards={cards}
+                  blurFormTrigger={blurFormTrigger}
                   focusFormTrigger={focusFormTrigger}
                   newCardsToTop={newCardsToTop}
                   saveCardState={saveCardState}
+                  toggleIsFormFocused={toggleIsFormFocused}
                 />
                 <Toggle
                   label="Add cards to top"
@@ -253,6 +258,7 @@ const mapStateToProps = (state) => {
   const { listOne } = state;
   const {
     activeTaskId,
+    blurFormTrigger,
     newCardsToTop,
     focusFormTrigger,
     cards,
@@ -262,6 +268,7 @@ const mapStateToProps = (state) => {
 
   return {
     activeTaskId,
+    blurFormTrigger,
     cards,
     focusFormTrigger,
     hideCompleted,
@@ -288,6 +295,7 @@ export default connect(mapStateToProps, {
   toggleNewCardsToTop,
   toggleCompleted,
   toggleHideCompleted,
+  toggleIsFormFocused,
   toggleSelected,
   setHoveredCard,
   uncompleteAll,
