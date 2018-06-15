@@ -79,7 +79,7 @@ class App extends Component {
 
   handleNowButtonClick = () => {
     const { updateStartTime } = this.props;
-    const newTime = roundMinutes(moment().format('h:mm a'), 5);
+    const newTime = roundMinutes(moment().format('h:mm a'));
 
     updateStartTime(newTime);
   }
