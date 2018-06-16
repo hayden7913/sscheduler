@@ -48,10 +48,10 @@ class TaskCard extends PureComponent {
     handleHover(null);
   }
 
-  handleDeleteCard = (evt) => {
-    const { cardId, handleDelete } = this.props;
-
-    handleDelete(cardId, evt);
+  handleAutoAdjustCard = () => {
+    const { handleAutoAdjust, index } = this.props;
+    console.log(handleAutoAdjust);
+    handleAutoAdjust(index);
   }
 
   handleTimeClick = (evt) => {
@@ -71,8 +71,7 @@ class TaskCard extends PureComponent {
       duration,
       handleClick,
       handleHover,
-      handleDblClick,
-      handleDelete,
+      handleAutoAdjust,
       handleDurationChange,
       handleTextChange,
       index,
@@ -117,7 +116,7 @@ class TaskCard extends PureComponent {
             />
           </div>
           <div className="card-col card-col-4 card-col-delete">
-            <span className="icon-trash" onClick={this.handleDeleteCard}></span>
+            <span className="icon-trash" onClick={this.handleAutoAdjustCard}></span>
           </div>
         </Card>
       </div>

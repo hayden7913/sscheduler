@@ -109,6 +109,7 @@ class Container extends PureComponent {
       canDrop,
       cards ,
       isOver,
+      autoAdjustDuration,
       hideCompleted,
       connectDropTarget,
       saveCardState,
@@ -136,10 +137,10 @@ class Container extends PureComponent {
               cardId={card.id}
               className={`${isCardActive} ${isCardSelected} ${isCardCompleted}`}
               duration={card.duration}
+              handleAutoAdjust={autoAdjustDuration}
               handleClick={this.handleCardClick}
               handleCardUpdate={this.handleCardUpdate}
               handleDblClick={this.handleCardDblClick}
-              handleDelete={this.handleDeleteCard}
               handleDurationChange={this.handleDurationChange}
               handleHover={this.handleCardHover}
               handleTextChange={this.handleTextChange}

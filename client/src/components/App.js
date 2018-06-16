@@ -21,6 +21,7 @@ import TextArea from './TextArea';
 
 import {
   addCard,
+  autoAdjustDuration,
   deleteAll,
   deleteCard,
   deleteCompleted,
@@ -279,6 +280,7 @@ const mapStateToProps = (state) => {
 
 export default connect(mapStateToProps, {
   addCard,
+  autoAdjustDuration,
   deleteAll,
   deleteCard,
   deleteCompleted,

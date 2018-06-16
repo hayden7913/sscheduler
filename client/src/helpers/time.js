@@ -40,11 +40,10 @@ export function getCummTimeStamp(startTime, cummTime) {
   return startTime.clone().add(cummTime, 'minutes').format('h:mm a');
 }
 
-export const isTimeBetweenInteveral = (startTime, currDuration, nextDuration) => {
+export const isTimeBetweenInteveral = (now, startTime, currDuration, nextDuration) => {
   const startTimeMoment = getMoment(startTime);
   const taskStart = startTimeMoment.clone().add(currDuration, 'minutes');
   const taskEnd = startTimeMoment.clone().add(nextDuration,  'minutes');
-  const now = moment();
 
   return now.isAfter(taskStart) && now.isBefore(taskEnd);
 }
@@ -64,3 +63,9 @@ export function roundMinutes(hmm_aString, roundVal) {
 
  return hours + ':'+ minutes + a
 }
+
+export const getTimeInMinutes = timeString => getMoment(timeString).unix() / 60;
+
+export const getMinutesPastCurrentTask = (pastCummSum, nowInMinutes, startInMinutes) =>  (
+  Math.round(nowInMinutes - startInMinutes - pastCummSum)
+);

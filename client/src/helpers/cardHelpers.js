@@ -1,4 +1,12 @@
+import moment from 'moment';
 import { compose } from '../helpers/functional';
+import { isTimeBetweenInteveral } from '../helpers/time';
+
+export const getActiveTaskIndex = startTime => cummDurationMap => {
+  return cummDurationMap.findIndex((cummDuration, index) => {
+      return isTimeBetweenInteveral(moment(), startTime, cummDuration, cummDurationMap[index + 1]);
+    });
+}
 
 const getChildren = (node, children = []) => {
   node.childNodes.forEach(child => {

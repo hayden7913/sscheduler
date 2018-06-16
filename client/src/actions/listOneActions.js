@@ -1,5 +1,12 @@
 import shortId from 'shortid';
-import { getCummDurationMap, isTimeBetweenInteveral } from '../helpers/time';
+import moment from 'moment';
+import {
+  getCummDurationMap,
+  isTimeBetweenInteveral,
+  getMinutesPastCurrentTask,
+  getTimeInMinutes,
+} from '../helpers/time';
+import { getActiveTaskIndex } from '../helpers/cardHelpers';
 import { findIndices, filterConsec } from '../helpers/custom-immutable';
 
 const keymap = {
@@ -36,6 +43,24 @@ const assignIdsToCards = (cards) => cards.map(card => {
   return card || {};
 });
 
+export const autoAdjustDuration = (cardIndex) => (dispatch, getState) => {
+  const { cards, startTime } = getState().listOne.present;
+  const card = cards[cardIndex];
+  const cummDurationMap = getCummDurationMap(cards);
+  const activeTaskIndex = getActiveTaskIndex(startTime)(cummDurationMap);
+
+  const adjustmentValue = getMinutesPastCurrentTask(
+    cummDurationMap[activeTaskIndex],
+    getTimeInMinutes(moment().format('h:mma')),
+    getTimeInMinutes(startTime)
+  );
+
+  dispatch({
+    type: 'UPDATE_CARD_DURATION',
+    newDuration: Number(card.duration) + adjustmentValue,
+    cardId: card.id,
+  });
+}
 export const ADD_CARD = 'ADD_CARD';
 export const INSERT_BELOW_SELECTED = 'INSERT_BELOW_SELECTED';
 export const addCard = (newCard) => {
@@ -266,16 +291,14 @@ export function saveCardState() {
 }
 
 export const SET_ACTIVE_TASK = 'SET_ACTIVE_TASK';
+
 export function setActiveTask() {
   return (dispatch, getState) => {
     let newActiveTaskId;
     const { activeTaskId, cards, startTime  } = getState().listOne.present;
     const cummDurationMap = getCummDurationMap(cards);
 
-    const activeIndex = cummDurationMap.findIndex((cummDuration, index) => {
-      return isTimeBetweenInteveral(startTime, cummDuration, cummDurationMap[index + 1]);
-    });
-
+    const activeIndex = getActiveTaskIndex(startTime)(cummDurationMap);
 
     if ((activeIndex === -1) && (cards.length > 0)) {
       newActiveTaskId = cards[0].id;
