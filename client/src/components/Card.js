@@ -116,7 +116,7 @@ class TaskCard extends PureComponent {
             />
           </div>
           <div className="card-col card-col-4 card-col-delete">
-            <span className="icon-trash" onClick={this.handleAutoAdjustCard}></span>
+            <span className="icon-clock" onClick={this.handleAutoAdjustCard}></span>
           </div>
         </Card>
       </div>

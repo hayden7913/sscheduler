@@ -6,7 +6,7 @@ import {
   getMinutesPastCurrentTask,
   getTimeInMinutes,
 } from '../helpers/time';
-import { getActiveTaskIndex } from '../helpers/cardHelpers';
+import { getActiveTaskIndex, getCardIndexById } from '../helpers/cardHelpers';
 import { findIndices, filterConsec } from '../helpers/custom-immutable';
 
 const keymap = {
@@ -182,6 +182,13 @@ export const COMPLETE_HOVERED = 'COMPLETE_HOVERED';
 export const UNDO = 'UNDO';
 export const REDO = 'REDO';
 
+const  advanceHoveredCard = () => (dispatch, getState) => {
+  const { cards, hoveredCardId } = getState().listOne.present;
+  const cardIndex = getCardIndexById(cards)(hoveredCardId);
+
+  setHoveredCard(cards[cardIndex + 1].id);
+}
+
 export const handleKeyDown = (evt) => {
   return (dispatch, getState) => {
     const evtobj = window.event? event : evt;
@@ -203,9 +210,11 @@ export const handleKeyDown = (evt) => {
         const { isEditingCard, isFormFocused } = getState().ui;
         if (!isEditingCard && ! isFormFocused) {
           if (key === 'C') {
+            dispatch(advanceHoveredCard());
             dispatch({
               type: 'DELETE_HOVERED'
             });
+
           }
 
           if (key === 'D') {

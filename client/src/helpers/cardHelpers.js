@@ -8,6 +8,8 @@ export const getActiveTaskIndex = startTime => cummDurationMap => {
     });
 }
 
+export const getCardIndexById = cards => cardId => cards.findIndex(card => card.id === cardId);
+
 const getChildren = (node, children = []) => {
   node.childNodes.forEach(child => {
     if (child) {
