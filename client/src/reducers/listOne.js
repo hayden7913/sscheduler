@@ -116,9 +116,10 @@ const listOne = (state = defaultState, action) => {
       };
     }
     case actions.INSERT_BELOW_SELECTED: {
-      const { index, newCard } = action;
+      const { index, cards } = action;
 
-      const newCards = insertAfterIndex(state.cards, index, newCard);
+      const newCards = insertAfterIndex(state.cards, index, cards);
+
       return  {
         ...state,
         cards: newCards,

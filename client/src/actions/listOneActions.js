@@ -79,7 +79,7 @@ export const addCard = (newCard) => {
     return dispatch({
       type: 'INSERT_BELOW_SELECTED',
       index: endIndex,
-      newCard: Object.assign(newCard, { isSelected: true})
+      cards: Object.assign(newCard, { isSelected: true})
     });
   }
 }
@@ -115,12 +115,22 @@ export const deleteAll = () => dispatch => {
   dispatch(saveCardState());
 };
 
-export const importCards = (evt) => (dispatch) => {
+export const importCards = (evt) => (dispatch, getState) => {
   readFile(evt).then(cardsFile => {
-    const cards = JSON.parse(cardsFile)
-    const cardsWithIds = assignIdsToCards(cards);
+    const jsonCards = JSON.parse(cardsFile)
+    const cardsWithIds = assignIdsToCards(jsonCards);
+    const stateCards = getState().listOne.present.cards;
+    const selectedCards = stateCards.filter(card => card.isSelected)
+    const lastSelectedCardIndex = selectedCards.length
+      ? selectedCards[selectedCards.length - 1]
+      : null;
 
-    dispatch(fetchCardsSuccess({ cards }));
+    dispatch({
+      type: 'INSERT_BELOW_SELECTED',
+      index: lastSelectedCardIndex || stateCards.length,
+      cards: jsonCards,
+    });
+
     dispatch(saveCardState());
   });
 }

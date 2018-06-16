@@ -13,6 +13,14 @@ export function insertAfterIndex(arr, index, newVal) {
   const firstHalfArr = arr.slice(0, index + 1);
   const secondHalfArr = arr.slice(index + 1, arr.length);
 
+  if (Array.isArray(newVal)) {
+    return [
+      ...firstHalfArr,
+      ...newVal,
+      ...secondHalfArr
+    ]
+  }
+
   return [
     ...firstHalfArr,
     newVal,
